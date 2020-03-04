@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.example.soundlevelmeter.Interface.CallBackFromService;
+import com.example.soundlevelmeter.Singleton.DataEvent;
 import com.example.soundlevelmeter.Singleton.Singleton;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -31,7 +32,7 @@ public class MyService extends Service {
     public CallBackFromService callBack;
     private double mEMA = 0.0d;
     private final double EMA_FILTER = 0.6d;
-    private double sound;
+    private int sound;
     public boolean isStopThread = false;
     private final IBinder binder = new LocalBinder();
 
@@ -79,9 +80,9 @@ public class MyService extends Service {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                Log.d("EEE", "noise = " + sound);
+                //   Log.d("EEE", "noise = " + sound);
                 if (callBack != null) {
-                    callBack.callBackFromSoundMeter((int) sound);
+                    callBack.callBackFromSoundMeter(sound);
                 }
             }
         };
@@ -100,7 +101,7 @@ public class MyService extends Service {
                         if (isStopThread) {
                             return;
                         }
-                        Log.i("EEE", "Sleep");
+                        //     Log.i("EEE", "Sleep");
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -120,14 +121,15 @@ public class MyService extends Service {
         }
     }
 
-    public double getSoundDb() {
+    public int getSoundDb() {
         double amp = getAmplitude();
         double ampEMA = getAmplitudeEMA(amp);
         //  Log.d("EEE", "soundDb() : " + "  amp -  " + amp );
-        double result = 20 * Math.log10(amp / 5d);
+        int result = (int) Math.round(20 * Math.log10(amp / 5d));
         if (result < 0) {
             return 0;
         }
+
         return result;
     }
 
@@ -183,7 +185,7 @@ public class MyService extends Service {
                 }
             };
 
-            public Thread threadLocation = new Thread() {
+            private Thread threadLocation = new Thread() {
 
                 @Override
                 public void run() {
@@ -209,12 +211,14 @@ public class MyService extends Service {
 
                         speed = Math.round(speedInFloat);
 
-                        Log.d("EEE", "lmsg   " + msg + "  getSpeed " + currentLocation.getSpeed() + "  distance  -  " + distanceBetween +
-                                "  interval Time   - " + intervalTime + " speed -  " + speedInFloat + " speed -  " + speed);
+                        if (Singleton.getInstance().isStatusWriteTrack()) {
+                            writeTrack();
+                        }
+                        //     Log.d("EEE", "lmsg   " + msg + "  getSpeed " + currentLocation.getSpeed() + "  distance  -  " + distanceBetween +
+                        //             "  interval Time   - " + intervalTime + " speed -  " + speedInFloat + " speed -  " + speed);
 
                         if (callBack != null && !isFirstTime) {
                             handler.post(runnable);
-
                         }
 
                         lastTime = currentTime;
@@ -222,9 +226,20 @@ public class MyService extends Service {
                         isFirstTime = false;
 
                     }
-                    return;
                 }
             };
+
+            private void writeTrack() {
+                DataEvent event = new DataEvent();
+                event.setSpeed(speed);
+                int sound = getSoundDb();
+                event.setSound(sound);
+                event.setTime(System.currentTimeMillis());
+
+                Log.d("EEE", "Systemtime " + System.currentTimeMillis() + "  Sound in track  " + sound);
+                Singleton.getInstance().addDataToList(event);
+
+            }
 
             @Override
             public void onLocationResult(final LocationResult locationResult) {
@@ -250,10 +265,7 @@ public class MyService extends Service {
         stopSpeedometer();
         stopRecorder();
         isStopThread = true;
-        Singleton.getInstance().setStatusSpeedometer(false);
-        Singleton.getInstance().setStatusService(false);
-        Singleton.getInstance().setStatusSoundMeter(false);
-        Singleton.getInstance().setStatusWriteTrack(false);
+        Singleton.getInstance().destroy();
         Log.d("EEE", "onDestroy   MyService ");
     }
 

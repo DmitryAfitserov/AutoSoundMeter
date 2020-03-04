@@ -38,7 +38,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
     private static final int RECORD_AUDIO_REQUEST_CODE = 1001;
     private final int LOCATION_REQUEST_CODE = 1002;
-    Button btnSpeedometer;
+    private Button btnSpeedometer;
     private SoundMeterViewModel soundMeterViewModel;
     private LocationManager locationManager;
     private ServiceConnection serviceConnection;
@@ -90,6 +90,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
             public void onClick(View v) {
                 if (!Singleton.getInstance().isStatusWriteTrack()) {
                     if (Singleton.getInstance().isStatusSpeedometer() && Singleton.getInstance().isStatusSoundMeter()) {
+                        Singleton.getInstance().clearList();
                         Singleton.getInstance().setStatusWriteTrack(true);
                         btnStartTrack.setText(R.string.button_stop_track);
 
@@ -196,6 +197,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
     }
 
     private boolean checkGps() {
+
         locationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
 
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -225,7 +227,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         }
     }
 
-    public boolean checkPermissionSoundMeter() {
+    private boolean checkPermissionSoundMeter() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
 
             requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},

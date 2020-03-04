@@ -1,5 +1,7 @@
 package com.example.soundlevelmeter.Singleton;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +71,13 @@ public class Singleton {
     }
 
     public void clearList() {
-        list.clear();
+        if (list != null) {
+            list.clear();
+        }
+
+    }
+
+    public void destroy() {
+        instance = null;
     }
 }
