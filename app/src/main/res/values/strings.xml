@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">SoundLevelMeter</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="not_permission">Нет разрешения</string>
+
+
+    <string name="menu_sound_meter">Шумомер</string>
+    <string name="double_click">Нажмите ещё раз для выхода</string>
+    <string name="menu_statistics">Графики</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="button_start_track">Начать запись</string>
+    <string name="button_stop_track">Остановить запись</string>
+    <string name="text_for_not_work_speedometer">Спидометр не запущен</string>
+    <string name="button_start_speedometer">Запустить спидометр</string>
+    <string name="button_stop_speedometer">Остановить спидометр</string>
+
+</resources>
