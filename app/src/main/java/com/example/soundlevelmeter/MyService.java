@@ -254,7 +254,9 @@ public class MyService extends Service {
     }
 
     public void stopSpeedometer() {
-        fusedLocationClient.removeLocationUpdates(locationCallback);
+        if (fusedLocationClient != null) {
+            fusedLocationClient.removeLocationUpdates(locationCallback);
+        }
         callBack.callBackFromSpeedometer(0);
     }
 
