@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.example.soundlevelmeter.Interface.CallBackFromService;
+import com.example.soundlevelmeter.Singleton.Singleton;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -32,28 +33,21 @@ public class MyService extends Service {
     private final double EMA_FILTER = 0.6d;
     private double sound;
     public boolean isStopThread = false;
-
-
-    //  SoundMeterFragment soundMeterFragment;
-
     private final IBinder binder = new LocalBinder();
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         return android.app.Service.START_NOT_STICKY;
     }
 
 
     @Override
     public IBinder onBind(Intent intent) {
-
         return binder;
     }
 
-    public void startSoundMeter() {
 
+    public void startSoundMeter() {
 
         try {
             if (mRecorder == null) {
@@ -226,8 +220,9 @@ public class MyService extends Service {
                         lastTime = currentTime;
                         lastLocation = currentLocation;
                         isFirstTime = false;
-                        return;
+
                     }
+                    return;
                 }
             };
 
@@ -237,6 +232,7 @@ public class MyService extends Service {
                 if (locationResult == null) {
                     return;
                 }
+                threadLocation.start();
 
             }
         };
@@ -244,11 +240,9 @@ public class MyService extends Service {
     }
 
     public void stopSpeedometer() {
-
         fusedLocationClient.removeLocationUpdates(locationCallback);
         callBack.callBackFromSpeedometer(0);
     }
-
 
     @Override
     public void onDestroy() {
@@ -256,8 +250,10 @@ public class MyService extends Service {
         stopSpeedometer();
         stopRecorder();
         isStopThread = true;
-
-
+        Singleton.getInstance().setStatusSpeedometer(false);
+        Singleton.getInstance().setStatusService(false);
+        Singleton.getInstance().setStatusSoundMeter(false);
+        Singleton.getInstance().setStatusWriteTrack(false);
         Log.d("EEE", "onDestroy   MyService ");
     }
 

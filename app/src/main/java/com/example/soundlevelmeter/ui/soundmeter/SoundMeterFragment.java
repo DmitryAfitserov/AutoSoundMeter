@@ -1,7 +1,6 @@
 package com.example.soundlevelmeter.ui.soundmeter;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -29,7 +28,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.soundlevelmeter.Interface.CallBackFromService;
 import com.example.soundlevelmeter.MyService;
 import com.example.soundlevelmeter.R;
-import com.example.soundlevelmeter.StatusClass;
+import com.example.soundlevelmeter.Singleton.Singleton;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 import static android.content.Context.LOCATION_SERVICE;
@@ -39,17 +38,14 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
     private static final int RECORD_AUDIO_REQUEST_CODE = 1001;
     private final int LOCATION_REQUEST_CODE = 1002;
-
+    Button btnSpeedometer;
     private SoundMeterViewModel soundMeterViewModel;
     private LocationManager locationManager;
-
     private ServiceConnection serviceConnection;
     private Intent intent;
     private TextView textViewSpeedometer;
     private TextView textViewSoundMeter;
     private MyService myService;
-    Button btnSpeedometer;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -73,10 +69,10 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                 textViewSoundMeter.setText(s);
             }
         });
-        if (StatusClass.isStatusSpeedometer) {
+        if (Singleton.getInstance().isStatusSpeedometer()) {
             btnSpeedometer.setText(R.string.button_stop_speedometer);
         }
-        if (StatusClass.isStatusWriteTrack) {
+        if (Singleton.getInstance().isStatusWriteTrack()) {
             btnStartTrack.setText(R.string.button_stop_track);
         }
         btnSpeedometer.setOnClickListener(new View.OnClickListener() {
@@ -92,21 +88,21 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         btnStartTrack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!StatusClass.isStatusWriteTrack) {
-                    if (StatusClass.isStatusSpeedometer && StatusClass.isStatusSoundMeter) {
-                        StatusClass.isStatusWriteTrack = true;
+                if (!Singleton.getInstance().isStatusWriteTrack()) {
+                    if (Singleton.getInstance().isStatusSpeedometer() && Singleton.getInstance().isStatusSoundMeter()) {
+                        Singleton.getInstance().setStatusWriteTrack(true);
                         btnStartTrack.setText(R.string.button_stop_track);
 
                     }
-                    if (!StatusClass.isStatusSpeedometer) {
+                    if (!Singleton.getInstance().isStatusSpeedometer()) {
                         Toast.makeText(getContext(), "Not speed", Toast.LENGTH_LONG).show();
                     }
-                    if (!StatusClass.isStatusSoundMeter) {
+                    if (!Singleton.getInstance().isStatusSoundMeter()) {
                         Toast.makeText(getContext(), "Not sound", Toast.LENGTH_LONG).show();
                     }
 
                 } else {
-                    StatusClass.isStatusWriteTrack = false;
+                    Singleton.getInstance().setStatusWriteTrack(false);
                     btnStartTrack.setText(R.string.button_start_track);
                 }
             }
@@ -120,13 +116,13 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                 binderService.setCallBackFromService(SoundMeterFragment.this);
                 myService = ((MyService.LocalBinder) service).getService();
                 myService.startSoundMeter();
-                StatusClass.isStatusService = true;
+                Singleton.getInstance().setStatusService(true);
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
                 Log.d("EEE", " onServiceDisconnected  Disconnected ");
-                StatusClass.isStatusService = false;
+                Singleton.getInstance().setStatusService(false);
 
             }
 
@@ -135,7 +131,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
         if (checkPermissionSoundMeter()) {
             createService();
-            StatusClass.isStatusSoundMeter = true;
+            Singleton.getInstance().setStatusSoundMeter(true);
         }
 
 
@@ -144,14 +140,14 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
 
     private void clickBtnSpeedometer() {
-        if (StatusClass.isStatusSpeedometer) {
+        if (Singleton.getInstance().isStatusSpeedometer()) {
             myService.stopSpeedometer();
             btnSpeedometer.setText(R.string.button_start_speedometer);
-            StatusClass.isStatusSpeedometer = false;
+            Singleton.getInstance().setStatusSpeedometer(false);
         } else {
             if (checkPermission()) {
                 myService.startSpeedometer();
-                StatusClass.isStatusSpeedometer = true;
+                Singleton.getInstance().setStatusSpeedometer(true);
                 btnSpeedometer.setText(R.string.button_stop_speedometer);
             }
 
@@ -167,6 +163,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
     @Override
     public void callBackFromSoundMeter(int sound) {
+
         soundMeterViewModel.setValueSound(sound);
     }
 
@@ -246,11 +243,11 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
         if (RECORD_AUDIO_REQUEST_CODE == requestCode && permissions[0].equals(Manifest.permission.RECORD_AUDIO)) {
             if (grantResults[0] == 0) {
-                StatusClass.isStatusSoundMeter = true;
+                Singleton.getInstance().setStatusSoundMeter(true);
             } else {
                 Toast.makeText(getContext(), R.string.not_permission, Toast.LENGTH_SHORT).show();
             }
-            if (!StatusClass.isStatusSoundMeter) {
+            if (!Singleton.getInstance().isStatusSoundMeter()) {
                 createService();
             }
         }
