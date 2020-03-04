@@ -24,11 +24,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.example.soundlevelmeter.Interface.CallBackFromService;
 import com.example.soundlevelmeter.MyService;
 import com.example.soundlevelmeter.R;
 import com.example.soundlevelmeter.Singleton.Singleton;
+import com.google.android.material.navigation.NavigationView;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 import static android.content.Context.LOCATION_SERVICE;
@@ -103,6 +105,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                     }
 
                 } else {
+                    showAlertForSaveTrack();
                     Singleton.getInstance().setStatusWriteTrack(false);
                     btnStartTrack.setText(R.string.button_start_track);
                 }
@@ -124,19 +127,45 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
             public void onServiceDisconnected(ComponentName name) {
                 Log.d("EEE", " onServiceDisconnected  Disconnected ");
                 Singleton.getInstance().setStatusService(false);
-
             }
-
         };
-
 
         if (checkPermissionSoundMeter()) {
             createService();
             Singleton.getInstance().setStatusSoundMeter(true);
         }
-
-
         return root;
+    }
+
+    private void showAlertForSaveTrack() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setMessage("Информация записана, что делать")
+                .setCancelable(true)
+                .setPositiveButton("Сохранить трэк",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("посмотреть на графике",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+                        navigationView.setCheckedItem(R.id.nav_statistics);
+                        Navigation.findNavController(getView()).navigate(R.id.nav_statistics);
+
+
+                    }
+                });
+        alertDialogBuilder.setNeutralButton("закрыть",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 
 

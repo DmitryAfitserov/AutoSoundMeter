@@ -236,7 +236,6 @@ public class MyService extends Service {
                 event.setSound(sound);
                 event.setTime(System.currentTimeMillis());
 
-                Log.d("EEE", "Systemtime " + System.currentTimeMillis() + "  Sound in track  " + sound);
                 Singleton.getInstance().addDataToList(event);
 
             }
