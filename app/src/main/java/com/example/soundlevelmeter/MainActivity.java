@@ -98,8 +98,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (doubleClick) {
-            super.onBackPressed();
             stopService(new Intent(this, MyService.class));
+            finish();
+            System.exit(0);
             return;
         }
         doubleClick = true;

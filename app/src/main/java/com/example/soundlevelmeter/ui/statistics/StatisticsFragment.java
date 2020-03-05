@@ -31,7 +31,7 @@ public class StatisticsFragment extends Fragment {
                 textView.setText(s);
             }
         });
-        Navigation.findNavController(root).popBackStack();
+
         return root;
     }
 }

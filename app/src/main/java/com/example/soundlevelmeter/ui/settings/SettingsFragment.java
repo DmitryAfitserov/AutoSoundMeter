@@ -31,7 +31,7 @@ public class SettingsFragment extends Fragment {
                 textView.setText(s);
             }
         });
-        //  Navigation.findNavController(getView()).popBackStack();
+
         return root;
     }
 }
