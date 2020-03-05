@@ -19,5 +19,7 @@
     <string name="text_for_not_work_speedometer">Спидометр не запущен</string>
     <string name="button_start_speedometer">Запустить спидометр</string>
     <string name="button_stop_speedometer">Остановить спидометр</string>
+    <string name="sound">Шум</string>
+    <string name="speed">Скорость</string>
 
 </resources>
