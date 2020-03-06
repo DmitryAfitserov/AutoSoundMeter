@@ -157,7 +157,7 @@ public class MyService extends Service {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
             locationRequest = LocationRequest.create();
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            locationRequest.setInterval(100); // 0,1 seconds
+            locationRequest.setInterval(500); // 0,1 seconds
             //  locationRequest.setFastestInterval(5 * 10); // 0,05 seconds
         }
 

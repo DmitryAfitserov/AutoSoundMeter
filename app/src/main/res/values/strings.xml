@@ -25,6 +25,7 @@
     <string name="speed">Скорость</string>
     <string name="button_save">Сохранить</string>
     <string name="button_play">Старт</string>
+    <string name="button_pause">Пауза</string>
     <string name="button_clean">Очистить</string>
 
 </resources>

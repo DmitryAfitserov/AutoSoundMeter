@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,64 +52,31 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
         statisticsViewModel =
                 ViewModelProviders.of(this).get(StatisticsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_statistics, container, false);
-//        final TextView textView = root.findViewById(R.id.text_statistics);
-//        statisticsViewModel.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
+
         graph = root.findViewById(R.id.graph_view);
         graph.setVisibility(View.VISIBLE);
-        //     graph.getViewport().setScalable(true);
 
         checkBoxSpeed = root.findViewById(R.id.checkbox_speed);
         checkBoxSound = root.findViewById(R.id.checkbox_sound);
+        final Button btnPlayStop = root.findViewById(R.id.btn_play_stop);
+        final Button btnClean = root.findViewById(R.id.btn_clean);
+        createListeners(btnPlayStop, btnClean);
 
-        if (Singleton.getInstance().isCheckBoxSound()) {
-            checkBoxSound.setChecked(true);
-        } else checkBoxSound.setChecked(false);
+        if (!Singleton.getInstance().isCheckBoxSound()) {
+            checkBoxSound.setChecked(false);
+        }
+        if (!Singleton.getInstance().isCheckBoxSpeed()) {
+            checkBoxSpeed.setChecked(false);
+        }
+        if (Singleton.getInstance().isStatusWriteTrack()) {
+            btnPlayStop.setText(R.string.button_pause);
+        }
 
-        if (Singleton.getInstance().isCheckBoxSpeed()) {
-            checkBoxSpeed.setChecked(true);
-        } else checkBoxSpeed.setChecked(false);
-
-        checkBoxSound.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Singleton.getInstance().setCheckBoxSound(checkBoxSound.isChecked());
-                upDateGraph();
-            }
-        });
-        checkBoxSpeed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Singleton.getInstance().setCheckBoxSpeed(checkBoxSpeed.isChecked());
-                upDateGraph();
-            }
-        });
         createService();
-
         upDateGraph();
 
         return root;
     }
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.d("EEE", " onServiceConnected with Statistics OK  ");
-            MyService.LocalBinder binderService = (MyService.LocalBinder) service;
-            binderService.setCallBackForStatistics(StatisticsFragment.this);
-
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Log.d("EEE", " onServiceDisconnected with Statistics  Disconnected ");
-
-        }
-    };
 
     private void createService() {
         Intent intent = new Intent(getContext(), MyService.class);
@@ -122,7 +90,6 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
             return;
         }
         graph.removeAllSeries();
-        //  graph.getViewport().setXAxisBoundsManual(true);
         if (checkBoxSpeed.isChecked()) {
             startPainGraphSpeed();
         }
@@ -137,12 +104,11 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
 
     private void settingScaleGraph() {
         graph.getViewport().setScalable(true);
-        //   graph.getViewport().setScrollable(true);
+        graph.getViewport().setScrollable(true);
 
-        //   graph.getViewport().setMinX(15);
-        //  graph.getViewport().setMaxX(30);
+        graph.getViewport().setMinX(20);
+        graph.getViewport().setMaxX(50);
 
-        //   graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().scrollToEnd();
     }
 
@@ -193,4 +159,61 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
     public void callBackForUpDataGraph() {
         upDateGraph();
     }
+
+    private void createListeners(final Button btnPlayStop, Button btnClean) {
+        btnPlayStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!Singleton.getInstance().isStatusWriteTrack()) {
+                    Singleton.getInstance().setStatusWriteTrack(true);
+                    btnPlayStop.setText(R.string.button_pause);
+                } else {
+                    Singleton.getInstance().setStatusWriteTrack(false);
+                    btnPlayStop.setText(R.string.button_play);
+                }
+            }
+        });
+
+        btnClean.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Singleton.getInstance().clearList();
+                if (!Singleton.getInstance().isStatusWriteTrack()) {
+                    upDateGraph();
+                }
+            }
+        });
+
+        checkBoxSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Singleton.getInstance().setCheckBoxSound(checkBoxSound.isChecked());
+                upDateGraph();
+            }
+        });
+        checkBoxSpeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Singleton.getInstance().setCheckBoxSpeed(checkBoxSpeed.isChecked());
+                upDateGraph();
+            }
+        });
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d("EEE", " onServiceConnected with Statistics OK  ");
+            MyService.LocalBinder binderService = (MyService.LocalBinder) service;
+            binderService.setCallBackForStatistics(StatisticsFragment.this);
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d("EEE", " onServiceDisconnected with Statistics  Disconnected ");
+
+        }
+    };
+
 }
