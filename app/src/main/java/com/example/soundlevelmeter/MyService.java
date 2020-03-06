@@ -180,10 +180,16 @@ public class MyService extends Service {
             int speed;
             LocationResult locationResult;
 
-            final Runnable runnable = new Runnable() {
+            final Runnable runnableForSoundMeter = new Runnable() {
                 @Override
                 public void run() {
                     callBack.callBackFromSpeedometer(speed);
+                }
+            };
+            final Runnable runnableForStatistics = new Runnable() {
+                @Override
+                public void run() {
+                    callBackForStaticsits.callBackForUpDataGraph();
                 }
             };
 
@@ -205,10 +211,6 @@ public class MyService extends Service {
                         currentTime = System.currentTimeMillis();
                         intervalTime = currentTime - lastTime;
 
-                        double latitude = currentLocation.getLatitude();
-                        double longitude = currentLocation.getLongitude();
-                        String msg = "New Latitude: " + latitude + "New Longitude: " + longitude;
-
                         float speedInFloat = distanceBetween / (float) intervalTime * 3600f;
 
                         speed = Math.round(speedInFloat);
@@ -216,11 +218,9 @@ public class MyService extends Service {
                         if (Singleton.getInstance().isStatusWriteTrack()) {
                             writeTrack();
                         }
-                        //     Log.d("EEE", "lmsg   " + msg + "  getSpeed " + currentLocation.getSpeed() + "  distance  -  " + distanceBetween +
-                        //             "  interval Time   - " + intervalTime + " speed -  " + speedInFloat + " speed -  " + speed);
 
                         if (callBack != null && !isFirstTime) {
-                            handler.post(runnable);
+                            handler.post(runnableForSoundMeter);
                         }
 
                         lastTime = currentTime;
@@ -240,7 +240,7 @@ public class MyService extends Service {
 
                 Singleton.getInstance().addDataToList(event);
                 if (callBackForStaticsits != null) {
-                    callBackForStaticsits.callBackForUpDataGraph();
+                    handler.post(runnableForStatistics);
                 }
 
             }

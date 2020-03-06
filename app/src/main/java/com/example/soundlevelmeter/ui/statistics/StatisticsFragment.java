@@ -122,20 +122,37 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
             return;
         }
         graph.removeAllSeries();
+        //  graph.getViewport().setXAxisBoundsManual(true);
         if (checkBoxSpeed.isChecked()) {
             startPainGraphSpeed();
         }
         if (checkBoxSound.isChecked()) {
             startPainGraphSound();
         }
+        if (checkBoxSound.isChecked() || checkBoxSpeed.isChecked()) {
+            settingScaleGraph();
+
+        }
+    }
+
+    private void settingScaleGraph() {
+        graph.getViewport().setScalable(true);
+        //   graph.getViewport().setScrollable(true);
+
+        //   graph.getViewport().setMinX(15);
+        //  graph.getViewport().setMaxX(30);
+
+        //   graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().scrollToEnd();
     }
 
     private void startPainGraphSound() {
 
             try {
-                DataPoint[] dataPoints = new DataPoint[list.size()];
+                int size = list.size();
+                DataPoint[] dataPoints = new DataPoint[size];
 
-                for (int i = 0; i < list.size(); i++) {
+                for (int i = 0; i < size; i++) {
 
                     double x = list.get(i).getTime() / 10d;
                     double y = list.get(i).getSound();
@@ -144,9 +161,7 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
                 }
                 seriesSound = new LineGraphSeries<>(dataPoints);
 
-
                 graph.addSeries(seriesSound);
-                graph.getViewport().scrollToEnd();
             } catch (IllegalArgumentException e) {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -155,9 +170,10 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
     private void startPainGraphSpeed() {
 
         try {
-            DataPoint[] dataPoints = new DataPoint[list.size()];
+            int size = list.size();
+            DataPoint[] dataPoints = new DataPoint[size];
 
-            for (int i = 0; i < list.size(); i++) {
+            for (int i = 0; i < size; i++) {
 
                 double x = list.get(i).getTime() / 10d;
                 double y = list.get(i).getSpeed();
@@ -166,9 +182,7 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
             }
             seriesSpeed = new LineGraphSeries<>(dataPoints);
 
-
             graph.addSeries(seriesSpeed);
-            graph.getViewport().scrollToEnd();
         } catch (IllegalArgumentException e) {
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
