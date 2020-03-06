@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.example.soundlevelmeter.Interface.CallBackForStaticsits;
 import com.example.soundlevelmeter.Interface.CallBackFromService;
 import com.example.soundlevelmeter.Singleton.DataEvent;
 import com.example.soundlevelmeter.Singleton.Singleton;
@@ -27,9 +28,10 @@ public class MyService extends Service {
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
-    MediaRecorder mRecorder;
-    Thread thread;
+    private MediaRecorder mRecorder;
+    private Thread thread;
     public CallBackFromService callBack;
+    public CallBackForStaticsits callBackForStaticsits;
     private double mEMA = 0.0d;
     private final double EMA_FILTER = 0.6d;
     private int sound;
@@ -237,6 +239,9 @@ public class MyService extends Service {
                 event.setTime(System.currentTimeMillis());
 
                 Singleton.getInstance().addDataToList(event);
+                if (callBackForStaticsits != null) {
+                    callBackForStaticsits.callBackForUpDataGraph();
+                }
 
             }
 
@@ -288,6 +293,11 @@ public class MyService extends Service {
 
         public void setCallBackFromService(CallBackFromService callBack) {
             MyService.this.callBack = callBack;
+
+        }
+
+        public void setCallBackForStatistics(CallBackForStaticsits callBackForStaticsits) {
+            MyService.this.callBackForStaticsits = callBackForStaticsits;
 
         }
 

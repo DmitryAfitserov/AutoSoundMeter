@@ -1,6 +1,10 @@
 package com.example.soundlevelmeter.ui.statistics;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +20,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import com.example.soundlevelmeter.Interface.CallBackForStaticsits;
 import com.example.soundlevelmeter.MainActivity;
+import com.example.soundlevelmeter.MyService;
 import com.example.soundlevelmeter.R;
 import com.example.soundlevelmeter.Singleton.DataEvent;
 import com.example.soundlevelmeter.Singleton.Singleton;
+import com.example.soundlevelmeter.ui.soundmeter.SoundMeterFragment;
 import com.google.android.gms.location.LocationCallback;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -27,13 +34,17 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.List;
 
-public class StatisticsFragment extends Fragment {
+import static android.content.Context.BIND_AUTO_CREATE;
+
+public class StatisticsFragment extends Fragment implements CallBackForStaticsits {
 
     private StatisticsViewModel statisticsViewModel;
     private List<DataEvent> list;
     private CheckBox checkBoxSpeed;
     private CheckBox checkBoxSound;
     private GraphView graph;
+    private LineGraphSeries<DataPoint> seriesSpeed;
+    private LineGraphSeries<DataPoint> seriesSound;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -66,37 +77,60 @@ public class StatisticsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Singleton.getInstance().setCheckBoxSound(checkBoxSound.isChecked());
+                upDateGraph();
             }
         });
         checkBoxSpeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Singleton.getInstance().setCheckBoxSpeed(checkBoxSpeed.isChecked());
+                upDateGraph();
             }
         });
+        createService();
 
-
-        if (checkBoxSound.isChecked()) {
-            startPainGraphSound(true);
-        }
-        if (checkBoxSpeed.isChecked()) {
-            startPainGraphSpeed();
-        }
-
-
-        //    getCorrectList();
-
+        upDateGraph();
 
         return root;
     }
 
-    private void startPainGraphSound(boolean isNewGraph) {
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d("EEE", " onServiceConnected with Statistics OK  ");
+            MyService.LocalBinder binderService = (MyService.LocalBinder) service;
+            binderService.setCallBackForStatistics(StatisticsFragment.this);
 
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d("EEE", " onServiceDisconnected with Statistics  Disconnected ");
+
+        }
+    };
+
+    private void createService() {
+        Intent intent = new Intent(getContext(), MyService.class);
+        getActivity().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+    }
+
+
+    private void upDateGraph() {
         list = Singleton.getInstance().getList();
         if (list == null) {
             return;
         }
-        if (isNewGraph) {
+        graph.removeAllSeries();
+        if (checkBoxSpeed.isChecked()) {
+            startPainGraphSpeed();
+        }
+        if (checkBoxSound.isChecked()) {
+            startPainGraphSound();
+        }
+    }
+
+    private void startPainGraphSound() {
 
             try {
                 DataPoint[] dataPoints = new DataPoint[list.size()];
@@ -108,27 +142,41 @@ public class StatisticsFragment extends Fragment {
                     dataPoints[i] = new DataPoint(x, y);
                     Log.d("EEE", "x=" + x + "     y=" + y);
                 }
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
+                seriesSound = new LineGraphSeries<>(dataPoints);
 
 
-                graph.addSeries(series);
+                graph.addSeries(seriesSound);
                 graph.getViewport().scrollToEnd();
             } catch (IllegalArgumentException e) {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
-
-        } else {
-
-        }
-
     }
 
     private void startPainGraphSpeed() {
 
+        try {
+            DataPoint[] dataPoints = new DataPoint[list.size()];
 
+            for (int i = 0; i < list.size(); i++) {
+
+                double x = list.get(i).getTime() / 10d;
+                double y = list.get(i).getSpeed();
+                dataPoints[i] = new DataPoint(x, y);
+                Log.d("EEE", "x=" + x + "     y=" + y);
+            }
+            seriesSpeed = new LineGraphSeries<>(dataPoints);
+
+
+            graph.addSeries(seriesSpeed);
+            graph.getViewport().scrollToEnd();
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
 
-
-
+    @Override
+    public void callBackForUpDataGraph() {
+        upDateGraph();
+    }
 }
