@@ -15,12 +15,16 @@
     <string name="menu_statistics">Графики</string>
     <string name="menu_settings">Настройки</string>
     <string name="button_start_track">Начать запись</string>
+    <string name="button_go_to_graph">К графику</string>
     <string name="button_stop_track">Остановить запись</string>
+    <string name="button_open_save_track">Открыть</string>
     <string name="text_for_not_work_speedometer">Спидометр не запущен</string>
     <string name="button_start_speedometer">Запустить спидометр</string>
     <string name="button_stop_speedometer">Остановить спидометр</string>
     <string name="sound">Шум</string>
     <string name="speed">Скорость</string>
-    <string name="button_open_save">загрузить трек</string>
+    <string name="button_save">Сохранить</string>
+    <string name="button_play">Старт</string>
+    <string name="button_clean">Очистить</string>
 
 </resources>

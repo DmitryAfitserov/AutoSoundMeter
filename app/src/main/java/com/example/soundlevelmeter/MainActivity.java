@@ -53,28 +53,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-            @Override
-            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                switch (destination.getId()) {
-                    case (R.id.nav_sound_meter): {
-                        Log.d("EEE", "touch 1");
-
-                        break;
-                    }
-                    case (R.id.nav_statistics): {
-                        Log.d("EEE", "touch 2");
-                        break;
-                    }
-                    case (R.id.nav_settings): {
-                        Log.d("EEE", "touch 3");
-                        break;
-                    }
-                }
-            }
-
-        });
     }
 
 
@@ -97,23 +75,33 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (doubleClick) {
-            stopService(new Intent(this, MyService.class));
-            finish();
-            System.exit(0);
-            return;
-        }
-        doubleClick = true;
-        Toast.makeText(getApplicationContext(), R.string.double_click, Toast.LENGTH_LONG).show();
-        Runnable runnable = new Runnable() {
+        if (Navigation.findNavController(
+                this, R.id.nav_host_fragment).getCurrentDestination().getId() ==
+                R.id.nav_sound_meter) {
 
-            @Override
-            public void run() {
-                doubleClick = false;
-
+            if (doubleClick) {
+                stopService(new Intent(this, MyService.class));
+                finish();
+                System.exit(0);
+                return;
             }
-        };
-        Handler handler = new Handler();
-        handler.postDelayed(runnable, 2500);
+            doubleClick = true;
+            Toast.makeText(getApplicationContext(), R.string.double_click, Toast.LENGTH_LONG).show();
+            Runnable runnable = new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleClick = false;
+
+                }
+            };
+            Handler handler = new Handler();
+            handler.postDelayed(runnable, 2500);
+        } else {
+            super.onBackPressed();
+        }
+
+
+
     }
 }

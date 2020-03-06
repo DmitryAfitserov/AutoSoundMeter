@@ -86,6 +86,14 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                 }
             }
         });
+        Button btnGoToGraph = root.findViewById(R.id.button_go_to_graph);
+        btnGoToGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Navigation.findNavController(getView()).navigate(R.id.nav_statistics);
+            }
+        });
 
         btnStartTrack.setOnClickListener(new View.OnClickListener() {
             @Override
