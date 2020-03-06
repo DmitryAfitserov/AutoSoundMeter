@@ -12,6 +12,9 @@ public class Singleton {
     private boolean isStatusSpeedometer = false;
     private boolean isStatusSoundMeter = false;
     private boolean isStatusWriteTrack = false;
+    private boolean isCheckBoxSpeed = true;
+    private boolean isCheckBoxSound = true;
+    private long startTime;
 
 
     private List<DataEvent> list;
@@ -59,6 +62,22 @@ public class Singleton {
         isStatusWriteTrack = statusWriteTrack;
     }
 
+    public boolean isCheckBoxSpeed() {
+        return isCheckBoxSpeed;
+    }
+
+    public void setCheckBoxSpeed(boolean checkBoxSpeed) {
+        isCheckBoxSpeed = checkBoxSpeed;
+    }
+
+    public boolean isCheckBoxSound() {
+        return isCheckBoxSound;
+    }
+
+    public void setCheckBoxSound(boolean checkBoxSound) {
+        isCheckBoxSound = checkBoxSound;
+    }
+
     public List<DataEvent> getList() {
         return list;
     }
@@ -67,6 +86,12 @@ public class Singleton {
         if (list == null) {
             list = new ArrayList<>();
         }
+        if (list.size() == 0) {
+            startTime = event.getTime();
+        }
+        long temp = Math.round((event.getTime() - startTime) / 100d);
+
+        event.setTime(temp);
         list.add(event);
     }
 

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.example.soundlevelmeter.MainActivity;
 import com.example.soundlevelmeter.R;
 import com.example.soundlevelmeter.Singleton.DataEvent;
 import com.example.soundlevelmeter.Singleton.Singleton;
+import com.google.android.gms.location.LocationCallback;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -28,7 +30,10 @@ import java.util.List;
 public class StatisticsFragment extends Fragment {
 
     private StatisticsViewModel statisticsViewModel;
-    List<DataEvent> list;
+    private List<DataEvent> list;
+    private CheckBox checkBoxSpeed;
+    private CheckBox checkBoxSound;
+    private GraphView graph;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -42,42 +47,88 @@ public class StatisticsFragment extends Fragment {
 //                textView.setText(s);
 //            }
 //        });
-        getCorrectList();
-        final GraphView graph = root.findViewById(R.id.graph_view);
+        graph = root.findViewById(R.id.graph_view);
         graph.setVisibility(View.VISIBLE);
+        //     graph.getViewport().setScalable(true);
 
-        try {
-            LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                    new DataPoint(0, 1),
-                    new DataPoint(Integer.valueOf(1), Integer.valueOf(2)),
-                    new DataPoint(Integer.valueOf(2), Integer.valueOf(5)),
-                    new DataPoint(Integer.valueOf(3), Integer.valueOf(7)),
-                    new DataPoint(Integer.valueOf(4), Integer.valueOf(9))
-            });
-            graph.addSeries(series);
-        } catch (IllegalArgumentException e) {
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        checkBoxSpeed = root.findViewById(R.id.checkbox_speed);
+        checkBoxSound = root.findViewById(R.id.checkbox_sound);
+
+        if (Singleton.getInstance().isCheckBoxSound()) {
+            checkBoxSound.setChecked(true);
+        } else checkBoxSound.setChecked(false);
+
+        if (Singleton.getInstance().isCheckBoxSpeed()) {
+            checkBoxSpeed.setChecked(true);
+        } else checkBoxSpeed.setChecked(false);
+
+        checkBoxSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Singleton.getInstance().setCheckBoxSound(checkBoxSound.isChecked());
+            }
+        });
+        checkBoxSpeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Singleton.getInstance().setCheckBoxSpeed(checkBoxSpeed.isChecked());
+            }
+        });
+
+
+        if (checkBoxSound.isChecked()) {
+            startPainGraphSound(true);
         }
+        if (checkBoxSpeed.isChecked()) {
+            startPainGraphSpeed();
+        }
+
+
+        //    getCorrectList();
 
 
         return root;
     }
 
-    private void getCorrectList() {
-        if (list == null) {
-            list = Singleton.getInstance().getList();
-        }
-        if (list.size() < 1) {
-            list = Singleton.getInstance().getList();
-        }
+    private void startPainGraphSound(boolean isNewGraph) {
 
-        long startTime = list.get(0).getTime();
-        for (DataEvent event : list) {
-            long currentTime = event.getTime();
-            event.setTime(currentTime - startTime);
-            Log.d("EEE", "time " + event.getTime());
+        list = Singleton.getInstance().getList();
+        if (list == null) {
+            return;
+        }
+        if (isNewGraph) {
+
+            try {
+                DataPoint[] dataPoints = new DataPoint[list.size()];
+
+                for (int i = 0; i < list.size(); i++) {
+
+                    double x = list.get(i).getTime() / 10d;
+                    double y = list.get(i).getSound();
+                    dataPoints[i] = new DataPoint(x, y);
+                    Log.d("EEE", "x=" + x + "     y=" + y);
+                }
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
+
+
+                graph.addSeries(series);
+                graph.getViewport().scrollToEnd();
+            } catch (IllegalArgumentException e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+        } else {
+
         }
 
     }
+
+    private void startPainGraphSpeed() {
+
+
+    }
+
+
+
 
 }
