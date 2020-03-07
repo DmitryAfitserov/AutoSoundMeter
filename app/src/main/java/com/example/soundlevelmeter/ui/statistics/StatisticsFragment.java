@@ -46,6 +46,7 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
     private GraphView graph;
     private LineGraphSeries<DataPoint> seriesSpeed;
     private LineGraphSeries<DataPoint> seriesSound;
+//    private String titleTime = getResources().getString(R.string.title_time);
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
 
         graph = root.findViewById(R.id.graph_view);
         graph.setVisibility(View.VISIBLE);
+        // graph.getGridLabelRenderer().setHorizontalAxisTitle(titleTime);
 
         checkBoxSpeed = root.findViewById(R.id.checkbox_speed);
         checkBoxSound = root.findViewById(R.id.checkbox_sound);
@@ -165,8 +167,22 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
             @Override
             public void onClick(View v) {
                 if (!Singleton.getInstance().isStatusWriteTrack()) {
-                    Singleton.getInstance().setStatusWriteTrack(true);
-                    btnPlayStop.setText(R.string.button_pause);
+                    if (Singleton.getInstance().isStatusSpeedometer() &&
+                            Singleton.getInstance().isStatusSoundMeter()) {
+                        Singleton.getInstance().setStatusWriteTrack(true);
+                        btnPlayStop.setText(R.string.button_pause);
+                    } else {
+                        if (!Singleton.getInstance().isStatusSpeedometer()) {
+                            Toast.makeText(getContext(), R.string.text_for_not_work_speedometer,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        if (!Singleton.getInstance().isStatusSoundMeter()) {
+                            Toast.makeText(getContext(), R.string.text_for_not_work_soundmeter,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+
                 } else {
                     Singleton.getInstance().setStatusWriteTrack(false);
                     btnPlayStop.setText(R.string.button_play);
