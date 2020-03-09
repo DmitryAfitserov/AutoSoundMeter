@@ -15,15 +15,29 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.soundlevelmeter.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NotesFragment extends ListFragment {
 
     private NotesViewModel notesViewModel;
+    private ArrayList<Note> list = new ArrayList<>();
+
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        for (int i = 0; i < 10; i++) {
+            Note note = new Note("dfdf", "dfdf");
+            list.add(note);
 
-        AdapterForListNotes adapter = new AdapterForListNotes(getContext(), R.layout.item_list_fragment);
+        }
+
+
+        AdapterForListNotes adapter =
+                new AdapterForListNotes(getContext(), R.layout.item_list_fragment, list);
         setListAdapter(adapter);
     }
 }

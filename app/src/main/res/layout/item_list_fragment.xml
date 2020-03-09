@@ -7,12 +7,14 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/text_view_name_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
     </TextView>
 
     <TextView
+        android:id="@+id/text_view_content_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
