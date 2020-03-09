@@ -10,18 +10,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+
 
 import com.example.soundlevelmeter.R;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class NotesFragment extends ListFragment {
 
@@ -65,7 +62,7 @@ public class NotesFragment extends ListFragment {
 
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack if needed
-        transaction.add(R.id.container_notes, fragmentNote);
+        transaction.replace(R.id.nav_host_fragment, fragmentNote).setPrimaryNavigationFragment(fragmentNote);
         transaction.addToBackStack(null);
 
 // Commit the transaction
