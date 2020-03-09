@@ -13,7 +13,7 @@
     <string name="menu_sound_meter">Шумомер</string>
     <string name="double_click">Нажмите ещё раз для выхода</string>
     <string name="menu_statistics">Графики</string>
-    <string name="menu_settings">Настройки</string>
+    <string name="menu_notes">Настройки</string>
     <string name="button_start_track">Начать запись</string>
     <string name="button_go_to_graph">К графику</string>
     <string name="button_stop_track">Остановить запись</string>
