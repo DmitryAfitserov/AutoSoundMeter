@@ -63,6 +63,7 @@ public class NotesFragment extends ListFragment {
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack if needed
         transaction.replace(R.id.nav_host_fragment, fragmentNote).setPrimaryNavigationFragment(fragmentNote);
+        transaction.hide(this);
         transaction.addToBackStack(null);
 
 // Commit the transaction
