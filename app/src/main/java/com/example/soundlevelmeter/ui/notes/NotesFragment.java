@@ -1,14 +1,19 @@
 package com.example.soundlevelmeter.ui.notes;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,6 +31,7 @@ public class NotesFragment extends ListFragment {
 
 
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -39,5 +45,32 @@ public class NotesFragment extends ListFragment {
         AdapterForListNotes adapter =
                 new AdapterForListNotes(getContext(), R.layout.item_list_fragment, list);
         setListAdapter(adapter);
+
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        return inflater.inflate(R.layout.fragment_notes, container, false);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Log.d("EEE", "position  " + position);
+
+        NoteContentFragment fragmentNote = new NoteContentFragment(list.get(position));
+
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack if needed
+        transaction.add(R.id.container_notes, fragmentNote);
+        transaction.addToBackStack(null);
+
+// Commit the transaction
+        transaction.commit();
+
+
     }
 }

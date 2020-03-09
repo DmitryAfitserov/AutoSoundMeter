@@ -18,12 +18,12 @@ import java.util.List;
 
 public class AdapterForListNotes extends ArrayAdapter<Note> {
 
-    private int resourses;
+    private int resourse;
     private LayoutInflater inflater;
 
     public AdapterForListNotes(@NonNull Context context, int resource, @NonNull List<Note> objects) {
         super(context, resource, objects);
-        this.resourses = resource;
+        this.resourse = resource;
         this.inflater = LayoutInflater.from(context);
 
     }
@@ -36,7 +36,7 @@ public class AdapterForListNotes extends ArrayAdapter<Note> {
         ViewHolder viewHolder;
 
         if (convertView == null) {
-            convertView = inflater.inflate(this.resourses, parent, false);
+            convertView = inflater.inflate(this.resourse, parent, false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
