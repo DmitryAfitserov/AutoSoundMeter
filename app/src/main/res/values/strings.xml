@@ -8,6 +8,10 @@
     <string name="action_settings">Настройки</string>
 
     <string name="not_permission">Нет разрешения</string>
+    <string name="use_mph">использовать mph</string>
+    <string name="unit_of_measure">Единицы измерения</string>
+    <string name="speedometer">Спидометр</string>
+    <string name="auto_run_speedometer">Включать при запуске приложения</string>
 
 
     <string name="menu_sound_meter">Шумомер</string>

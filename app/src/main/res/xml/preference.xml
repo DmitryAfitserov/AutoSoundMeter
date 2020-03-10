@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:key="check_box_use_mph"
+        android:summary="@string/use_mph"
+        android:title="@string/unit_of_measure"></CheckBoxPreference>
+
+    <CheckBoxPreference
+        android:key="check_box_auto_run_speedometer"
+        android:icon="@android:drawable/ic_input_add"
+        android:summary="@string/auto_run_speedometer"
+        android:title="@string/speedometer"></CheckBoxPreference>
+</PreferenceScreen>

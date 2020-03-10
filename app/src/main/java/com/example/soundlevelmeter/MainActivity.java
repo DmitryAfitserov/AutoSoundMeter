@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 if (navController.getCurrentDestination().getId() != R.id.fragment_settings) {
                     navController.navigate(R.id.open_fragment_settings);
                 }
-                
+
                 return true;
             }
         }

@@ -14,6 +14,7 @@ public class Singleton {
     private boolean isStatusWriteTrack = false;
     private boolean isCheckBoxSpeed = true;
     private boolean isCheckBoxSound = true;
+    private boolean isUseMPH;
     private long startTime;
 
 
@@ -28,6 +29,14 @@ public class Singleton {
             instance = new Singleton();
         }
         return instance;
+    }
+
+    public boolean isUseMPH() {
+        return isUseMPH;
+    }
+
+    public void setUseMPH(boolean useMPH) {
+        isUseMPH = useMPH;
     }
 
     public boolean isStatusService() {

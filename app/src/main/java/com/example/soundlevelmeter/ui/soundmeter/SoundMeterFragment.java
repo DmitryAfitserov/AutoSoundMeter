@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 
 import com.example.soundlevelmeter.Interface.CallBackFromService;
 import com.example.soundlevelmeter.MyService;
@@ -48,6 +50,12 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
     private TextView textViewSpeedometer;
     private TextView textViewSoundMeter;
     private MyService myService;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d("EEE", "onCreate");
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -298,6 +306,12 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                 Toast.makeText(getContext(), R.string.not_permission, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void getDataPreference() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        preferences.getBoolean("fd", false);
+        preferences.getBoolean("l", false);
     }
 
 
