@@ -30,7 +30,7 @@
     <fragment
         android:id="@+id/fragment_note"
         android:name="com.example.soundlevelmeter.ui.notes.NoteContentFragment"
-        android:label="@string/menu_notes"
+        android:label="@string/title_note"
         tools:layout="@layout/fragment_content_note" />
 
 

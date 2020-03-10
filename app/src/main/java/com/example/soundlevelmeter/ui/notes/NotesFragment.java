@@ -5,26 +5,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
+import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 import androidx.navigation.Navigation;
-
-
 import com.example.soundlevelmeter.R;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 
-public class NotesFragment extends ListFragment {
+public class NotesFragment extends ListFragment implements AbsListView.OnScrollListener {
 
-    private NotesViewModel notesViewModel;
     private ArrayList<Note> list = new ArrayList<>();
+    private View view;
+    private FloatingActionButton fab;
+
 
 
 
@@ -33,12 +32,11 @@ public class NotesFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             Note note = new Note("dfdf", "dfdf");
             list.add(note);
 
         }
-
 
         AdapterForListNotes adapter =
                 new AdapterForListNotes(getContext(), R.layout.item_list_fragment, list);
@@ -50,28 +48,50 @@ public class NotesFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_notes, container, false);
+        view = inflater.inflate(R.layout.fragment_notes, container, false);
+        fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("EEE", "floating button click");
+            }
+        });
+
+
+        return view;
     }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getListView().setOnScrollListener(this);
+
+    }
+
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Log.d("EEE", "position  " + position);
-
-//        NoteContentFragment fragmentNote = new NoteContentFragment(list.get(position));
-//
-//        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-//
-//        // Replace whatever is in the fragment_container view with this fragment,
-//        // and add the transaction to the back stack if needed
-//        transaction.replace(R.id.nav_host_fragment, fragmentNote).setPrimaryNavigationFragment(fragmentNote);
-//        transaction.hide(this);
-//        transaction.addToBackStack(null);
-//
-//// Commit the transaction
-//        transaction.commit();
 
         Navigation.findNavController(getView()).navigate(R.id.fragment_note);
 
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        int btn_initPosY = fab.getScrollY();
+        if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
+            fab.animate().cancel();
+            fab.animate().translationYBy(150);
+        } else {
+            fab.animate().cancel();
+            fab.animate().translationY(btn_initPosY);
+        }
+    }
+
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
     }
 }
