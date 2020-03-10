@@ -29,18 +29,21 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
 
 
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         for (int i = 0; i < 5; i++) {
-            Note note = new Note("dfdf", "dfdf");
+            Note note = new Note(i + "  dfdf", "dfdf");
             list.add(note);
 
         }
+        if (getListAdapter() == null) {
+            AdapterForListNotes adapter =
+                    new AdapterForListNotes(getContext(), R.layout.item_list_fragment, list);
+            setListAdapter(adapter);
+        }
 
-        AdapterForListNotes adapter =
-                new AdapterForListNotes(getContext(), R.layout.item_list_fragment, list);
-        setListAdapter(adapter);
 
     }
 
@@ -53,7 +56,7 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("EEE", "floating button click");
+                changeFragment();
             }
         });
 
@@ -72,13 +75,25 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        Log.d("EEE", "touch");
+        changeFragment(position);
 
+    }
+
+    private void changeFragment() {
         Navigation.findNavController(getView()).navigate(R.id.fragment_note);
+    }
 
+    private void changeFragment(int position) {
+        Bundle args = new Bundle();
+        args.putInt("int", position);
+
+        Navigation.findNavController(getView()).navigate(R.id.fragment_note, args);
     }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
+        Log.d("EEE", "scroll");
         int btn_initPosY = fab.getScrollY();
         if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
             fab.animate().cancel();
