@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
+import androidx.navigation.Navigation;
 
 
 import com.example.soundlevelmeter.R;
@@ -56,18 +57,20 @@ public class NotesFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Log.d("EEE", "position  " + position);
 
-        NoteContentFragment fragmentNote = new NoteContentFragment(list.get(position));
+//        NoteContentFragment fragmentNote = new NoteContentFragment(list.get(position));
+//
+//        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//
+//        // Replace whatever is in the fragment_container view with this fragment,
+//        // and add the transaction to the back stack if needed
+//        transaction.replace(R.id.nav_host_fragment, fragmentNote).setPrimaryNavigationFragment(fragmentNote);
+//        transaction.hide(this);
+//        transaction.addToBackStack(null);
+//
+//// Commit the transaction
+//        transaction.commit();
 
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack if needed
-        transaction.replace(R.id.nav_host_fragment, fragmentNote).setPrimaryNavigationFragment(fragmentNote);
-        transaction.hide(this);
-        transaction.addToBackStack(null);
-
-// Commit the transaction
-        transaction.commit();
+        Navigation.findNavController(getView()).navigate(R.id.fragment_note);
 
 
     }

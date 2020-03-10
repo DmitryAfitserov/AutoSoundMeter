@@ -21,7 +21,17 @@
         android:id="@+id/nav_settings"
         android:name="com.example.soundlevelmeter.ui.notes.NotesFragment"
         android:label="@string/menu_notes"
-        tools:layout="@layout/fragment_notes" />
+        tools:layout="@layout/fragment_notes">
+        <action
+            android:id="@+id/action_nav_settings_to_fragment_note"
+            app:destination="@id/fragment_note" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_note"
+        android:name="com.example.soundlevelmeter.ui.notes.NoteContentFragment"
+        android:label="@string/menu_notes"
+        tools:layout="@layout/fragment_content_note" />
 
 
 </navigation>

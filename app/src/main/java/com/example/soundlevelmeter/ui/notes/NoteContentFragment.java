@@ -14,9 +14,7 @@ import com.example.soundlevelmeter.R;
 public class NoteContentFragment extends Fragment {
 
 
-    public NoteContentFragment(Note note) {
 
-    }
 
     @Nullable
     @Override
