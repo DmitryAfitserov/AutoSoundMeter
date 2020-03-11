@@ -205,7 +205,7 @@ public class MyService extends Service {
                         lastTime = System.currentTimeMillis();
 
                     } else {
-
+                        Log.d("EEE", "lastLocation == nullewe");
                         float distanceBetween = currentLocation.distanceTo(lastLocation);
 
                         currentTime = System.currentTimeMillis();

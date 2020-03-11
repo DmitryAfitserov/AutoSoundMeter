@@ -50,15 +50,14 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
     private TextView textViewSpeedometer;
     private TextView textViewSoundMeter;
     private MyService myService;
+    private boolean isAutoRunSpeedometer;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d("EEE", "onCreate");
-    }
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        Log.d("EEE", "onCreate");
         soundMeterViewModel =
                 ViewModelProviders.of(this).get(SoundMeterViewModel.class);
         View root = inflater.inflate(R.layout.fragment_sound_meter, container, false);
@@ -66,6 +65,12 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         textViewSoundMeter = root.findViewById(R.id.text_sound_meter);
         btnSpeedometer = root.findViewById(R.id.button_speedometer);
         final Button btnStartTrack = root.findViewById(R.id.button_start_track);
+
+        getDataPreference();
+        if (isAutoRunSpeedometer) {
+            checkGps();
+        }
+
 
         soundMeterViewModel.getValueSpeed().observe(this, new Observer<String>() {
             @Override
@@ -85,6 +90,8 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         if (Singleton.getInstance().isStatusWriteTrack()) {
             btnStartTrack.setText(R.string.button_stop_track);
         }
+
+        // if()
         btnSpeedometer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,6 +144,9 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                 myService = ((MyService.LocalBinder) service).getService();
                 myService.startSoundMeter();
                 Singleton.getInstance().setStatusService(true);
+                if (isAutoRunSpeedometer && !Singleton.getInstance().isStatusSpeedometer()) {
+                    clickBtnSpeedometer();
+                }
             }
 
             @Override
@@ -310,8 +320,9 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
     private void getDataPreference() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        preferences.getBoolean("fd", false);
-        preferences.getBoolean("l", false);
+        isAutoRunSpeedometer = preferences.getBoolean("check_box_auto_run_speedometer", false);
+        boolean isUseMph = preferences.getBoolean("check_box_use_mph", false);
+
     }
 
 
