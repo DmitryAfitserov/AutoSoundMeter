@@ -14,6 +14,10 @@
     <string name="auto_run_speedometer">Включать при запуске приложения</string>
 
 
+    <string name="mph">mph</string>
+    <string name="kmh">км/час</string>
+
+
     <string name="menu_sound_meter">Шумомер</string>
     <string name="double_click">Нажмите ещё раз для выхода</string>
     <string name="menu_statistics">Графики</string>

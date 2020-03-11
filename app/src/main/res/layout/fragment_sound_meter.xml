@@ -5,30 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_speedometer"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:textAlignment="center"
-        android:textSize="40dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button_speedometer"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:orientation="vertical"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_speedometer" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
+        <TextView
+            android:id="@+id/text_speedometer"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:textSize="30sp"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="2467" />
 
-        android:id="@+id/button_speedometer"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:text="@string/button_start_speedometer"
+        <TextView
+            android:id="@+id/text_unit"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_toEndOf="@+id/text_speedometer"
+            android:layout_marginStart="5dp"
+            android:textSize="24sp"
+            android:text="@string/kmh"
+            android:gravity="bottom"
+            android:layout_centerVertical="true" />
 
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
+        <Button
 
-        app:layout_constraintStart_toEndOf="@+id/text_speedometer"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/button_speedometer"
+            android:layout_width="130dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/text_unit"
+            android:layout_marginTop="0dp"
+            android:text="@string/button_start_speedometer"
+            android:textSize="14sp" />
 
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/text_sound_meter"

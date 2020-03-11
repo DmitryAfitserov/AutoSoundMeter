@@ -51,6 +51,8 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
     private TextView textViewSoundMeter;
     private MyService myService;
     private boolean isAutoRunSpeedometer;
+    private boolean isUseMph;
+    private final double coef = 0.621d;
 
 
 
@@ -64,9 +66,15 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         textViewSpeedometer = root.findViewById(R.id.text_speedometer);
         textViewSoundMeter = root.findViewById(R.id.text_sound_meter);
         btnSpeedometer = root.findViewById(R.id.button_speedometer);
+        TextView textUnit = root.findViewById(R.id.text_unit);
+
         final Button btnStartTrack = root.findViewById(R.id.button_start_track);
 
         getDataPreference();
+        if (isUseMph) {
+            textUnit.setText(getResources().getString(R.string.mph));
+        }
+
         if (isAutoRunSpeedometer) {
             checkGps();
         }
@@ -91,7 +99,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
             btnStartTrack.setText(R.string.button_stop_track);
         }
 
-        // if()
+
         btnSpeedometer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,6 +233,12 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
     @Override
     public void callBackFromSpeedometer(int speed) {
+        if (isUseMph) {
+            int speedMph = (int) (speed * coef);
+            Log.d("EEE", "speed " + speed + " newspeed " + speedMph);
+            soundMeterViewModel.setValueSpeed(speedMph);
+            return;
+        }
         soundMeterViewModel.setValueSpeed(speed);
     }
 
@@ -321,7 +335,8 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
     private void getDataPreference() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         isAutoRunSpeedometer = preferences.getBoolean("check_box_auto_run_speedometer", false);
-        boolean isUseMph = preferences.getBoolean("check_box_use_mph", false);
+        isUseMph = preferences.getBoolean("check_box_use_mph", false);
+        Singleton.getInstance().setUseMPH(isUseMph);
 
     }
 
