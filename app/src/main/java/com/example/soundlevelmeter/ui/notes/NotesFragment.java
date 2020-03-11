@@ -88,6 +88,7 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
         Bundle args = new Bundle();
         args.putInt("int", position);
 
+
         Navigation.findNavController(getView()).navigate(R.id.fragment_note, args);
     }
 

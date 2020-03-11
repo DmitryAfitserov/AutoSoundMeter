@@ -1,5 +1,7 @@
 package com.example.soundlevelmeter.ui.notes;
 
+import java.io.Serializable;
+
 public class Note {
 
     private String nameNote;
