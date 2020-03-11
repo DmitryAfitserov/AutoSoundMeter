@@ -46,13 +46,16 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
     private GraphView graph;
     private LineGraphSeries<DataPoint> seriesSpeed;
     private LineGraphSeries<DataPoint> seriesSound;
-//    private String titleTime = getResources().getString(R.string.title_time);
+    private final double coef = 0.621d;
+    private boolean isUseMph;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         statisticsViewModel =
                 ViewModelProviders.of(this).get(StatisticsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_statistics, container, false);
+
+        isUseMph = Singleton.getInstance().isUseMPH();
 
         graph = root.findViewById(R.id.graph_view);
         graph.setVisibility(View.VISIBLE);
@@ -124,8 +127,9 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
 
                     double x = list.get(i).getTime() / 10d;
                     double y = list.get(i).getSound();
+
                     dataPoints[i] = new DataPoint(x, y);
-                    Log.d("EEE", "x=" + x + "     y=" + y);
+
                 }
                 seriesSound = new LineGraphSeries<>(dataPoints);
 
@@ -145,8 +149,12 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
 
                 double x = list.get(i).getTime() / 10d;
                 double y = list.get(i).getSpeed();
+                if (isUseMph) {
+                    y = y * coef;
+                    Log.d("EEE", "speed " + list.get(i).getSpeed() + " newspeed " + y);
+                }
                 dataPoints[i] = new DataPoint(x, y);
-                Log.d("EEE", "x=" + x + "     y=" + y);
+                //   Log.d("EEE", "x=" + x + "     y=" + y);
             }
             seriesSpeed = new LineGraphSeries<>(dataPoints);
 

@@ -235,7 +235,6 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
     public void callBackFromSpeedometer(int speed) {
         if (isUseMph) {
             int speedMph = (int) (speed * coef);
-            Log.d("EEE", "speed " + speed + " newspeed " + speedMph);
             soundMeterViewModel.setValueSpeed(speedMph);
             return;
         }
@@ -337,7 +336,6 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         isAutoRunSpeedometer = preferences.getBoolean("check_box_auto_run_speedometer", false);
         isUseMph = preferences.getBoolean("check_box_use_mph", false);
         Singleton.getInstance().setUseMPH(isUseMph);
-
     }
 
 
