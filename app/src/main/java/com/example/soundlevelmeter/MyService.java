@@ -282,8 +282,7 @@ public class MyService extends Service implements LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     public void onDestroyActivity() {
         Log.d("EEE", "onDestroyActivity");
-        onDestroy();
-
+        this.stopSelf();
     }
 
 

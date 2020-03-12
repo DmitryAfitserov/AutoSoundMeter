@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.fragment.app.ListFragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import com.example.soundlevelmeter.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -51,6 +53,7 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        SharedViewModel sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
         view = inflater.inflate(R.layout.fragment_notes, container, false);
         fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
