@@ -70,6 +70,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
         final Button btnStartTrack = root.findViewById(R.id.button_start_track);
 
+
         getDataPreference();
         if (isUseMph) {
             textUnit.setText(getResources().getString(R.string.mph));
@@ -155,6 +156,8 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                 if (isAutoRunSpeedometer && !Singleton.getInstance().isStatusSpeedometer()) {
                     clickBtnSpeedometer();
                 }
+
+                getActivity().getLifecycle().addObserver(myService);
             }
 
             @Override

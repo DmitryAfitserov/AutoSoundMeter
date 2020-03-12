@@ -10,6 +10,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+
 import com.example.soundlevelmeter.Interface.CallBackForStaticsits;
 import com.example.soundlevelmeter.Interface.CallBackFromService;
 import com.example.soundlevelmeter.Singleton.DataEvent;
@@ -23,7 +27,7 @@ import com.google.android.gms.location.LocationServices;
 import java.io.IOException;
 
 
-public class MyService extends Service {
+public class MyService extends Service implements LifecycleObserver {
 
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
@@ -275,13 +279,11 @@ public class MyService extends Service {
         Log.d("EEE", "onDestroy   MyService ");
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    public void onDestroyActivity() {
+        Log.d("EEE", "onDestroyActivity");
+        onDestroy();
 
-    @Override
-    public boolean onUnbind(Intent intent) {
-
-        //  fusedLocationClient.removeLocationUpdates(locationCallback);
-        Log.d("EEE", "onUnbind in   MyService ");
-        return super.onUnbind(intent);
     }
 
 
