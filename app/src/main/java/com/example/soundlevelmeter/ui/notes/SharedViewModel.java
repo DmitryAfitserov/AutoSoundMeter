@@ -11,59 +11,65 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.preference.PreferenceManager;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class SharedViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<Note> dataNotes = new MutableLiveData<>();
-    Set<String> dataNotesSet;
+
     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplication());
+    ArrayList<Note> list;
 
     public SharedViewModel(@NonNull Application application) {
         super(application);
+
+        list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Note note = new Note(i + "Dima", "dfd");
+            list.add(note);
+        }
         setSetSharedPreferences();
         getSetSharedPreferences();
-        String[] t = {};
-        if (dataNotesSet == null) {
-            Log.d("EEE", "null dataset");
-            return;
+        for (Note note : list) {
+
+            Log.d("EEE", note.getNameNote() + "   " + note.getContentNote());
+
         }
 
-        t = dataNotesSet.toArray(new String[dataNotesSet.size()]);
-        for (int i = 0; i < t.length; i++) {
 
-            Log.d("EEE", t[i]);
-        }
     }
 
 
-    public MutableLiveData<Note> getData() {
 
-
-        return dataNotes;
-    }
 
     private void getSetSharedPreferences() {
-        dataNotesSet = preferences.getStringSet("stringSet", null);
+        String jsonDataString = preferences.getString("string", null);
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Note>>() {
+        }.getType();
+
+        list = gson.fromJson(jsonDataString, type);
+
     }
 
     private void setSetSharedPreferences() {
-        dataNotesSet = new LinkedHashSet<>();
-
-        for (int i = 0; i < 10; i++) {
-
-            dataNotesSet.add(" i the best");
-
-        }
-
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putStringSet("stringSet", dataNotesSet);
+
+        Gson gson = new Gson();
+        String jsonDataString = gson.toJson(list);
+        editor.putString("string", jsonDataString);
+
 
         editor.apply();
+        list = null;
 
-        dataNotesSet = new LinkedHashSet<>();
     }
 
 }
