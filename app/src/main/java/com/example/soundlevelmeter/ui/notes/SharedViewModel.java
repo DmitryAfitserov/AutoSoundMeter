@@ -6,8 +6,11 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModel;
 import androidx.preference.PreferenceManager;
 
@@ -20,7 +23,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SharedViewModel extends AndroidViewModel {
+public class SharedViewModel extends AndroidViewModel implements LifecycleObserver {
 
 
     private SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplication());
@@ -85,8 +88,11 @@ public class SharedViewModel extends AndroidViewModel {
         list.add(note);
     }
 
-    public void changeNote(Note note, int position) {
-        list.set(position, note);
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    public void onStopActivity() {
+        Log.d("EEE", "onStopActivity");
+        setListInSharedPreferences();
     }
+
 
 }

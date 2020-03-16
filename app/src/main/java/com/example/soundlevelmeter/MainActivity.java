@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (doubleClick) {
                 stopService(new Intent(this, MyService.class));
+
                 finish();
                 System.exit(0);
                 return;

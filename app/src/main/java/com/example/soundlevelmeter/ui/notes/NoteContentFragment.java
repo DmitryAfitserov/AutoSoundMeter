@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.soundlevelmeter.MainActivity;
 import com.example.soundlevelmeter.R;
 
 public class NoteContentFragment extends Fragment {
@@ -44,7 +45,7 @@ public class NoteContentFragment extends Fragment {
             isNewNote = true;
         }
 
-        sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
+        sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
 
         if (isNewNote) {
 
@@ -104,7 +105,6 @@ public class NoteContentFragment extends Fragment {
         } else {
             note.setNameNote(nameNote);
             note.setContentNote(contentNote);
-            sharedViewModel.changeNote(note, position);
         }
     }
 
