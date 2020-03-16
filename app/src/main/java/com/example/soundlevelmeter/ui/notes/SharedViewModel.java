@@ -23,42 +23,51 @@ import java.util.Set;
 public class SharedViewModel extends AndroidViewModel {
 
 
-    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplication());
-    ArrayList<Note> list;
+    private SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplication());
+    private ArrayList<Note> list;
 
     public SharedViewModel(@NonNull Application application) {
         super(application);
-
-        list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Note note = new Note(i + "Dima", "dfd");
-            list.add(note);
+        Log.d("EEE", "SharedViewModel");
+        if (list == null) {
+            getListFromSharedPreferences();
         }
-        setSetSharedPreferences();
-        getSetSharedPreferences();
-        for (Note note : list) {
 
-            Log.d("EEE", note.getNameNote() + "   " + note.getContentNote());
-
-        }
+//        for (int i = 0; i < 10; i++) {
+//            Note note = new Note(i + "Dima", "dfd");
+//            list.add(note);
+//        }
 
 
     }
 
 
-
-
-    private void getSetSharedPreferences() {
+    private void getListFromSharedPreferences() {
         String jsonDataString = preferences.getString("string", null);
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<Note>>() {
-        }.getType();
+        if (jsonDataString != null) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<Note>>() {
+            }.getType();
 
-        list = gson.fromJson(jsonDataString, type);
+            list = gson.fromJson(jsonDataString, type);
+        }
+
 
     }
 
-    private void setSetSharedPreferences() {
+    public ArrayList<Note> getList() {
+        return list;
+    }
+
+    public Note getNote(int position) {
+        if (position < list.size()) {
+            return list.get(position);
+        }
+        return null;
+    }
+
+
+    private void setListInSharedPreferences() {
 
         SharedPreferences.Editor editor = preferences.edit();
 
@@ -70,6 +79,14 @@ public class SharedViewModel extends AndroidViewModel {
         editor.apply();
         list = null;
 
+    }
+
+    public void addNote(Note note) {
+        list.add(note);
+    }
+
+    public void changeNote(Note note, int position) {
+        list.set(position, note);
     }
 
 }

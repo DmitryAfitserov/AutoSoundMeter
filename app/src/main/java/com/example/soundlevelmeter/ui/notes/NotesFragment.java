@@ -35,17 +35,18 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        for (int i = 0; i < 5; i++) {
-            Note note = new Note(i + "  dfdf", "dfdf");
-            list.add(note);
-
-        }
+//        for (int i = 0; i < 5; i++) {
+//            Note note = new Note(i + "  dfdf", "dfdf");
+//            list.add(note);
+//
+//        }
+        SharedViewModel sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
+        list = sharedViewModel.getList();
         if (getListAdapter() == null) {
             AdapterForListNotes adapter =
                     new AdapterForListNotes(getContext(), R.layout.item_list_fragment, list);
             setListAdapter(adapter);
         }
-
 
     }
 
@@ -53,7 +54,6 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        SharedViewModel sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
         view = inflater.inflate(R.layout.fragment_notes, container, false);
         fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -91,13 +91,11 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
         Bundle args = new Bundle();
         args.putInt("int", position);
 
-
         Navigation.findNavController(getView()).navigate(R.id.fragment_note, args);
     }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        Log.d("EEE", "scroll");
         int btn_initPosY = fab.getScrollY();
         if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
             fab.animate().cancel();
