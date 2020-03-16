@@ -52,8 +52,10 @@ public class NoteContentFragment extends Fragment {
         } else {
             note = sharedViewModel.getNote(position);
             Log.d("EEE", note.getNameNote());
-            editTextNameNote.setText(note.getNameNote());
-            editTextContentNote.setText(note.getContentNote());
+            nameNote = note.getNameNote();
+            contentNote = note.getContentNote();
+            editTextNameNote.setText(nameNote);
+            editTextContentNote.setText(contentNote);
         }
 
         editTextNameNote.addTextChangedListener(textWatcherName);

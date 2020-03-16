@@ -97,13 +97,13 @@ public class MainActivity extends AppCompatActivity {
 
             if (doubleClick) {
                 stopService(new Intent(this, MyService.class));
-
-                finish();
-                System.exit(0);
-                return;
+                super.onBackPressed();
+//                finish();
+//                System.exit(0);
+//                return;
             }
             doubleClick = true;
-            Toast.makeText(getApplicationContext(), R.string.double_click, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.double_click, Toast.LENGTH_SHORT).show();
             Runnable runnable = new Runnable() {
 
                 @Override
