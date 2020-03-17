@@ -1,6 +1,7 @@
 package com.example.soundlevelmeter.ui.notes;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,11 +15,13 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.example.soundlevelmeter.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -30,6 +33,7 @@ public class NoteContentFragment extends Fragment {
     private String contentNote = "";
     private SharedViewModel sharedViewModel;
     private Note note;
+    private boolean isDeletedNote = false;
 
 
 
@@ -41,6 +45,9 @@ public class NoteContentFragment extends Fragment {
         EditText editTextNameNote = view.findViewById(R.id.edit_text_name_note);
         EditText editTextContentNote = view.findViewById(R.id.edit_text_content_note);
         Button buttonSaveNote = view.findViewById(R.id.button_save_note);
+        FloatingActionButton buttonDelete = view.findViewById(R.id.button_delete_note);
+        buttonDelete.setOnClickListener(clickListenerDelete);
+
         buttonSaveNote.setOnClickListener(clickListenerSave);
 
         Bundle args = getArguments();
@@ -49,6 +56,7 @@ public class NoteContentFragment extends Fragment {
             getArguments().clear();
             isNewNote = false;
         } else {
+            position = -1;
             isNewNote = true;
         }
 
@@ -69,10 +77,34 @@ public class NoteContentFragment extends Fragment {
         return view;
     }
 
+    private DialogInterface.OnClickListener clickListenerPositiveForAlert = new DialogInterface.OnClickListener() {
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            deleteNote();
+        }
+    };
+
+    private DialogInterface.OnClickListener clickListenerNegativeForAlert = new DialogInterface.OnClickListener() {
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
+        }
+    };
+
+    private View.OnClickListener clickListenerDelete = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            showAlertDelete();
+        }
+    };
+
     private View.OnClickListener clickListenerSave = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.nav_notes);
+            Navigation.findNavController(Objects.requireNonNull(getView())).
+                    navigate(R.id.action_fragment_note_to_nav_notes);
         }
     };
 
@@ -125,9 +157,10 @@ public class NoteContentFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        save();
+        if (!isDeletedNote) {
+            save();
+        }
         hideKeyboard();
-
     }
 
     private void hideKeyboard() {
@@ -135,6 +168,25 @@ public class NoteContentFragment extends Fragment {
                 requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
         assert imm != null;
         imm.hideSoftInputFromWindow(Objects.requireNonNull(getView()).getWindowToken(), 0);
+    }
+
+    private void showAlertDelete() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        alertDialog.setMessage(R.string.message_alert_delete_note);
+        alertDialog.setPositiveButton(R.string.yes, clickListenerPositiveForAlert);
+        alertDialog.setNegativeButton(R.string.no, clickListenerNegativeForAlert);
+        alertDialog.setCancelable(true);
+        alertDialog.create().show();
+
+    }
+
+    private void deleteNote() {
+        if (position >= 0) {
+            sharedViewModel.deleteNote(position);
+        }
+        isDeletedNote = true;
+        Navigation.findNavController(
+                Objects.requireNonNull(getView())).navigate(R.id.action_fragment_note_to_nav_notes);
     }
 
 

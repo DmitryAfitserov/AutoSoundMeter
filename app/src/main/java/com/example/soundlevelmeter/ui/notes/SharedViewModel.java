@@ -88,10 +88,16 @@ public class SharedViewModel extends AndroidViewModel implements LifecycleObserv
         list.add(note);
     }
 
+
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     public void onStopActivity() {
         Log.d("EEE", "onStopActivity");
         setListInSharedPreferences();
+    }
+
+    public void deleteNote(int position) {
+        list.remove(position);
+
     }
 
 

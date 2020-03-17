@@ -7,6 +7,10 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Настройки</string>
 
+    <string name="message_alert_delete_note">Удалить заметку?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+
     <string name="not_permission">Нет разрешения</string>
     <string name="use_mph">использовать mph</string>
     <string name="unit_of_measure">Единицы измерения</string>

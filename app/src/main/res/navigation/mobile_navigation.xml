@@ -23,7 +23,7 @@
         android:label="@string/menu_notes"
         tools:layout="@layout/fragment_notes">
         <action
-            android:id="@+id/action_nav_settings_to_fragment_note"
+            android:id="@+id/action_nav_notes_to_fragment_note"
             app:destination="@id/fragment_note" />
     </fragment>
 
@@ -32,6 +32,12 @@
         android:name="com.example.soundlevelmeter.ui.notes.NoteContentFragment"
         android:label="@string/title_note"
         tools:layout="@layout/fragment_content_note">
+
+        <action
+            android:id="@+id/action_fragment_note_to_nav_notes"
+            app:destination="@id/nav_notes"
+            app:popUpTo="@+id/nav_sound_meter"
+            app:popUpToInclusive="false" />
 
     </fragment>
 
