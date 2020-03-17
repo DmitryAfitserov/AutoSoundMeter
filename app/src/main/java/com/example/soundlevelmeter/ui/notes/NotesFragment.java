@@ -28,11 +28,6 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        for (int i = 0; i < 5; i++) {
-//            Note note = new Note(i + "  dfdf", "dfdf");
-//            list.add(note);
-//
-//        }
 
         SharedViewModel sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
         Objects.requireNonNull(getActivity()).getLifecycle().addObserver(sharedViewModel);

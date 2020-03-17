@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -33,6 +32,8 @@ import com.example.soundlevelmeter.MyService;
 import com.example.soundlevelmeter.R;
 import com.example.soundlevelmeter.Singleton.Singleton;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Objects;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 import static android.content.Context.LOCATION_SERVICE;
@@ -115,7 +116,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
             @Override
             public void onClick(View v) {
 
-                Navigation.findNavController(getView()).navigate(R.id.nav_statistics);
+                Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.nav_statistics);
             }
         });
 
@@ -157,7 +158,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                     clickBtnSpeedometer();
                 }
 
-                getActivity().getLifecycle().addObserver(myService);
+                Objects.requireNonNull(getActivity()).getLifecycle().addObserver(myService);
             }
 
             @Override
@@ -187,9 +188,11 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         alertDialogBuilder.setNegativeButton("посмотреть на графике",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+                        NavigationView navigationView =
+                                Objects.requireNonNull(getActivity()).findViewById(R.id.nav_view);
                         navigationView.setCheckedItem(R.id.nav_statistics);
-                        Navigation.findNavController(getView()).navigate(R.id.nav_statistics);
+                        Navigation.findNavController(Objects.requireNonNull(getView())).
+                                navigate(R.id.nav_statistics);
 
 
                     }
@@ -224,7 +227,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
     private void createService() {
         Log.d("EEE", " createService  ");
         intent = new Intent(getContext(), MyService.class);
-        getActivity().startService(intent);
+        Objects.requireNonNull(getActivity()).startService(intent);
         getActivity().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
     }
 
@@ -269,8 +272,10 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
     private boolean checkGps() {
 
-        locationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
+        locationManager = (LocationManager)
+                Objects.requireNonNull(getContext()).getSystemService(LOCATION_SERVICE);
 
+        assert locationManager != null;
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             showGPSDisabledAlertToUser();
             return false;
@@ -280,7 +285,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
     }
 
     private boolean checkPermission() {
-        if (ActivityCompat.checkSelfPermission(getContext(),
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -299,7 +304,8 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
     }
 
     private boolean checkPermissionSoundMeter() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
 
             requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
                     RECORD_AUDIO_REQUEST_CODE);
@@ -335,8 +341,10 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
     }
 
     private void getDataPreference() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        isAutoRunSpeedometer = preferences.getBoolean("check_box_auto_run_speedometer", false);
+        SharedPreferences preferences = PreferenceManager.
+                getDefaultSharedPreferences(Objects.requireNonNull(getContext()));
+        isAutoRunSpeedometer = preferences.
+                getBoolean("check_box_auto_run_speedometer", false);
         isUseMph = preferences.getBoolean("check_box_use_mph", false);
         Singleton.getInstance().setUseMPH(isUseMph);
     }
