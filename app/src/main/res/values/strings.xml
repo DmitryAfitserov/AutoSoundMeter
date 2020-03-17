@@ -12,6 +12,8 @@
     <string name="unit_of_measure">Единицы измерения</string>
     <string name="speedometer">Спидометр</string>
     <string name="auto_run_speedometer">Включать при запуске приложения</string>
+    <string name="btn_save_note">Ок</string>
+    <string name="btn_delete_note">Удалить</string>
 
 
     <string name="mph">mph</string>

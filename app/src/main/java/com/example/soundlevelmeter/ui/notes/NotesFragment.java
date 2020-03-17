@@ -12,24 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.fragment.app.ListFragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import com.example.soundlevelmeter.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class NotesFragment extends ListFragment implements AbsListView.OnScrollListener {
 
-    private ArrayList<Note> list = new ArrayList<>();
-    private View view;
     private FloatingActionButton fab;
-
-
-
-
-
 
 
     @Override
@@ -40,12 +33,14 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
 //            list.add(note);
 //
 //        }
+
         SharedViewModel sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
-        getActivity().getLifecycle().addObserver(sharedViewModel);
+        Objects.requireNonNull(getActivity()).getLifecycle().addObserver(sharedViewModel);
+        ArrayList<Note> list;
         list = sharedViewModel.getList();
         if (getListAdapter() == null) {
             AdapterForListNotes adapter =
-                    new AdapterForListNotes(getContext(), R.layout.item_list_fragment, list);
+                    new AdapterForListNotes(Objects.requireNonNull(getContext()), R.layout.item_list_fragment, list);
             setListAdapter(adapter);
         }
 
@@ -55,7 +50,7 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_notes, container, false);
+        View view = inflater.inflate(R.layout.fragment_notes, container, false);
         fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,21 +73,21 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
 
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         Log.d("EEE", "touch");
         changeFragment(position);
 
     }
 
     private void changeFragment() {
-        Navigation.findNavController(getView()).navigate(R.id.fragment_note);
+        Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.fragment_note);
     }
 
     private void changeFragment(int position) {
         Bundle args = new Bundle();
         args.putInt("int", position);
 
-        Navigation.findNavController(getView()).navigate(R.id.fragment_note, args);
+        Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.fragment_note, args);
     }
 
     @Override

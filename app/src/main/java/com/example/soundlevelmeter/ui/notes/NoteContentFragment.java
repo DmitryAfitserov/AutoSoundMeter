@@ -15,9 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-
-import com.example.soundlevelmeter.MainActivity;
 import com.example.soundlevelmeter.R;
+
+import java.util.Objects;
 
 public class NoteContentFragment extends Fragment {
 
@@ -25,8 +25,8 @@ public class NoteContentFragment extends Fragment {
     private boolean isNewNote;
     private String nameNote = "";
     private String contentNote = "";
-    SharedViewModel sharedViewModel;
-    Note note;
+    private SharedViewModel sharedViewModel;
+    private Note note;
 
 
 
@@ -49,9 +49,7 @@ public class NoteContentFragment extends Fragment {
 
         sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
 
-        if (isNewNote) {
-
-        } else {
+        if (!isNewNote) {
             note = sharedViewModel.getNote(position);
             Log.d("EEE", note.getNameNote());
             nameNote = note.getNameNote();
@@ -121,7 +119,9 @@ public class NoteContentFragment extends Fragment {
     }
 
     private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager) Objects.
+                requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert imm != null;
+        imm.hideSoftInputFromWindow(Objects.requireNonNull(getView()).getWindowToken(), 0);
     }
 }

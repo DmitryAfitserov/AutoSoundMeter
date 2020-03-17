@@ -3,19 +3,13 @@ package com.example.soundlevelmeter;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Handler;
-import android.util.Log;
-import android.view.KeyEvent;
+
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -29,6 +23,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.Toast;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_settings: {
-                if (navController.getCurrentDestination().getId() != R.id.fragment_settings) {
+                if (Objects.requireNonNull
+                        (navController.getCurrentDestination()).getId() != R.id.fragment_settings) {
                     navController.navigate(R.id.open_fragment_settings);
                 }
 
@@ -92,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (navController.getCurrentDestination().getId() ==
+        if (Objects.requireNonNull(navController.getCurrentDestination()).getId() ==
                 R.id.nav_sound_meter) {
 
             if (doubleClick) {
