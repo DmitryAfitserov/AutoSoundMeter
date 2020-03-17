@@ -32,7 +32,9 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
         SharedViewModel sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
         Objects.requireNonNull(getActivity()).getLifecycle().addObserver(sharedViewModel);
         ArrayList<Note> list;
+
         list = sharedViewModel.getList();
+        Log.d("EEE", "sharedViewModel.getList();   " + list.size());
         if (getListAdapter() == null) {
             AdapterForListNotes adapter =
                     new AdapterForListNotes(Objects.requireNonNull(getContext()), R.layout.item_list_fragment, list);

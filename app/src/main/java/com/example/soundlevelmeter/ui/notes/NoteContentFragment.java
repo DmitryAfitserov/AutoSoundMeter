@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
 import com.example.soundlevelmeter.R;
@@ -60,6 +62,7 @@ public class NoteContentFragment extends Fragment {
             isNewNote = true;
         }
 
+
         sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
 
         if (!isNewNote) {
@@ -74,8 +77,32 @@ public class NoteContentFragment extends Fragment {
         editTextNameNote.addTextChangedListener(textWatcherName);
         editTextContentNote.addTextChangedListener(textWatcherContent);
 
+
         return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Navigation.findNavController(view).
+                addOnDestinationChangedListener(v);
+    }
+
+    private NavController.OnDestinationChangedListener v = new NavController.OnDestinationChangedListener() {
+        @Override
+        public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+            if (destination.getId() == R.id.nav_notes) {
+                Log.d("EEE", "nDestinationChanged");
+                if (!isDeletedNote) {
+                    save();
+                }
+                hideKeyboard();
+                sharedViewModel = null;
+                note = null;
+            }
+            Navigation.findNavController(Objects.requireNonNull(getView())).removeOnDestinationChangedListener(v);
+        }
+    };
 
     private DialogInterface.OnClickListener clickListenerPositiveForAlert = new DialogInterface.OnClickListener() {
 
@@ -154,14 +181,6 @@ public class NoteContentFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (!isDeletedNote) {
-            save();
-        }
-        hideKeyboard();
-    }
 
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) Objects.

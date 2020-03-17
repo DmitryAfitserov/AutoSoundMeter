@@ -18,6 +18,7 @@
     <string name="auto_run_speedometer">Включать при запуске приложения</string>
     <string name="btn_save_note">Ок</string>
     <string name="btn_delete_note">Удалить</string>
+    <string name="list_is_empty">Нет заметок</string>
 
 
     <string name="mph">mph</string>
