@@ -8,10 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+
 import androidx.lifecycle.OnLifecycleEvent;
-import androidx.lifecycle.ViewModel;
 import androidx.preference.PreferenceManager;
 
 import com.google.gson.Gson;
@@ -19,9 +17,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 public class SharedViewModel extends AndroidViewModel implements LifecycleObserver {
 
@@ -31,16 +26,8 @@ public class SharedViewModel extends AndroidViewModel implements LifecycleObserv
 
     public SharedViewModel(@NonNull Application application) {
         super(application);
-        Log.d("EEE", "SharedViewModel");
-        if (list == null) {
+
             getListFromSharedPreferences();
-        }
-
-//        for (int i = 0; i < 10; i++) {
-//            Note note = new Note(i + "Dima", "dfd");
-//            list.add(note);
-//        }
-
 
     }
 
@@ -58,11 +45,11 @@ public class SharedViewModel extends AndroidViewModel implements LifecycleObserv
 
     }
 
-    public ArrayList<Note> getList() {
+    ArrayList<Note> getList() {
         return list;
     }
 
-    public Note getNote(int position) {
+    Note getNote(int position) {
         if (position < list.size()) {
             return list.get(position);
         }
@@ -84,7 +71,7 @@ public class SharedViewModel extends AndroidViewModel implements LifecycleObserv
 
     }
 
-    public void addNote(Note note) {
+    void addNote(Note note) {
         list.add(note);
     }
 
@@ -95,7 +82,7 @@ public class SharedViewModel extends AndroidViewModel implements LifecycleObserv
         setListInSharedPreferences();
     }
 
-    public void deleteNote(int position) {
+    void deleteNote(int position) {
         list.remove(position);
 
     }
