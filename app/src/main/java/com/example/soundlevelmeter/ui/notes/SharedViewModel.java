@@ -80,7 +80,7 @@ public class SharedViewModel extends AndroidViewModel implements LifecycleObserv
 
 
         editor.apply();
-        list = null;
+
 
     }
 
