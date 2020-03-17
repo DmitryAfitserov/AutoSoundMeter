@@ -95,9 +95,8 @@ public class MainActivity extends AppCompatActivity {
             if (doubleClick) {
                 stopService(new Intent(this, MyService.class));
                 super.onBackPressed();
-//                finish();
-//                System.exit(0);
-//                return;
+
+                return;
             }
             doubleClick = true;
             Toast.makeText(getApplicationContext(), R.string.double_click, Toast.LENGTH_SHORT).show();

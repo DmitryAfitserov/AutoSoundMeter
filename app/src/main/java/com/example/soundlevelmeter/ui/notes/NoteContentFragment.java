@@ -9,12 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+
 import com.example.soundlevelmeter.R;
 
 import java.util.Objects;
@@ -37,6 +40,8 @@ public class NoteContentFragment extends Fragment {
 
         EditText editTextNameNote = view.findViewById(R.id.edit_text_name_note);
         EditText editTextContentNote = view.findViewById(R.id.edit_text_content_note);
+        Button buttonSaveNote = view.findViewById(R.id.button_save_note);
+        buttonSaveNote.setOnClickListener(clickListenerSave);
 
         Bundle args = getArguments();
         if (args != null) {
@@ -63,6 +68,13 @@ public class NoteContentFragment extends Fragment {
 
         return view;
     }
+
+    private View.OnClickListener clickListenerSave = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.nav_notes);
+        }
+    };
 
     private TextWatcher textWatcherName = new TextWatcher() {
         @Override
@@ -124,4 +136,6 @@ public class NoteContentFragment extends Fragment {
         assert imm != null;
         imm.hideSoftInputFromWindow(Objects.requireNonNull(getView()).getWindowToken(), 0);
     }
+
+
 }
