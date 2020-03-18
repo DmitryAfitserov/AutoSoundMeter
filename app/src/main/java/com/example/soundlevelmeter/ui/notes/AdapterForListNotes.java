@@ -6,10 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -48,6 +46,7 @@ public class AdapterForListNotes extends ArrayAdapter<Note> {
         }
         Note note = getItem(position);
 
+        assert note != null;
         viewHolder.textViewName.setText(note.getNameNote());
         viewHolder.textViewContent.setText(note.getContentNote());
 
@@ -75,7 +74,6 @@ public class AdapterForListNotes extends ArrayAdapter<Note> {
             imageButtonDelete = view.findViewById(R.id.button_delete_note_in_notes);
         }
     }
-
 
     private void showAlert(final int position) {
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
