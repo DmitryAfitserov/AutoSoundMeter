@@ -1,24 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:id="@+id/item_list_fragment"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    android:descendantFocusability="blocksDescendants">
 
     <TextView
         android:id="@+id/text_view_name_item"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+
+        android:layout_margin="3dp"
+        android:textSize="20sp"
+        android:layout_toStartOf="@+id/button_delete_note_in_notes"
+        android:layout_alignParentStart="true"
+
+        >
 
     </TextView>
 
     <TextView
         android:id="@+id/text_view_content_item"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_name_item"
+        android:layout_margin="3dp"
+        android:textSize="16sp"
+        android:layout_toStartOf="@+id/button_delete_note_in_notes"
+        android:layout_alignParentStart="true"
+
+        >
 
 
     </TextView>
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/button_delete_note_in_notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="16dp"
+        android:background="@drawable/ic_delete_black_24dp"
+        android:contentDescription="@string/btn_delete_note"
+
+        />
+
+</RelativeLayout>
