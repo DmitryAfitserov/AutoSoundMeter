@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Save {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
 
     public String saveName;
