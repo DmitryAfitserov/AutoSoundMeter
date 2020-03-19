@@ -1,22 +1,25 @@
 package com.example.soundlevelmeter.Room;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.PrimaryKey;
+
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(foreignKeys = @ForeignKey(entity = Save.class,
-        parentColumns = "idSave", childColumns = "idPoint", onDelete = CASCADE))
+        parentColumns = "id", childColumns = "idSave", onDelete = CASCADE, onUpdate = CASCADE), primaryKeys = {"idPoint"}, tableName = "event_point")
 public class EventPoint {
 
-    @PrimaryKey
+
+    public long idPoint;
+
+
     public int idSave;
 
-    @PrimaryKey(autoGenerate = true)
-    private long idPoint;
-    private int sound;
-    private int speed;
-    private long time;
+
+    public int sound;
+    public int speed;
+    public long time;
 
 }

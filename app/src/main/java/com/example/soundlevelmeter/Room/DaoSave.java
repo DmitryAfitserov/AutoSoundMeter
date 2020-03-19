@@ -18,7 +18,7 @@ public interface DaoSave {
     Save getSave(long id);
 
     @Query("SELECT * FROM SAVE WHERE id = :idSave")
-    LiveData<Save> getSave(int idSave);
+    LiveData<EventList> getSave(int idSave);
 
 
     @Insert
