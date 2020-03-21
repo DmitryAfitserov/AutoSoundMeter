@@ -64,13 +64,18 @@ public class MainActivity extends AppCompatActivity {
         MyRoomDataBase db = Room.databaseBuilder(getApplicationContext(),
                 MyRoomDataBase.class, "database-name").allowMainThreadQueries().build();
 
-        Save save = new Save();
-        save.saveName = "SAVE 1";
-        db.getDaoSave().addSave(save);
+//        Save save = new Save();
+//        save.saveName = "SAVE 1";
+//        db.getDaoSave().addSave(save);
 
 
-        Save save1 = db.getDaoSave().getSave(0);
-        Log.d("EEE", "save = " + save1.saveName);
+        List<Save> list = db.getDaoSave().getListSave();
+        for (Save save2 : list) {
+            Log.d("EEE", save2.id + "   name " + save2.saveName);
+        }
+
+        Save save = db.getDaoSave().getSave(1);
+        Log.d("EEE", "save id = " + save.id);
 
 
 

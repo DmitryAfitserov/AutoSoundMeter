@@ -16,19 +16,17 @@ public interface DaoSave {
     List<Save> getListSave();
 
     @Query("SELECT * FROM Save WHERE id = :id")
-    Save getSave(long id);
+    Save getSave(int id);
 
-    @Transaction
-    @Query("SELECT * FROM SAVE WHERE id = :idSave")
-    LiveData<EventList> getSaveWithList(int idSave);
+//    @Transaction
+//    @Query("SELECT * FROM SAVE WHERE id = :idSave")
+//    LiveData<EventList> getSaveWithList(int idSave);
 
 
 
     @Insert
     void addSave(Save save);
 
-    @Delete
-    void deleteSave(Save save);
 
 
 }
