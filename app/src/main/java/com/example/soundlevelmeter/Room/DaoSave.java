@@ -1,11 +1,9 @@
 package com.example.soundlevelmeter.Room;
 
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Transaction;
+
 
 import java.util.List;
 
@@ -18,9 +16,6 @@ public interface DaoSave {
     @Query("SELECT * FROM Save WHERE id = :id")
     Save getSave(int id);
 
-//    @Transaction
-//    @Query("SELECT * FROM SAVE WHERE id = :idSave")
-//    LiveData<EventList> getSaveWithList(int idSave);
 
     @Insert
     void addListEvent(List<EventPoint> list);
@@ -37,5 +32,5 @@ public interface DaoSave {
     @Insert
     void addSave(Save save);
 
-    
+
 }

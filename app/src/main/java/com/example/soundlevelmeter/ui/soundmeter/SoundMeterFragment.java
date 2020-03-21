@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
+import com.example.soundlevelmeter.AppDataBase;
 import com.example.soundlevelmeter.Interface.CallBackFromService;
 import com.example.soundlevelmeter.MyService;
 import com.example.soundlevelmeter.R;
@@ -182,7 +183,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                 .setPositiveButton("Сохранить трэк",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-
+                                AppDataBase appDataBase = Singleton.getInstance().getAppBD(getContext());
                             }
                         });
         alertDialogBuilder.setNegativeButton("посмотреть на графике",

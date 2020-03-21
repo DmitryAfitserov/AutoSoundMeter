@@ -1,6 +1,12 @@
 package com.example.soundlevelmeter.Singleton;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
+import androidx.room.Room;
+
+import com.example.soundlevelmeter.AppDataBase;
+import com.example.soundlevelmeter.Room.MyRoomDataBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +22,7 @@ public class Singleton {
     private boolean isCheckBoxSound = true;
     private boolean isUseMPH;
     private long startTime;
+    private AppDataBase appBD;
 
 
     private List<DataEvent> list;
@@ -113,5 +120,15 @@ public class Singleton {
 
     public void destroy() {
         instance = null;
+    }
+
+
+    public AppDataBase getAppBD(Context context) {
+
+        if (appBD == null) {
+            AppDataBase appBD = new AppDataBase(context);
+        }
+
+        return appBD;
     }
 }

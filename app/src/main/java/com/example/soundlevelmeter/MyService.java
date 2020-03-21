@@ -204,12 +204,10 @@ public class MyService extends Service implements LifecycleObserver {
 
                     currentLocation = locationResult.getLastLocation();
                     if (lastLocation == null) {
-                        Log.d("EEE", "lastLocation == null");
                         lastLocation = currentLocation;
                         lastTime = System.currentTimeMillis();
 
                     } else {
-                        Log.d("EEE", "lastLocation == nullewe");
                         float distanceBetween = currentLocation.distanceTo(lastLocation);
 
                         currentTime = System.currentTimeMillis();
@@ -269,6 +267,7 @@ public class MyService extends Service implements LifecycleObserver {
         callBack.callBackFromSpeedometer(0);
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -276,7 +275,6 @@ public class MyService extends Service implements LifecycleObserver {
         stopRecorder();
         isStopThread = true;
         Singleton.getInstance().destroy();
-        Log.d("EEE", "onDestroy   MyService ");
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
