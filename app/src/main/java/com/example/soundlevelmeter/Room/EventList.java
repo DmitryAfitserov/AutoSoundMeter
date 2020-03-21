@@ -1,9 +1,11 @@
 package com.example.soundlevelmeter.Room;
 
 import androidx.room.Embedded;
+import androidx.room.Entity;
 import androidx.room.Relation;
 
 import java.util.List;
+
 
 public class EventList {
 

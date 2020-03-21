@@ -6,24 +6,33 @@ import android.os.Bundle;
 
 import android.os.Handler;
 
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.soundlevelmeter.Room.EventList;
+import com.example.soundlevelmeter.Room.EventPoint;
+import com.example.soundlevelmeter.Room.MyRoomDataBase;
+import com.example.soundlevelmeter.Room.Save;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.room.Room;
 
 import android.view.Menu;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,6 +59,21 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
+        MyRoomDataBase db = Room.databaseBuilder(getApplicationContext(),
+                MyRoomDataBase.class, "database-name").allowMainThreadQueries().build();
+
+        Save save = new Save();
+        save.saveName = "SAVE 1";
+        db.getDaoSave().addSave(save);
+
+
+        Save save1 = db.getDaoSave().getSave(0);
+        Log.d("EEE", "save = " + save1.saveName);
+
+
+
 
     }
 

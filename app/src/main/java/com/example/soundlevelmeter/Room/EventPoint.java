@@ -14,7 +14,7 @@ public class EventPoint {
 
     public long idPoint;
 
-
+    @ColumnInfo(name = "idSave", index = true)
     public int idSave;
 
 
