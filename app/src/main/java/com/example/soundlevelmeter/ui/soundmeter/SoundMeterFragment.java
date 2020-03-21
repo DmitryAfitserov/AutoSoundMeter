@@ -183,7 +183,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                 .setPositiveButton("Сохранить трэк",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                AppDataBase appDataBase = Singleton.getInstance().getAppBD(getContext());
+                                // AppDataBase appDataBase = Singleton.getInstance().getAppBD(getContext());
                             }
                         });
         alertDialogBuilder.setNegativeButton("посмотреть на графике",

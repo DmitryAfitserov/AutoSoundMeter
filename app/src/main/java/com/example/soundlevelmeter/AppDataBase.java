@@ -20,6 +20,18 @@ public class AppDataBase {
 
     }
 
+    public void addSave(Save save) {
+
+
+    }
+
+    private Thread thread = new Thread() {
+        @Override
+        public void run() {
+            super.run();
+        }
+    };
+
 
 //
 //        MyRoomDataBase db = Room.databaseBuilder(getApplicationContext(),
