@@ -22,7 +22,7 @@ public class Singleton {
     private boolean isCheckBoxSound = true;
     private boolean isUseMPH;
     private long startTime;
-    private AppDataBase appBD;
+    private MyRoomDataBase bd;
 
 
     private List<DataEvent> list;
@@ -123,12 +123,13 @@ public class Singleton {
     }
 
 
-    public AppDataBase getAppBD(Context context) {
+    public MyRoomDataBase getBD(Context context) {
 
-        if (appBD == null) {
-            AppDataBase appBD = new AppDataBase(context);
+        if (bd == null) {
+            bd = Room.databaseBuilder(context,
+                    MyRoomDataBase.class, "database-name").build();
         }
 
-        return appBD;
+        return bd;
     }
 }

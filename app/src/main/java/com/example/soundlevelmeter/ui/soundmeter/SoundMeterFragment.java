@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,12 +32,14 @@ import com.example.soundlevelmeter.AppDataBase;
 import com.example.soundlevelmeter.Interface.CallBackFromService;
 import com.example.soundlevelmeter.MyService;
 import com.example.soundlevelmeter.R;
+import com.example.soundlevelmeter.Room.MyRoomDataBase;
 import com.example.soundlevelmeter.Singleton.Singleton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
 
 import static android.content.Context.BIND_AUTO_CREATE;
+import static android.content.Context.HARDWARE_PROPERTIES_SERVICE;
 import static android.content.Context.LOCATION_SERVICE;
 
 public class SoundMeterFragment extends Fragment implements CallBackFromService {
@@ -183,7 +186,8 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                 .setPositiveButton("Сохранить трэк",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // AppDataBase appDataBase = Singleton.getInstance().getAppBD(getContext());
+                                MyRoomDataBase bd = Singleton.getInstance().getBD(getContext());
+
                             }
                         });
         alertDialogBuilder.setNegativeButton("посмотреть на графике",
@@ -208,6 +212,30 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
+
+    private void saveTrack(MyRoomDataBase bd) {
+
+
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        };
+
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+
+            }
+        };
+
+
+    }
+
+
 
 
     private void clickBtnSpeedometer() {

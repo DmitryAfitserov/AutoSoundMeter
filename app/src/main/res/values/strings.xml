@@ -20,6 +20,11 @@
     <string name="btn_delete_note">Удалить</string>
     <string name="list_is_empty">Нет заметок</string>
 
+    <string name="write_name_track">Название записи</string>
+
+
+    <string name="button_cancel">Отмена</string>
+
 
     <string name="mph">mph</string>
     <string name="kmh">км/час</string>
