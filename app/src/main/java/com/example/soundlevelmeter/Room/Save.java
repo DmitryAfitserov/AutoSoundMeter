@@ -7,8 +7,23 @@ import androidx.room.PrimaryKey;
 public class Save {
 
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    private int id;
 
-    public String saveName;
+    private String saveName;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getSaveName() {
+        return saveName;
+    }
+
+    public void setSaveName(String saveName) {
+        this.saveName = saveName;
+    }
 }

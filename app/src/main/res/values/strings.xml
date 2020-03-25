@@ -24,6 +24,7 @@
 
 
     <string name="button_cancel">Отмена</string>
+    <string name="toast_input_name_track">Введите имя записи</string>
 
 
     <string name="mph">mph</string>
