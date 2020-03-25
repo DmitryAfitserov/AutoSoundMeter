@@ -66,6 +66,15 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (setSave.contains(s.toString())) {
+                Log.d("EEE", "name is exist");
+                //message
+                //  editText.setTextColor();
+            } else {
+                //drop message
+            }
+
+
 
         }
 
@@ -93,11 +102,9 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
                     Toast.makeText(getContext(),
                             R.string.toast_input_name_track, Toast.LENGTH_SHORT).show();
                 } else {
+                    addSaveInBD();
 
-                    List<DataEvent> list = Singleton.getInstance().getList();
-                    Save save = new Save();
                 }
-
 
 
                 break;
@@ -119,7 +126,7 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
                 } else {
                     for (Save save : listSave) {
                         setSave.add(save.getSaveName());
-                        Log.d("EEE", "setSave.add(save.getSaveName());" + save.getSaveName());
+                        Log.d("EEE", "setSave.add(save.getSaveName());" + save.getSaveName() + "  id = " + save.getId());
                     }
                 }
             }
@@ -128,4 +135,23 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
 
 
     }
+
+    private void addSaveInBD() {
+
+        Thread thread = new Thread() {
+
+            @Override
+            public void run() {
+                super.run();
+                Save save = new Save();
+                save.setSaveName(saveName);
+                bd.getDaoSave().addSave(save);
+                Log.d("EEE", "Save save = new Save(); save id =" + save.getId());
+            }
+        };
+        thread.start();
+
+    }
+
+
 }
