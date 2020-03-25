@@ -40,6 +40,8 @@ public class SharedViewModel extends AndroidViewModel implements LifecycleObserv
             }.getType();
 
             list = gson.fromJson(jsonDataString, type);
+        } else {
+            list = new ArrayList<>();
         }
 
 
