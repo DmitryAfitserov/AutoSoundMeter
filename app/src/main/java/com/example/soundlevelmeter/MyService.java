@@ -16,7 +16,7 @@ import androidx.lifecycle.OnLifecycleEvent;
 
 import com.example.soundlevelmeter.Interface.CallBackForStaticsits;
 import com.example.soundlevelmeter.Interface.CallBackFromService;
-import com.example.soundlevelmeter.Singleton.DataEvent;
+import com.example.soundlevelmeter.Room.DataEvent;
 import com.example.soundlevelmeter.Singleton.Singleton;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;

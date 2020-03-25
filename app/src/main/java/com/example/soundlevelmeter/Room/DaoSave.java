@@ -18,13 +18,13 @@ public interface DaoSave {
 
 
     @Insert
-    void addListEvent(List<EventPoint> list);
+    void addListEvent(List<DataEvent> list);
 
-    @Query("SELECT * FROM event_point WHERE idSave = :idSave")
-    List<EventPoint> getListEvent(int idSave);
+    @Query("SELECT * FROM DataEvent WHERE idSave = :idSave")
+    List<DataEvent> getListEvent(int idSave);
 
-    @Query("SELECT * FROM event_point")
-    List<EventPoint> getAllListEvent();
+    @Query("SELECT * FROM DataEvent")
+    List<DataEvent> getAllListEvent();
 
     @Query("DELETE FROM Save WHERE id = :id")
     void deleteSave(int id);

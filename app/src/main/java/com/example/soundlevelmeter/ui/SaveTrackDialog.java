@@ -2,19 +2,24 @@ package com.example.soundlevelmeter.ui;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
 import com.example.soundlevelmeter.R;
+import com.example.soundlevelmeter.Room.DataEvent;
 import com.example.soundlevelmeter.Room.MyRoomDataBase;
 import com.example.soundlevelmeter.Singleton.Singleton;
 
-public class SaveTrackDialog extends Dialog implements DialogInterface.OnClickListener {
+import java.util.List;
 
+public class SaveTrackDialog extends Dialog implements View.OnClickListener {
+
+
+    private Button btnSave, btnCancel;
 
     public SaveTrackDialog(@NonNull Context context) {
         super(context);
@@ -25,28 +30,33 @@ public class SaveTrackDialog extends Dialog implements DialogInterface.OnClickLi
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_save_track);
+        btnCancel = findViewById(R.id.btn_cancel_save_track);
+        btnCancel.setOnClickListener(this);
+
+        btnSave = findViewById(R.id.btn_save_track);
+        btnSave.setOnClickListener(this);
+
 
 
 
     }
 
+
     @Override
-    public void onClick(DialogInterface dialog, int which) {
-        switch (which) {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.btn_cancel_save_track: {
-                Log.d("EEE", "R.id.btn_cancel_save_track");
-                dialog.cancel();
+                dismiss();
                 break;
             }
             case R.id.btn_save_track: {
-                Log.d("EEE", "R.id.btn_cancel_save_track");
                 MyRoomDataBase bd = Singleton.getInstance().getBD(getContext());
+                List<DataEvent> list = Singleton.getInstance().getList();
 
                 break;
             }
             default:
-                dialog.cancel();
-
+                dismiss();
 
         }
     }

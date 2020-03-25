@@ -11,24 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 
 import com.example.soundlevelmeter.Interface.CallBackForStaticsits;
-import com.example.soundlevelmeter.MainActivity;
 import com.example.soundlevelmeter.MyService;
 import com.example.soundlevelmeter.R;
-import com.example.soundlevelmeter.Singleton.DataEvent;
+import com.example.soundlevelmeter.Room.DataEvent;
 import com.example.soundlevelmeter.Singleton.Singleton;
-import com.example.soundlevelmeter.ui.soundmeter.SoundMeterFragment;
-import com.google.android.gms.location.LocationCallback;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
