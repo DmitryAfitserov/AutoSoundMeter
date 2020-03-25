@@ -17,6 +17,7 @@ public interface DaoSave {
     Save getSave(int id);
 
 
+
     @Insert
     void addListEvent(List<DataEvent> list);
 
@@ -28,6 +29,9 @@ public interface DaoSave {
 
     @Query("DELETE FROM Save WHERE id = :id")
     void deleteSave(int id);
+
+    @Query("SELECT * FROM Save WHERE saveName = :saveName")
+    Save getSaveByName(String saveName);
 
     @Insert
     void addSave(Save save);

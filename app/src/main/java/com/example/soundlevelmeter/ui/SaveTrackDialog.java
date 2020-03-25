@@ -3,6 +3,7 @@ package com.example.soundlevelmeter.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -32,6 +33,8 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
     private EditText editText;
     private MyRoomDataBase bd;
     private Set<String> setSave = new HashSet<>();
+    private Handler handler = new Handler();
+    private Runnable runnable;
 
     public SaveTrackDialog(@NonNull Context context) {
         super(context);
@@ -90,10 +93,11 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
 
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.btn_cancel_save_track: {
-                dismiss();
+                // dismiss();
+                test();
                 break;
             }
             case R.id.btn_save_track: {
@@ -103,7 +107,15 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
                             R.string.toast_input_name_track, Toast.LENGTH_SHORT).show();
                 } else {
                     addSaveInBD();
-
+                    v.setEnabled(false);
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            v.setEnabled(true);
+                            dismiss();
+                        }
+                    };
+                    
                 }
 
 
@@ -113,6 +125,34 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
                 dismiss();
 
         }
+    }
+
+    private void test() {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                Log.d("EEE", "List<Save> listSave:");
+
+                List<Save> listSave = bd.getDaoSave().getListSave();
+
+                for (Save save : listSave) {
+                    Log.d("EEE", "SaveName =" + save.getSaveName() + "   id = " + save.getId());
+                }
+
+
+                Log.d("EEE", "List<DataEvent>:");
+                List<DataEvent> dataEv = bd.getDaoSave().getAllListEvent();
+
+                for (DataEvent dataEvent : dataEv) {
+
+                    Log.d("EEE", "id " + dataEvent.getIdPoint() + "   idSave = " + dataEvent.getIdSave() + "    time =  " + dataEvent.getTime());
+                }
+
+            }
+        };
+        thread.start();
+
+
     }
 
     private void getSaveList() {
@@ -146,7 +186,16 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
                 Save save = new Save();
                 save.setSaveName(saveName);
                 bd.getDaoSave().addSave(save);
-                Log.d("EEE", "Save save = new Save(); save id =" + save.getId());
+                save = bd.getDaoSave().getSaveByName(saveName);
+                int saveId = save.getId();
+                List<DataEvent> dataEventList = Singleton.getInstance().getList();
+                for (DataEvent dataEvent : dataEventList) {
+
+                    dataEvent.setIdSave(saveId);
+
+                }
+                bd.getDaoSave().addListEvent(dataEventList);
+                handler.post(runnable);
             }
         };
         thread.start();
