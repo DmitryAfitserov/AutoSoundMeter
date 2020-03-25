@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,8 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
     private Set<String> setSave = new HashSet<>();
     private Handler handler = new Handler();
     private Runnable runnable;
+    private TextView textViewAlert;
+    private boolean canSave = false;
 
     public SaveTrackDialog(@NonNull Context context) {
         super(context);
@@ -57,6 +60,8 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
         bd = Singleton.getInstance().getBD(getContext());
         getSaveList();
 
+        textViewAlert = findViewById(R.id.text_view_alert);
+
 
 
     }
@@ -69,13 +74,28 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            if (s.toString().isEmpty()) {
+                canSave = false;
+                textViewAlert.setText(R.string.alert_name_is_empty);
+                textViewAlert.setEnabled(true);
+                return;
+            }
+
             if (setSave.contains(s.toString())) {
-                Log.d("EEE", "name is exist");
+
+                canSave = false;
+                textViewAlert.setEnabled(true);
+                textViewAlert.setText(R.string.alert_name_is_exist);
                 //message
                 //  editText.setTextColor();
             } else {
+                canSave = true;
+                textViewAlert.setEnabled(false);
+
                 //drop message
             }
+
 
 
 
@@ -96,15 +116,17 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
     public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.btn_cancel_save_track: {
-                // dismiss();
-                test();
+                dismiss();
+                //test();
                 break;
             }
             case R.id.btn_save_track: {
                 saveName = editText.getText().toString();
-                if (saveName.isEmpty()) {
-                    Toast.makeText(getContext(),
-                            R.string.toast_input_name_track, Toast.LENGTH_SHORT).show();
+                if (!canSave) {
+                    if (!textViewAlert.isEnabled()) {
+                        textViewAlert.setEnabled(true);
+                    }
+
                 } else {
                     addSaveInBD();
                     v.setEnabled(false);
@@ -115,7 +137,7 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
                             dismiss();
                         }
                     };
-                    
+
                 }
 
 
@@ -161,9 +183,7 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
             public void run() {
                 List<Save> listSave = bd.getDaoSave().getListSave();
 
-                if (listSave.isEmpty()) {
-                    Log.d("EEE", "listSave.isEmpty()");
-                } else {
+                if (!listSave.isEmpty()) {
                     for (Save save : listSave) {
                         setSave.add(save.getSaveName());
                         Log.d("EEE", "setSave.add(save.getSaveName());" + save.getSaveName() + "  id = " + save.getId());

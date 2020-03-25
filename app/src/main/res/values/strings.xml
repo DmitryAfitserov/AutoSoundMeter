@@ -26,6 +26,9 @@
     <string name="button_cancel">Отмена</string>
     <string name="toast_input_name_track">Введите имя записи</string>
 
+    <string name="alert_name_is_empty">Имя не может быть пустым</string>
+    <string name="alert_name_is_exist">Такое имя уже существует</string>
+
 
     <string name="mph">mph</string>
     <string name="kmh">км/час</string>
