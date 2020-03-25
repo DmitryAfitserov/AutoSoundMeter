@@ -34,6 +34,7 @@ import com.example.soundlevelmeter.MyService;
 import com.example.soundlevelmeter.R;
 import com.example.soundlevelmeter.Room.MyRoomDataBase;
 import com.example.soundlevelmeter.Singleton.Singleton;
+import com.example.soundlevelmeter.ui.SaveTrackDialog;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
@@ -186,7 +187,9 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                 .setPositiveButton("Сохранить трэк",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                MyRoomDataBase bd = Singleton.getInstance().getBD(getContext());
+                                SaveTrackDialog myDialog =
+                                        new SaveTrackDialog(Objects.requireNonNull(getContext()));
+                                myDialog.show();
 
                             }
                         });
@@ -213,27 +216,6 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         alert.show();
     }
 
-    private void saveTrack(MyRoomDataBase bd) {
-
-
-        Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        };
-
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                super.run();
-
-            }
-        };
-
-
-    }
 
 
 
