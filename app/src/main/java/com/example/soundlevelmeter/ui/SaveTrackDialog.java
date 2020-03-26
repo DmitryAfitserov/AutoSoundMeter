@@ -13,7 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -31,7 +30,6 @@ import java.util.Set;
 public class SaveTrackDialog extends Dialog implements View.OnClickListener {
 
 
-    private Button btnSave, btnCancel;
     private String saveName;
     private EditText editText;
     private MyRoomDataBase bd;
@@ -50,6 +48,8 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_save_track);
+
+        Button btnSave, btnCancel;
         btnCancel = findViewById(R.id.btn_cancel_save_track);
         btnCancel.setOnClickListener(this);
 
@@ -215,14 +215,14 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
         thread.start();
     }
 
-    public void showKeyboard() {
+    private void showKeyboard() {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         Objects.requireNonNull(inputMethodManager).
                 toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    public void closeKeyboard() {
+    private void closeKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager)
                 getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         Objects.requireNonNull(inputMethodManager).
