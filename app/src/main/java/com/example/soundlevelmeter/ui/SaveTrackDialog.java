@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.example.soundlevelmeter.Singleton.Singleton;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class SaveTrackDialog extends Dialog implements View.OnClickListener {
@@ -56,6 +58,8 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
 
         editText = findViewById(R.id.edit_text_name_save);
         editText.addTextChangedListener(textWatcher);
+        editText.requestFocus();
+        showKeyboard();
 
         bd = Singleton.getInstance().getBD(getContext());
         getSaveList();
@@ -210,5 +214,27 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
         };
         thread.start();
     }
+
+    public void showKeyboard() {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        Objects.requireNonNull(inputMethodManager).
+                toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    public void closeKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager)
+                getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        Objects.requireNonNull(inputMethodManager).
+                toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        closeKeyboard();
+
+    }
+
 
 }
