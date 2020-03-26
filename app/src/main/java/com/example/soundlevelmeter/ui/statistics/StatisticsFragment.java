@@ -22,6 +22,7 @@ import com.example.soundlevelmeter.MyService;
 import com.example.soundlevelmeter.R;
 import com.example.soundlevelmeter.Room.DataEvent;
 import com.example.soundlevelmeter.Singleton.Singleton;
+import com.example.soundlevelmeter.ui.SaveTrackDialog;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -58,7 +59,8 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
         checkBoxSound = root.findViewById(R.id.checkbox_sound);
         final Button btnPlayStop = root.findViewById(R.id.btn_play_stop);
         final Button btnClean = root.findViewById(R.id.btn_clean);
-        createListeners(btnPlayStop, btnClean);
+        final Button btnSave = root.findViewById(R.id.btn_save_track_in_statistics);
+        createListeners(btnPlayStop, btnClean, btnSave);
 
         if (!Singleton.getInstance().isCheckBoxSound()) {
             checkBoxSound.setChecked(false);
@@ -163,7 +165,7 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
         upDateGraph();
     }
 
-    private void createListeners(final Button btnPlayStop, Button btnClean) {
+    private void createListeners(final Button btnPlayStop, Button btnClean, Button btnSaveTrack) {
         btnPlayStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,6 +199,20 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
                 Singleton.getInstance().clearList();
                 if (!Singleton.getInstance().isStatusWriteTrack()) {
                     upDateGraph();
+                }
+            }
+        });
+
+        btnSaveTrack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Singleton.getInstance().isStatusWriteTrack()) {
+                    Toast.makeText(getContext(), R.string.toast_stop_write_track, Toast.LENGTH_SHORT).show();
+                } else if (Singleton.getInstance().getList().isEmpty()) {
+                    Toast.makeText(getContext(), R.string.toast_not_wrote_track, Toast.LENGTH_SHORT).show();
+                } else {
+                    SaveTrackDialog saveTrackDialog = new SaveTrackDialog(getContext());
+                    saveTrackDialog.show();
                 }
             }
         });

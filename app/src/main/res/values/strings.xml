@@ -25,6 +25,8 @@
 
     <string name="button_cancel">Отмена</string>
     <string name="toast_input_name_track">Введите имя записи</string>
+    <string name="toast_stop_write_track">Остановите запись трека</string>
+    <string name="toast_not_wrote_track">Нет записанного трека</string>
 
     <string name="alert_name_is_empty">Имя не может быть пустым</string>
     <string name="alert_name_is_exist">Такое имя уже существует</string>

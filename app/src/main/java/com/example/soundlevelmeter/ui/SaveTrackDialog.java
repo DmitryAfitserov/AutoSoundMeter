@@ -78,27 +78,23 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
             if (s.toString().isEmpty()) {
                 canSave = false;
                 textViewAlert.setText(R.string.alert_name_is_empty);
-                textViewAlert.setEnabled(true);
+                textViewAlert.setVisibility(View.VISIBLE);
                 return;
             }
 
             if (setSave.contains(s.toString())) {
 
                 canSave = false;
-                textViewAlert.setEnabled(true);
+                textViewAlert.setVisibility(View.VISIBLE);
                 textViewAlert.setText(R.string.alert_name_is_exist);
                 //message
                 //  editText.setTextColor();
             } else {
                 canSave = true;
-                textViewAlert.setEnabled(false);
+                textViewAlert.setVisibility(View.INVISIBLE);
 
                 //drop message
             }
-
-
-
-
         }
 
         @Override
@@ -106,10 +102,6 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
 
         }
     };
-
-
-
-
 
 
     @Override
@@ -123,8 +115,8 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
             case R.id.btn_save_track: {
                 saveName = editText.getText().toString();
                 if (!canSave) {
-                    if (!textViewAlert.isEnabled()) {
-                        textViewAlert.setEnabled(true);
+                    if (textViewAlert.getVisibility() == View.INVISIBLE) {
+                        textViewAlert.setVisibility(View.VISIBLE);
                     }
 
                 } else {
@@ -139,8 +131,6 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
                     };
 
                 }
-
-
                 break;
             }
             default:
@@ -219,8 +209,6 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
             }
         };
         thread.start();
-
     }
-
 
 }

@@ -27,7 +27,7 @@ public class Singleton {
     private List<DataEvent> list;
 
     private Singleton() {
-
+        list = new ArrayList<>();
     }
 
     public static Singleton getInstance() {
