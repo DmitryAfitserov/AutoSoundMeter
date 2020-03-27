@@ -66,8 +66,6 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
 
         textViewAlert = findViewById(R.id.text_view_alert);
 
-
-
     }
 
     private TextWatcher textWatcher = new TextWatcher() {

@@ -32,6 +32,9 @@
     <string name="alert_name_is_exist">Такое имя уже существует</string>
 
 
+    <string name="dialog_message_choose_save">Выберите сохранение</string>
+
+
     <string name="mph">mph</string>
     <string name="kmh">км/час</string>
 

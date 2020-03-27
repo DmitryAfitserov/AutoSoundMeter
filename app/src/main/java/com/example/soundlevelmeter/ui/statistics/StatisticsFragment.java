@@ -4,16 +4,19 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -21,6 +24,8 @@ import com.example.soundlevelmeter.Interface.CallBackForStaticsits;
 import com.example.soundlevelmeter.MyService;
 import com.example.soundlevelmeter.R;
 import com.example.soundlevelmeter.Room.DataEvent;
+import com.example.soundlevelmeter.Room.MyRoomDataBase;
+import com.example.soundlevelmeter.Room.Save;
 import com.example.soundlevelmeter.Singleton.Singleton;
 import com.example.soundlevelmeter.ui.SaveTrackDialog;
 import com.jjoe64.graphview.GraphView;
@@ -28,12 +33,13 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.List;
+import java.util.Objects;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 
-public class StatisticsFragment extends Fragment implements CallBackForStaticsits {
+public class StatisticsFragment extends Fragment implements View.OnClickListener, CallBackForStaticsits {
 
-    private StatisticsViewModel statisticsViewModel;
+
     private List<DataEvent> list;
     private CheckBox checkBoxSpeed;
     private CheckBox checkBoxSound;
@@ -42,10 +48,13 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
     private LineGraphSeries<DataPoint> seriesSound;
     private final double coef = 0.621d;
     private boolean isUseMph;
+    private Handler handler = new Handler();
+    private List<Save> listSave;
+    private Button btnPlayStop;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        statisticsViewModel =
+        StatisticsViewModel statisticsViewModel =
                 ViewModelProviders.of(this).get(StatisticsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_statistics, container, false);
 
@@ -57,10 +66,20 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
 
         checkBoxSpeed = root.findViewById(R.id.checkbox_speed);
         checkBoxSound = root.findViewById(R.id.checkbox_sound);
-        final Button btnPlayStop = root.findViewById(R.id.btn_play_stop);
-        final Button btnClean = root.findViewById(R.id.btn_clean);
-        final Button btnSave = root.findViewById(R.id.btn_save_track_in_statistics);
-        createListeners(btnPlayStop, btnClean, btnSave);
+
+        btnPlayStop = root.findViewById(R.id.btn_play_stop);
+        btnPlayStop.setOnClickListener(this);
+
+        Button btnClean = root.findViewById(R.id.btn_clean);
+        btnClean.setOnClickListener(this);
+
+        Button btnSave = root.findViewById(R.id.btn_save_track_in_statistics);
+        btnSave.setOnClickListener(this);
+
+        Button btnOpenSaveTrack = root.findViewById(R.id.btn_open_save_track);
+        btnOpenSaveTrack.setOnClickListener(this);
+
+        createListeners();
 
         if (!Singleton.getInstance().isCheckBoxSound()) {
             checkBoxSound.setChecked(false);
@@ -80,7 +99,7 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
 
     private void createService() {
         Intent intent = new Intent(getContext(), MyService.class);
-        getActivity().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+        Objects.requireNonNull(getActivity()).bindService(intent, serviceConnection, BIND_AUTO_CREATE);
     }
 
 
@@ -165,10 +184,46 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
         upDateGraph();
     }
 
-    private void createListeners(final Button btnPlayStop, Button btnClean, Button btnSaveTrack) {
-        btnPlayStop.setOnClickListener(new View.OnClickListener() {
+    private void createListeners() {
+
+        checkBoxSound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Singleton.getInstance().setCheckBoxSound(checkBoxSound.isChecked());
+                upDateGraph();
+            }
+        });
+        checkBoxSpeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Singleton.getInstance().setCheckBoxSpeed(checkBoxSpeed.isChecked());
+                upDateGraph();
+            }
+        });
+
+    }
+
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d("EEE", " onServiceConnected with Statistics OK  ");
+            MyService.LocalBinder binderService = (MyService.LocalBinder) service;
+            binderService.setCallBackForStatistics(StatisticsFragment.this);
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d("EEE", " onServiceDisconnected with Statistics  Disconnected ");
+
+        }
+    };
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_play_stop: {
                 if (!Singleton.getInstance().isStatusWriteTrack()) {
                     if (Singleton.getInstance().isStatusSpeedometer() &&
                             Singleton.getInstance().isStatusSoundMeter()) {
@@ -190,63 +245,65 @@ public class StatisticsFragment extends Fragment implements CallBackForStaticsit
                     Singleton.getInstance().setStatusWriteTrack(false);
                     btnPlayStop.setText(R.string.button_play);
                 }
-            }
-        });
 
-        btnClean.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            }
+            case R.id.btn_clean: {
+
                 Singleton.getInstance().clearList();
                 if (!Singleton.getInstance().isStatusWriteTrack()) {
                     upDateGraph();
                 }
-            }
-        });
 
-        btnSaveTrack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            }
+            case R.id.btn_save_track_in_statistics: {
+
                 if (Singleton.getInstance().isStatusWriteTrack()) {
                     Toast.makeText(getContext(), R.string.toast_stop_write_track, Toast.LENGTH_SHORT).show();
                 } else if (Singleton.getInstance().getList().isEmpty()) {
                     Toast.makeText(getContext(), R.string.toast_not_wrote_track, Toast.LENGTH_SHORT).show();
                 } else {
-                    SaveTrackDialog saveTrackDialog = new SaveTrackDialog(getContext());
+                    SaveTrackDialog saveTrackDialog =
+                            new SaveTrackDialog(Objects.requireNonNull(getContext()));
                     saveTrackDialog.show();
                 }
-            }
-        });
 
-        checkBoxSound.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Singleton.getInstance().setCheckBoxSound(checkBoxSound.isChecked());
-                upDateGraph();
+                break;
             }
-        });
-        checkBoxSpeed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Singleton.getInstance().setCheckBoxSpeed(checkBoxSpeed.isChecked());
-                upDateGraph();
+
+            case R.id.btn_open_save_track: {
+
+                getSaveList();
+
+                AlertDialog.Builder alertDialog = new
+                        AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                alertDialog.setMessage(R.string.dialog_message_choose_save);
+
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                };
+
+
+                break;
             }
-        });
+
+
+        }
     }
 
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.d("EEE", " onServiceConnected with Statistics OK  ");
-            MyService.LocalBinder binderService = (MyService.LocalBinder) service;
-            binderService.setCallBackForStatistics(StatisticsFragment.this);
+    private void getSaveList() {
+        final MyRoomDataBase bd = Singleton.getInstance().getBD(getContext());
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                List<Save> listSave = bd.getDaoSave().getListSave();
 
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Log.d("EEE", " onServiceDisconnected with Statistics  Disconnected ");
-
-        }
-    };
-
+            }
+        };
+        thread.start();
+    }
 }
