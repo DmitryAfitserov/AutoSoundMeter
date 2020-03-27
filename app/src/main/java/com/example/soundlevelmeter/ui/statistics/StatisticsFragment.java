@@ -11,9 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -275,9 +277,6 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
 
             case R.id.btn_open_save_track: {
 
-                final AlertDialog.Builder builder = new
-                        AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                builder.setTitle(R.string.dialog_message_choose_save);
 
 
 
@@ -286,45 +285,33 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
                     @Override
                     public void run() {
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(
-                                getContext()), android.R.layout.select_dialog_singlechoice);
 
-
-                        final AlertDialog alertDialog;
-                        Log.d("EEE", "runnable run  listSave.size() = " + listSave.size());
                         String[] savesString = new String[listSave.size()];
                         int checkedItem = 0;
                         for (int i = 0; i < listSave.size(); i++) {
                             savesString[i] = listSave.get(i).getSaveName();
                         }
-                        alertDialog = builder.create();
+                        final ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(
+                                getContext()), android.R.layout.select_dialog_multichoice, savesString);
+
+                        final AlertDialog alertDialog = new
+                                AlertDialog.Builder(Objects.requireNonNull(getContext())).
+                                setTitle(R.string.dialog_message_choose_save).
+                                setAdapter(adapter, null).
+                                setPositiveButton("pos", null).
+                                setNegativeButton("neg", null).
+                                setNeutralButton("net", null).create();
+
+                        alertDialog.getListView().setItemsCanFocus(false);
+                        alertDialog.getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
 
-                        builder.setSingleChoiceItems(savesString, checkedItem, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.d("EEE", "alertDialog.setMultiChoiceItems choose = " + which);
-                            }
-                        });
-                        builder.setNegativeButton("neg", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
 
-                            }
-                        });
-                        builder.setNeutralButton("netr", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                        Log.d("EEE", "runnable run  listSave.size() = " + listSave.size());
 
 
-                            }
-                        });
-                        builder.setPositiveButton("pos", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
 
-                            }
-                        });
+
                         alertDialog.show();
 
                     }
