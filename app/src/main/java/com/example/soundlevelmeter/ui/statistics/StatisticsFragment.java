@@ -228,27 +228,7 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_play_stop: {
-                if (!Singleton.getInstance().isStatusWriteTrack()) {
-                    if (Singleton.getInstance().isStatusSpeedometer() &&
-                            Singleton.getInstance().isStatusSoundMeter()) {
-                        Singleton.getInstance().setStatusWriteTrack(true);
-                        btnPlayStop.setText(R.string.button_pause);
-                    } else {
-                        if (!Singleton.getInstance().isStatusSpeedometer()) {
-                            Toast.makeText(getContext(), R.string.text_for_not_work_speedometer,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        if (!Singleton.getInstance().isStatusSoundMeter()) {
-                            Toast.makeText(getContext(), R.string.text_for_not_work_soundmeter,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-
-                } else {
-                    Singleton.getInstance().setStatusWriteTrack(false);
-                    btnPlayStop.setText(R.string.button_play);
-                }
+                eventClickBtnPlayStop();
 
                 break;
             }
@@ -264,7 +244,7 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
             case R.id.btn_save_track_in_statistics: {
 
                 if (Singleton.getInstance().isStatusWriteTrack()) {
-                    Toast.makeText(getContext(), R.string.toast_stop_write_track, Toast.LENGTH_SHORT).show();
+                    eventClickBtnPlayStop();
                 } else if (Singleton.getInstance().getList().isEmpty()) {
                     Toast.makeText(getContext(), R.string.toast_not_wrote_track, Toast.LENGTH_SHORT).show();
                 } else {
@@ -277,6 +257,14 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
             }
 
             case R.id.btn_open_save_track: {
+
+                final Runnable runnableUpdateUI = new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("EEE", "  = updateUI = ");
+                        upDateGraph();
+                    }
+                };
 
 
                 Runnable runnable = new Runnable() {
@@ -301,33 +289,43 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
                             @Override
                             public void onClick(View v) {
                                 if (!stringsSave.isEmpty()) {
+                                    deleteSaveFromBD(listSave.get(positionItem).getId());
                                     listSave.remove(positionItem);
                                     Log.d("EEE", "which = " + positionItem + "  listSave.size() =  " + listSave.size());
                                     stringsSave.remove(positionItem);
-                                    if (positionItem > 0) {
+                                    if (positionItem > stringsSave.size() - 1) {
                                         positionItem--;
                                     }
-
                                     alertDialog.getListView().setItemChecked(positionItem, true);
                                     adapter.notifyDataSetChanged();
                                 }
-
                             }
                         };
 
                         alertDialog = new
-                                AlertDialog.Builder(Objects.requireNonNull(getContext())).
-                                setTitle(R.string.dialog_message_choose_save).
-                                setSingleChoiceItems(adapter, 0, new DialogInterface.OnClickListener() {
+                                AlertDialog.Builder(Objects.requireNonNull(getContext()))
+                                .setTitle(R.string.dialog_message_choose_save)
+                                .setSingleChoiceItems(adapter, 0, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         positionItem = which;
                                     }
-                                }).
-                                //    setAdapter(adapter, null).
-                                        setPositiveButton(R.string.button_open_save_track, null).
-                                        setNegativeButton(R.string.button_cancel, null).
-                                        setNeutralButton(R.string.btn_delete_note, null).create();
+                                })
+                                .setPositiveButton(R.string.button_open_save_track, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        int id = listSave.get(positionItem).getId();
+
+                                        if (Singleton.getInstance().isStatusWriteTrack()) {
+                                            eventClickBtnPlayStop();
+                                        }
+                                        Log.d("EEE", "positionItem = " + positionItem + " id = " + id);
+                                        openEventsFromBD(id, runnableUpdateUI);
+                                    }
+                                })
+                                .setNegativeButton(R.string.button_close, null)
+                                .setNeutralButton(R.string.btn_delete_note, null).create();
 
 
                         alertDialog.show();
@@ -343,6 +341,63 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
 
 
         }
+    }
+
+    private void eventClickBtnPlayStop() {
+
+        if (!Singleton.getInstance().isStatusWriteTrack()) {
+            if (Singleton.getInstance().isStatusSpeedometer() &&
+                    Singleton.getInstance().isStatusSoundMeter()) {
+                Singleton.getInstance().setStatusWriteTrack(true);
+                btnPlayStop.setText(R.string.button_pause);
+            } else {
+                if (!Singleton.getInstance().isStatusSpeedometer()) {
+                    Toast.makeText(getContext(), R.string.text_for_not_work_speedometer,
+                            Toast.LENGTH_SHORT).show();
+                }
+                if (!Singleton.getInstance().isStatusSoundMeter()) {
+                    Toast.makeText(getContext(), R.string.text_for_not_work_soundmeter,
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+        } else {
+            Singleton.getInstance().setStatusWriteTrack(false);
+            btnPlayStop.setText(R.string.button_play);
+        }
+
+
+    }
+
+    private void openEventsFromBD(final int idSave, final Runnable runnable) {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                MyRoomDataBase bd = Singleton.getInstance().getBD(getContext());
+
+                list.clear();
+                list = bd.getDaoSave().getListEvent(idSave);
+                Singleton.getInstance().setList(list);
+                Log.d("EEE", "list.size = " + list.size());
+                handler.post(runnable);
+
+            }
+        };
+        thread.start();
+    }
+
+    private void deleteSaveFromBD(final int idSave) {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                MyRoomDataBase bd = Singleton.getInstance().getBD(getContext());
+                bd.getDaoSave().deleteSave(idSave);
+            }
+        };
+        thread.start();
     }
 
 

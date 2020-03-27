@@ -97,6 +97,11 @@ public class Singleton {
         return list;
     }
 
+    public void setList(List<DataEvent> list) {
+        this.list = list;
+
+    }
+
     public void addDataToList(DataEvent event) {
         if (list == null) {
             list = new ArrayList<>();
