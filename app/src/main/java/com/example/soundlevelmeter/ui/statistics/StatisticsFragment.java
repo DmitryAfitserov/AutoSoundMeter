@@ -1,6 +1,7 @@
 package com.example.soundlevelmeter.ui.statistics;
 
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
 
 
     private List<DataEvent> list;
+    private List<Save> listSave;
     private CheckBox checkBoxSpeed;
     private CheckBox checkBoxSound;
     private GraphView graph;
@@ -49,7 +51,6 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
     private final double coef = 0.621d;
     private boolean isUseMph;
     private Handler handler = new Handler();
-    private List<Save> listSave;
     private Button btnPlayStop;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -274,19 +275,62 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
 
             case R.id.btn_open_save_track: {
 
-                getSaveList();
-
-                AlertDialog.Builder alertDialog = new
+                final AlertDialog.Builder builder = new
                         AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                alertDialog.setMessage(R.string.dialog_message_choose_save);
+                builder.setTitle(R.string.dialog_message_choose_save);
+
+
+
 
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
 
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(
+                                getContext()), android.R.layout.select_dialog_singlechoice);
+
+
+                        final AlertDialog alertDialog;
+                        Log.d("EEE", "runnable run  listSave.size() = " + listSave.size());
+                        String[] savesString = new String[listSave.size()];
+                        int checkedItem = 0;
+                        for (int i = 0; i < listSave.size(); i++) {
+                            savesString[i] = listSave.get(i).getSaveName();
+                        }
+                        alertDialog = builder.create();
+
+
+                        builder.setSingleChoiceItems(savesString, checkedItem, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("EEE", "alertDialog.setMultiChoiceItems choose = " + which);
+                            }
+                        });
+                        builder.setNegativeButton("neg", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        builder.setNeutralButton("netr", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+
+                            }
+                        });
+                        builder.setPositiveButton("pos", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        alertDialog.show();
+
                     }
                 };
 
+                getSaveList(runnable);
 
                 break;
             }
@@ -295,13 +339,14 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private void getSaveList() {
+
+    private void getSaveList(final Runnable runnable) {
         final MyRoomDataBase bd = Singleton.getInstance().getBD(getContext());
         Thread thread = new Thread() {
             @Override
             public void run() {
-                List<Save> listSave = bd.getDaoSave().getListSave();
-
+                listSave = bd.getDaoSave().getListSave();
+                handler.post(runnable);
             }
         };
         thread.start();
