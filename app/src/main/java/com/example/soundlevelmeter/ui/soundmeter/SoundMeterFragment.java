@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,11 +27,10 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
-import com.example.soundlevelmeter.AppDataBase;
+
 import com.example.soundlevelmeter.Interface.CallBackFromService;
 import com.example.soundlevelmeter.MyService;
 import com.example.soundlevelmeter.R;
-import com.example.soundlevelmeter.Room.MyRoomDataBase;
 import com.example.soundlevelmeter.Singleton.Singleton;
 import com.example.soundlevelmeter.ui.SaveTrackDialog;
 import com.google.android.material.navigation.NavigationView;
@@ -40,7 +38,6 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.Objects;
 
 import static android.content.Context.BIND_AUTO_CREATE;
-import static android.content.Context.HARDWARE_PROPERTIES_SERVICE;
 import static android.content.Context.LOCATION_SERVICE;
 
 public class SoundMeterFragment extends Fragment implements CallBackFromService {
@@ -170,6 +167,8 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
             public void onServiceDisconnected(ComponentName name) {
                 Log.d("EEE", " onServiceDisconnected  Disconnected ");
                 Singleton.getInstance().setStatusService(false);
+                myService = null;
+
             }
         };
 

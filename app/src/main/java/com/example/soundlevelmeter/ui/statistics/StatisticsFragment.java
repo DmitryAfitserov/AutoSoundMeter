@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -245,6 +246,9 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
 
                 if (Singleton.getInstance().isStatusWriteTrack()) {
                     eventClickBtnPlayStop();
+                    SaveTrackDialog saveTrackDialog =
+                            new SaveTrackDialog(Objects.requireNonNull(getContext()));
+                    saveTrackDialog.show();
                 } else if (Singleton.getInstance().getList().isEmpty()) {
                     Toast.makeText(getContext(), R.string.toast_not_wrote_track, Toast.LENGTH_SHORT).show();
                 } else {
@@ -314,19 +318,24 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
                                 .setPositiveButton(R.string.button_open_save_track, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        if (positionItem > -1) {
+                                            int id = listSave.get(positionItem).getId();
 
-                                        int id = listSave.get(positionItem).getId();
-
-                                        if (Singleton.getInstance().isStatusWriteTrack()) {
-                                            eventClickBtnPlayStop();
+                                            if (Singleton.getInstance().isStatusWriteTrack()) {
+                                                eventClickBtnPlayStop();
+                                            }
+                                            Log.d("EEE", "positionItem = " + positionItem + " id = " + id);
+                                            openEventsFromBD(id, runnableUpdateUI);
                                         }
-                                        Log.d("EEE", "positionItem = " + positionItem + " id = " + id);
-                                        openEventsFromBD(id, runnableUpdateUI);
+
                                     }
                                 })
                                 .setNegativeButton(R.string.button_close, null)
-                                .setNeutralButton(R.string.btn_delete_note, null).create();
-
+                                .setNeutralButton(R.string.btn_delete_note, null)
+                                .create();
+                        TextView textView = new TextView(getContext());
+                        textView.setText("Net save");
+                        alertDialog.getListView().setEmptyView(textView);
 
                         alertDialog.show();
                         alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(btnNeutDelete);

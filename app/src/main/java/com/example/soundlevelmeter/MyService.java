@@ -270,6 +270,7 @@ public class MyService extends Service implements LifecycleObserver {
 
     @Override
     public void onDestroy() {
+        Log.d("EEE", "onDestroy");
         super.onDestroy();
         stopSpeedometer();
         stopRecorder();
@@ -292,14 +293,11 @@ public class MyService extends Service implements LifecycleObserver {
 
         public void setCallBackFromService(CallBackFromService callBack) {
             MyService.this.callBack = callBack;
-
         }
 
         public void setCallBackForStatistics(CallBackForStaticsits callBackForStaticsits) {
             MyService.this.callBackForStaticsits = callBackForStaticsits;
-
         }
-
 
     }
 }

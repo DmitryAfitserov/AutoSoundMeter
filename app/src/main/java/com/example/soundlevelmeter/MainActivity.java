@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import android.os.Handler;
 
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -95,8 +96,11 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_sound_meter) {
 
             if (doubleClick) {
+                Log.d("EEE", "if (doubleClick) {");
                 stopService(new Intent(this, MyService.class));
+                Log.d("EEE", "stopService(new Intent");
                 super.onBackPressed();
+                Log.d("EEE", "super.onBackPressed()");
 
                 return;
             }
