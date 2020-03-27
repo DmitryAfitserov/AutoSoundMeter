@@ -318,7 +318,7 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
                                 .setPositiveButton(R.string.button_open_save_track, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        if (positionItem > -1) {
+                                        if (!listSave.isEmpty()) {
                                             int id = listSave.get(positionItem).getId();
 
                                             if (Singleton.getInstance().isStatusWriteTrack()) {
@@ -333,9 +333,7 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
                                 .setNegativeButton(R.string.button_close, null)
                                 .setNeutralButton(R.string.btn_delete_note, null)
                                 .create();
-                        TextView textView = new TextView(getContext());
-                        textView.setText("Net save");
-                        alertDialog.getListView().setEmptyView(textView);
+
 
                         alertDialog.show();
                         alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(btnNeutDelete);
