@@ -35,6 +35,7 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -278,41 +279,59 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
             case R.id.btn_open_save_track: {
 
 
-
-
-
                 Runnable runnable = new Runnable() {
+
+                    int positionItem = 0;
+                    ArrayAdapter<String> adapter;
+                    ArrayList<String> stringsSave = new ArrayList<>();
+                    AlertDialog alertDialog;
+
                     @Override
                     public void run() {
 
 
-                        String[] savesString = new String[listSave.size()];
-                        int checkedItem = 0;
-                        for (int i = 0; i < listSave.size(); i++) {
-                            savesString[i] = listSave.get(i).getSaveName();
-                        }
-                        final ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(
-                                getContext()), android.R.layout.select_dialog_multichoice, savesString);
 
-                        final AlertDialog alertDialog = new
+                        for (int i = 0; i < listSave.size(); i++) {
+                            stringsSave.add(listSave.get(i).getSaveName());
+                        }
+                        adapter = new ArrayAdapter<>(Objects.requireNonNull(
+                                getContext()), android.R.layout.simple_list_item_single_choice, stringsSave);
+
+                        View.OnClickListener btnNeutDelete = new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (!stringsSave.isEmpty()) {
+                                    listSave.remove(positionItem);
+                                    Log.d("EEE", "which = " + positionItem + "  listSave.size() =  " + listSave.size());
+                                    stringsSave.remove(positionItem);
+                                    if (positionItem > 0) {
+                                        positionItem--;
+                                    }
+
+                                    alertDialog.getListView().setItemChecked(positionItem, true);
+                                    adapter.notifyDataSetChanged();
+                                }
+
+                            }
+                        };
+
+                        alertDialog = new
                                 AlertDialog.Builder(Objects.requireNonNull(getContext())).
                                 setTitle(R.string.dialog_message_choose_save).
-                                setAdapter(adapter, null).
-                                setPositiveButton("pos", null).
-                                setNegativeButton("neg", null).
-                                setNeutralButton("net", null).create();
-
-                        alertDialog.getListView().setItemsCanFocus(false);
-                        alertDialog.getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-
-
-                        Log.d("EEE", "runnable run  listSave.size() = " + listSave.size());
-
-
+                                setSingleChoiceItems(adapter, 0, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        positionItem = which;
+                                    }
+                                }).
+                                //    setAdapter(adapter, null).
+                                        setPositiveButton(R.string.button_open_save_track, null).
+                                        setNegativeButton(R.string.button_cancel, null).
+                                        setNeutralButton(R.string.btn_delete_note, null).create();
 
 
                         alertDialog.show();
+                        alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(btnNeutDelete);
 
                     }
                 };
