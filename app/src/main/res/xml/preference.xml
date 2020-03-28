@@ -3,12 +3,13 @@
 
     <CheckBoxPreference
         android:key="check_box_use_mph"
+        android:icon="@drawable/ic_mph_100"
         android:summary="@string/use_mph"
         android:title="@string/unit_of_measure"></CheckBoxPreference>
 
     <CheckBoxPreference
         android:key="check_box_auto_run_speedometer"
-        android:icon="@android:drawable/ic_input_add"
+        android:icon="@drawable/ic_autostart_100"
         android:summary="@string/auto_run_speedometer"
         android:title="@string/speedometer"></CheckBoxPreference>
 </PreferenceScreen>
