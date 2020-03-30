@@ -9,5 +9,12 @@
 
     </style>
 
+    <style name="style_btn">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/rounded_corner</item>
+
+
+    </style>
+
 
 </resources>

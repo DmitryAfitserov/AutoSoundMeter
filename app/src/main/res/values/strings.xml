@@ -38,6 +38,8 @@
 
     <string name="mph">mph</string>
     <string name="kmh">км/час</string>
+    <string name="name">Название</string>
+    <string name="content">Содержание</string>
 
 
     <string name="menu_sound_meter">Шумомер</string>
