@@ -6,45 +6,73 @@
     android:layout_height="match_parent">
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <TextView
+        style="@style/text_view_style_gray"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp"
+        android:id="@+id/text_name_speedometer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:orientation="vertical"
+        android:text="@string/speedometer"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
+    </TextView>
+
+    <RelativeLayout
+        android:background="@drawable/border_grey"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_name_speedometer">
+
         <TextView
+            style="@style/text_view_style_black"
             android:id="@+id/text_speedometer"
             android:layout_width="70dp"
             android:layout_height="40dp"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="16dp"
-            android:textSize="30sp"
             android:layout_centerVertical="true"
+
             android:gravity="center_vertical"
-            android:text="2467" />
+            android:text="2467"
+            android:textSize="30sp" />
 
         <TextView
+            style="@style/text_view_style_black"
             android:id="@+id/text_unit"
             android:layout_width="80dp"
             android:layout_height="40dp"
-            android:layout_toEndOf="@+id/text_speedometer"
+            android:layout_centerVertical="true"
             android:layout_marginStart="5dp"
-            android:textSize="24sp"
-            android:text="@string/kmh"
+            android:layout_toEndOf="@+id/text_speedometer"
             android:gravity="bottom"
-            android:layout_centerVertical="true" />
+            android:text="@string/kmh"
+            android:textSize="24sp" />
 
         <Button
-
             android:id="@+id/button_speedometer"
+
+            style="@style/style_btn"
             android:layout_width="130dp"
-            android:layout_height="55dp"
-            android:layout_marginStart="20dp"
-            android:layout_toEndOf="@+id/text_unit"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="0dp"
+            android:layout_toEndOf="@+id/text_unit"
             android:text="@string/button_start_speedometer"
             android:textSize="14sp" />
 
@@ -71,6 +99,7 @@
         tools:layout_editor_absoluteX="-36dp">
 
         <Button
+            style="@style/style_btn"
             android:id="@+id/button_start_track"
 
             android:layout_width="150dp"
@@ -83,6 +112,7 @@
             />
 
         <Button
+            style="@style/style_btn"
             android:id="@+id/button_go_to_graph"
 
             android:layout_width="150dp"
