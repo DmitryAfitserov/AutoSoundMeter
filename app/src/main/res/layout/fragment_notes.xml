@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_notes"
-    android:layout_margin="6dp"
-    android:orientation="horizontal">
+    android:padding="8dp"
+    android:orientation="horizontal"
+    android:background="@color/grey_background">
 
     <ListView
         android:id="@android:id/list"
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:backgroundTint="@color/blue_new"
+        app:srcCompat="@drawable/ic_add_28" />
 
 </FrameLayout>

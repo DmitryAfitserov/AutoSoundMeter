@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="6dp"
+    android:padding="6dp"
+    android:background="@color/grey_background"
     android:id="@+id/fragment_note"
 
 
@@ -16,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/name"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:layout_marginStart="5dp"
         android:layout_alignParentStart="true">
 
@@ -38,13 +39,13 @@
             android:id="@+id/edit_text_name_note"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-
+            android:layout_marginEnd="3dp"
             android:layout_toStartOf="@+id/button_save_note"
             android:layout_alignParentStart="true"
-
-            android:inputType="text"
+            android:padding="5dp"
             android:background="@drawable/border"
-
+            android:inputType="text"
+            android:backgroundTint="@color/white"
             />
 
         <Button
@@ -68,7 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_name"
         android:text="@string/content"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:layout_marginStart="5dp">
 
 
@@ -81,7 +82,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/text_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/border"
+        android:background="@color/grey_background"
+
 
         >
 
@@ -89,10 +91,12 @@
             android:id="@+id/edit_text_content_note"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+            android:background="@drawable/border"
+            android:padding="5dp"
+            android:backgroundTint="@color/white"
             android:gravity="start|top"
-            android:scrollbars="vertical"
-            android:inputType="text" />
+            android:inputType="text"
+            android:scrollbars="vertical" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_delete_note"
@@ -101,8 +105,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:layout_gravity="bottom|end"
-
-            app:srcCompat="@drawable/ic_delete_24">
+            app:srcCompat="@drawable/ic_delete_24"
+            app:backgroundTint="@color/blue_new">
 
         </com.google.android.material.floatingactionbutton.FloatingActionButton>
 

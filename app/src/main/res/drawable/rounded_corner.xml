@@ -6,9 +6,9 @@
     android:insetRight="2dp">
     <shape
         android:shape="rectangle"
-        android:tint="@color/colorAccent">
+        android:tint="@color/blue_new">
         <corners android:radius="10dp" />
-        <solid android:color="@color/blue" />
+        <solid android:color="@color/blue_new" />
         <padding android:bottom="6dp" />
     </shape>
 </inset>

@@ -16,5 +16,15 @@
 
     </style>
 
+    <style name="text_view_style_black">
+        <item name="android:textColor">@color/black_litle</item>
+
+    </style>
+
+    <style name="text_view_style_gray">
+        <item name="android:textColor">@color/black_litle_gray</item>
+
+    </style>
+
 
 </resources>
