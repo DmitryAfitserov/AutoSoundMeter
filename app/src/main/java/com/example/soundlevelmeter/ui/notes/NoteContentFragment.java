@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -78,31 +79,35 @@ public class NoteContentFragment extends Fragment {
         editTextContentNote.addTextChangedListener(textWatcherContent);
 
 
+        if (isNewNote) {
+            //  editTextNameNote.requestFocus();
+            //   showKeyboard(editTextNameNote);
+        } else {
+            //  editTextContentNote.requestFocus();
+            //  showKeyboard(editTextContentNote);
+        }
+        showKeyboard();
+
+
+
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Navigation.findNavController(view).
-                addOnDestinationChangedListener(v);
+//        Navigation.findNavController(view).
+//                addOnDestinationChangedListener(v);
+
     }
 
-    private NavController.OnDestinationChangedListener v = new NavController.OnDestinationChangedListener() {
-        @Override
-        public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-            if (destination.getId() == R.id.nav_notes) {
-                Log.d("EEE", "nDestinationChanged");
-                if (!isDeletedNote) {
-                    save();
-                }
-                hideKeyboard();
-                sharedViewModel = null;
-                note = null;
-            }
-            Navigation.findNavController(Objects.requireNonNull(getView())).removeOnDestinationChangedListener(v);
-        }
-    };
+//    private NavController.OnDestinationChangedListener v = new NavController.OnDestinationChangedListener() {
+//        @Override
+//        public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+//
+//            Navigation.findNavController(Objects.requireNonNull(getView())).removeOnDestinationChangedListener(v);
+//        }
+//    };
 
     private DialogInterface.OnClickListener clickListenerPositiveForAlert = new DialogInterface.OnClickListener() {
 
@@ -183,10 +188,22 @@ public class NoteContentFragment extends Fragment {
 
 
     private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) Objects.
-                requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
-        assert imm != null;
-        imm.hideSoftInputFromWindow(Objects.requireNonNull(getView()).getWindowToken(), 0);
+
+        InputMethodManager inputMethodManager = (InputMethodManager)
+                getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputMethodManager.
+                hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
+
+
+    }
+
+    private void showKeyboard() {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.
+                toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     private void showAlertDelete() {
@@ -209,4 +226,22 @@ public class NoteContentFragment extends Fragment {
     }
 
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        hideKeyboard();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+
+        if (!isDeletedNote) {
+            save();
+        }
+
+        sharedViewModel = null;
+        note = null;
+    }
 }

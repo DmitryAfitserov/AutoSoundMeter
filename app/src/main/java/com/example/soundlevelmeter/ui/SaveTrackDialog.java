@@ -225,6 +225,7 @@ public class SaveTrackDialog extends Dialog implements View.OnClickListener {
                 getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         Objects.requireNonNull(inputMethodManager).
                 toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+
     }
 
     @Override
