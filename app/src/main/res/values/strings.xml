@@ -43,6 +43,9 @@
     <string name="name">Название</string>
     <string name="content">Содержание</string>
 
+    <string name="content_note">Содержание заметки</string>
+    <string name="name_note">Имя заметки</string>
+
 
     <string name="menu_sound_meter">Шумомер</string>
     <string name="double_click">Нажмите ещё раз для выхода</string>

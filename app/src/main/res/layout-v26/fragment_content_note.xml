@@ -45,7 +45,7 @@
             android:background="@drawable/border"
             android:inputType="text"
             android:labelFor="@+id/edit_text_name_note"
-            android:importantForAutofill="no" />
+            android:autofillHints="@string/name_note" />
 
         <Button
             style="@style/style_btn"
@@ -96,8 +96,7 @@
             android:inputType="text"
             android:scrollbars="vertical"
             android:labelFor="@+id/edit_text_content_note"
-
-            android:importantForAutofill="no" />
+            android:autofillHints="@string/content_note" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_delete_note"

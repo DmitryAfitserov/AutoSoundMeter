@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/border"
-    android:descendantFocusability="blocksDescendants"
-    android:backgroundTint="@color/white">
+    android:descendantFocusability="blocksDescendants">
 
     <TextView
         style="@style/text_view_style_black"
