@@ -172,6 +172,7 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
             seriesSpeed = new LineGraphSeries<>(dataPoints);
 
             graph.addSeries(seriesSpeed);
+
         } catch (IllegalArgumentException e) {
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }

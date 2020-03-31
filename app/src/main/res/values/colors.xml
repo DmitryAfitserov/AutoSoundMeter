@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#555555</color>
     <color name="colorRed">#FF0000</color>
-    <color name="blueDark">#0000CD</color>
-    <color name="blue">#0000FF</color>
+    <color name="blueDark">#0000FF</color>
+    <color name="blue">#002BFF</color>002BFF
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="grey">#A9A9A9</color>
@@ -13,4 +13,5 @@
     <color name="black_litle_gray">#555555</color>
     <color name="blue_new">#1E80FF</color>
     <color name="grey_background">#F3F3F3</color>
+    <color name="broun">#4A3719</color>
 </resources>

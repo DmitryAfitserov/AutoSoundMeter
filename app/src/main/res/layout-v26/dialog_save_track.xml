@@ -47,9 +47,9 @@
         android:layout_below="@+id/text_view_alert"
         android:inputType="text"
         android:labelFor="@+id/edit_text_name_save"
+        android:autofillHints="@string/name_save"
 
-
-        android:importantForAutofill="no" />
+        />
 
     <LinearLayout
         android:layout_width="match_parent"

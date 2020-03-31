@@ -28,10 +28,19 @@
 
     </style>
 
+    <style name="text_view_style_blue">
+        <item name="android:textColor">@color/blue_new</item>
+
+    </style>
+
     <style name="text_view_style_gray">
         <item name="android:textColor">@color/black_litle_gray</item>
 
     </style>
 
+    <style name="text_view_style_broun">
+        <item name="android:textColor">@color/broun</item>
+
+    </style>
 
 </resources>

@@ -48,6 +48,7 @@
 
     <string name="content_note">Содержание заметки</string>
     <string name="name_note">Имя заметки</string>
+    <string name="name_save">Имя трека</string>
 
 
     <string name="menu_sound_meter">Шумомер</string>
