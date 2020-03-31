@@ -16,19 +16,19 @@ public class SoundMeterViewModel extends ViewModel {
         valueSound.setValue("0");
     }
 
-    public LiveData<String> getValueSpeed() {
+    LiveData<String> getValueSpeed() {
         return valueSpeed;
     }
 
-    public LiveData<String> getValueSound() {
+    LiveData<String> getValueSound() {
         return valueSound;
     }
 
-    public void setValueSpeed(int speed) {
+    void setValueSpeed(int speed) {
         valueSpeed.setValue(String.valueOf(speed));
     }
 
-    public void setValueSound(int sound) {
+    void setValueSound(int sound) {
         valueSound.setValue(String.valueOf(sound));
     }
 }

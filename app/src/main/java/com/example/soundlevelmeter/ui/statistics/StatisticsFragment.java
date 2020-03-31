@@ -19,7 +19,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.example.soundlevelmeter.Interface.CallBackForStaticsits;
 import com.example.soundlevelmeter.MyService;
@@ -55,8 +54,7 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        StatisticsViewModel statisticsViewModel =
-                ViewModelProviders.of(this).get(StatisticsViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_statistics, container, false);
 
         isUseMph = Singleton.getInstance().isUseMPH();

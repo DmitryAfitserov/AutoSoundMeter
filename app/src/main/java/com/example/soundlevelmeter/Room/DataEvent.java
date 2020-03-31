@@ -27,7 +27,7 @@ public class DataEvent {
         return idPoint;
     }
 
-    public void setIdPoint(long idPoint) {
+    void setIdPoint(long idPoint) {
         this.idPoint = idPoint;
     }
 

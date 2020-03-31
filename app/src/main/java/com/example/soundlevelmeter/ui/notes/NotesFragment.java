@@ -37,7 +37,8 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
 //        Log.d("EEE", "sharedViewModel.getList();   " + list.size());
         if (getListAdapter() == null) {
             AdapterForListNotes adapter =
-                    new AdapterForListNotes(getContext(), R.layout.item_list_fragment, list);
+                    new AdapterForListNotes(Objects.requireNonNull(getContext()),
+                            R.layout.item_list_fragment, list);
             setListAdapter(adapter);
         }
 

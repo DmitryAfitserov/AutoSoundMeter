@@ -86,7 +86,7 @@ public class MyService extends Service implements LifecycleObserver {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                //   Log.d("EEE", "noise = " + sound);
+
                 if (callBack != null) {
                     callBack.callBackFromSoundMeter(sound);
                 }
