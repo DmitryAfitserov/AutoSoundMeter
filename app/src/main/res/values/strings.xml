@@ -38,6 +38,8 @@
 
     <string name="mph">mph</string>
     <string name="kmh">км/час</string>
+    <string name="db">Дб</string>
+    <string name="zero">0</string>
     <string name="name">Название</string>
     <string name="content">Содержание</string>
 
