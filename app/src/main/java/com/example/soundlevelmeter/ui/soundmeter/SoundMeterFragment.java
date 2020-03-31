@@ -181,9 +181,9 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
     private void showAlertForSaveTrack() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-        alertDialogBuilder.setMessage("Информация записана, что делать")
+        alertDialogBuilder.setMessage(R.string.track_wrote)
                 .setCancelable(true)
-                .setPositiveButton("Сохранить трэк",
+                .setPositiveButton(R.string.save_track,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 SaveTrackDialog myDialog =
@@ -192,7 +192,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
                             }
                         });
-        alertDialogBuilder.setNegativeButton("посмотреть на графике",
+        alertDialogBuilder.setNegativeButton(R.string.go_to_graph,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         NavigationView navigationView =
@@ -204,7 +204,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
                     }
                 });
-        alertDialogBuilder.setNeutralButton("закрыть",
+        alertDialogBuilder.setNeutralButton(R.string.close,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -220,18 +220,23 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
 
     private void clickBtnSpeedometer() {
-        if (Singleton.getInstance().isStatusSpeedometer()) {
-            myService.stopSpeedometer();
-            btnSpeedometer.setText(R.string.button_start_speedometer);
-            Singleton.getInstance().setStatusSpeedometer(false);
-        } else {
-            if (checkPermission()) {
-                myService.startSpeedometer();
-                Singleton.getInstance().setStatusSpeedometer(true);
-                btnSpeedometer.setText(R.string.button_stop_speedometer);
-            }
+        if (!Singleton.getInstance().isStatusSpeedometer()) {
 
+            if (checkPermission()) {
+                if (myService != null) {
+                    myService.startSpeedometer();
+                    Singleton.getInstance().setStatusSpeedometer(true);
+                    btnSpeedometer.setText(R.string.button_stop_speedometer);
+                }
+
+            }
         }
+//         else {
+//            //   myService.stopSpeedometer();
+//            //   btnSpeedometer.setText(R.string.button_start_speedometer);
+//            //   Singleton.getInstance().setStatusSpeedometer(false);
+//
+//        }
     }
 
     private void createService() {

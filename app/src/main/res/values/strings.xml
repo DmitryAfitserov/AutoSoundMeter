@@ -51,6 +51,12 @@
     <string name="name_save">Имя трека</string>
 
 
+    <string name="track_wrote">Трек записан</string>
+    <string name="go_to_graph">посмотреть на графике</string>
+    <string name="save_track">сохранить трэк</string>
+    <string name="close">закрыть</string>
+
+
     <string name="menu_sound_meter">Шумомер</string>
     <string name="double_click">Нажмите ещё раз для выхода</string>
     <string name="menu_statistics">Графики</string>
@@ -63,7 +69,7 @@
     <string name="text_for_not_work_speedometer">Спидометр не запущен</string>
     <string name="text_for_not_work_soundmeter">Шумомер не запущен</string>
     <string name="button_start_speedometer">Запустить спидометр</string>
-    <string name="button_stop_speedometer">Остановить спидометр</string>
+    <string name="button_stop_speedometer">Спидометер запущен</string>
     <string name="sound">Шум</string>
     <string name="speed">Скорость</string>
     <string name="button_save">Сохранить</string>

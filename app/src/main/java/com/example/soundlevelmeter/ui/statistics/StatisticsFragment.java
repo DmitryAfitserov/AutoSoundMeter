@@ -363,7 +363,6 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
                 }
             }
 
-
         } else {
             Singleton.getInstance().setStatusWriteTrack(false);
             btnPlayStop.setText(R.string.button_play);

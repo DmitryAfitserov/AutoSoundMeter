@@ -10,8 +10,13 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleService;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import com.example.soundlevelmeter.Interface.CallBackForStaticsits;
@@ -25,9 +30,10 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
+import java.util.List;
 
 
-public class MyService extends Service implements LifecycleObserver {
+public class MyService extends LifecycleService implements LifecycleObserver {
 
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
@@ -41,20 +47,43 @@ public class MyService extends Service implements LifecycleObserver {
     private int sound;
     public boolean isStopThread = false;
     private final IBinder binder = new LocalBinder();
+    private long timeCorrector = 0;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return android.app.Service.START_NOT_STICKY;
+        super.onStartCommand(intent, flags, startId);
+        return Service.START_NOT_STICKY;
     }
 
 
     @Override
     public IBinder onBind(Intent intent) {
+        super.onBind(intent);
         return binder;
     }
 
 
     public void startSoundMeter() {
+
+        MutableLiveData<Boolean> mutableLiveDataStatus = Singleton.getInstance().getIsStatusWriteTrackLiveData();
+        mutableLiveDataStatus.observe(this, new Observer<Boolean>() {
+
+            @Override
+            public void onChanged(Boolean aBoolean) {
+
+                if (aBoolean) {
+                    if (!Singleton.getInstance().getList().isEmpty()) {
+
+                        timeCorrector = System.currentTimeMillis() - Singleton.getInstance().getLastTime();
+                        Log.d("EEE", "timecorrector = " + timeCorrector);
+                    } else {
+                        timeCorrector = 0;
+                        Log.d("EEE", "timecorrector = null = " + timeCorrector);
+                    }
+
+                }
+            }
+        });
 
         try {
             if (mRecorder == null) {
@@ -157,6 +186,8 @@ public class MyService extends Service implements LifecycleObserver {
     }
 
     public void startSpeedometer() {
+
+
         if (fusedLocationClient == null) {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
             locationRequest = LocationRequest.create();
@@ -238,7 +269,8 @@ public class MyService extends Service implements LifecycleObserver {
                 event.setSpeed(speed);
                 int sound = getSoundDb();
                 event.setSound(sound);
-                event.setTime(System.currentTimeMillis());
+
+                event.setTime(System.currentTimeMillis() - timeCorrector);
 
                 Singleton.getInstance().addDataToList(event);
                 if (callBackForStaticsits != null) {

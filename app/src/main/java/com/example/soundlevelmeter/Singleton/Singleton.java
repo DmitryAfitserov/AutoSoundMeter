@@ -2,6 +2,8 @@ package com.example.soundlevelmeter.Singleton;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
 
 import com.example.soundlevelmeter.Room.DataEvent;
@@ -16,11 +18,12 @@ public class Singleton {
     private boolean isStatusService = false;
     private boolean isStatusSpeedometer = false;
     private boolean isStatusSoundMeter = false;
-    private boolean isStatusWriteTrack = false;
+    // private boolean isStatusWriteTrack = false;
+    private MutableLiveData<Boolean> isStatusWriteTrack = new MutableLiveData<>();
     private boolean isCheckBoxSpeed = true;
     private boolean isCheckBoxSound = true;
     private boolean isUseMPH;
-    private long startTime;
+    private long startTime, lastTime;
     private MyRoomDataBase bd;
 
 
@@ -28,11 +31,13 @@ public class Singleton {
 
     private Singleton() {
         list = new ArrayList<>();
+        isStatusWriteTrack.setValue(false);
     }
 
     public static Singleton getInstance() {
         if (instance == null) {
             instance = new Singleton();
+
         }
         return instance;
     }
@@ -70,11 +75,18 @@ public class Singleton {
     }
 
     public boolean isStatusWriteTrack() {
-        return isStatusWriteTrack;
+        if (isStatusWriteTrack == null) {
+            return false;
+        }
+        return isStatusWriteTrack.getValue();
     }
 
     public void setStatusWriteTrack(boolean statusWriteTrack) {
-        isStatusWriteTrack = statusWriteTrack;
+        isStatusWriteTrack.setValue(statusWriteTrack);
+    }
+
+    public MutableLiveData<Boolean> getIsStatusWriteTrackLiveData() {
+        return isStatusWriteTrack;
     }
 
     public boolean isCheckBoxSpeed() {
@@ -109,10 +121,15 @@ public class Singleton {
         if (list.size() == 0) {
             startTime = event.getTime();
         }
-        long temp = Math.round((event.getTime() - startTime) / 100d);
+        lastTime = event.getTime();
+        long temp = Math.round((lastTime - startTime) / 100d);
 
         event.setTime(temp);
         list.add(event);
+    }
+
+    public long getLastTime() {
+        return lastTime;
     }
 
     public void clearList() {
