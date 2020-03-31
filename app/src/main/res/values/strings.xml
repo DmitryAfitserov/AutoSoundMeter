@@ -11,6 +11,9 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
 
+    <string name="enable_GPS_for_use_app">Включить GPS для использования приложение</string>
+    <string name="enable_GPS">Включить GPS</string>
+
     <string name="not_permission">Нет разрешения</string>
     <string name="use_mph">использовать mph</string>
     <string name="unit_of_measure">Единицы измерения</string>

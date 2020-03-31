@@ -260,9 +260,9 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
     private void showGPSDisabledAlertToUser() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-        alertDialogBuilder.setMessage("Enable GPS to use application")
+        alertDialogBuilder.setMessage(R.string.enable_GPS_for_use_app)
                 .setCancelable(false)
-                .setPositiveButton("Enable GPS",
+                .setPositiveButton(R.string.enable_GPS,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 Intent callGPSSettingIntent = new Intent(
@@ -270,7 +270,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                                 startActivity(callGPSSettingIntent);
                             }
                         });
-        alertDialogBuilder.setNegativeButton("Cancel",
+        alertDialogBuilder.setNegativeButton(R.string.button_cancel,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
