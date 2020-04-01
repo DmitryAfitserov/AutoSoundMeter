@@ -192,11 +192,12 @@ public class MyService extends LifecycleService {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
             locationRequest = LocationRequest.create();
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            locationRequest.setInterval(500); // 0,1 seconds
-            //  locationRequest.setFastestInterval(5 * 10); // 0,05 seconds
+            locationRequest.setInterval(500); // 0,5 seconds
+            locationRequest.setFastestInterval(250); // 0,025 seconds
+            startLocationProvider();
         }
 
-        startLocationProvider();
+
     }
 
 

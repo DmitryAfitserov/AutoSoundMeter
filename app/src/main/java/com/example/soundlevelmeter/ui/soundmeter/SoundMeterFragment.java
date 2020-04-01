@@ -59,11 +59,17 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
     private MyService.LocalBinder binderService;
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        bindService();
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        Log.d("EEE", "onCreate");
+
+        Log.d("EEE", "onCreateView");
         soundMeterViewModel =
                 ViewModelProviders.of(this).get(SoundMeterViewModel.class);
         View root = inflater.inflate(R.layout.fragment_sound_meter, container, false);
@@ -80,9 +86,9 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
             textUnit.setText(getResources().getString(R.string.mph));
         }
 
-        if (isAutoRunSpeedometer) {
-            checkGps();
-        }
+//        if (isAutoRunSpeedometer) {
+//            checkGps();
+//        }
 
 
         soundMeterViewModel.getValueSpeed().observe(this, new Observer<String>() {
@@ -109,9 +115,8 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
             @Override
             public void onClick(View v) {
 
-                if (checkGps()) {
                     clickBtnSpeedometer();
-                }
+
             }
         });
         Button btnGoToGraph = root.findViewById(R.id.button_go_to_graph);
@@ -154,8 +159,12 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                 Log.d("EEE", " onServiceConnected OK  ");
                 binderService = (MyService.LocalBinder) service;
                 binderService.setCallBackFromService(SoundMeterFragment.this);
-                binderService.startSoundMeter();
+
+                if (checkPermissionSoundMeter()) {
+                    startSoundMeter();
+                }
                 Singleton.getInstance().setStatusService(true);
+
                 if (isAutoRunSpeedometer && !Singleton.getInstance().isStatusSpeedometer()) {
                     clickBtnSpeedometer();
                 }
@@ -172,11 +181,20 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
             }
         };
 
-        if (checkPermissionSoundMeter()) {
-            createService();
-            Singleton.getInstance().setStatusSoundMeter(true);
-        }
+
+//        if (checkPermissionSoundMeter()) {
+//            bindService();
+//            Singleton.getInstance().setStatusSoundMeter(true);
+//        }
         return root;
+    }
+
+    private void startSoundMeter() {
+        binderService.startSoundMeter();
+    }
+
+    private void startSpedometer() {
+        binderService.startSpeedometer();
     }
 
     private void showAlertForSaveTrack() {
@@ -222,9 +240,9 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
     private void clickBtnSpeedometer() {
         if (!Singleton.getInstance().isStatusSpeedometer()) {
 
-            if (checkPermission()) {
+            if (checkPermission() && checkGps()) {
                 if (binderService != null) {
-                    binderService.startSpeedometer();
+                    startSpedometer();
                     Singleton.getInstance().setStatusSpeedometer(true);
                     btnSpeedometer.setText(R.string.button_stop_speedometer);
                 }
@@ -239,16 +257,13 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 //        }
     }
 
-    private void createService() {
-        Log.d("EEE", " createService  ");
-        intent = new Intent(getContext(), MyService.class);
-        Objects.requireNonNull(getActivity()).startService(intent);
+    private void bindService() {
+        Log.d("EEE", " bindService  ");
         getActivity().bindService(new Intent(getContext(), MyService.class), serviceConnection, BIND_AUTO_CREATE);
     }
 
     @Override
     public void callBackFromSoundMeter(int sound) {
-
         soundMeterViewModel.setValueSound(sound);
     }
 
@@ -338,11 +353,12 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         if (RECORD_AUDIO_REQUEST_CODE == requestCode && permissions[0].equals(Manifest.permission.RECORD_AUDIO)) {
             if (grantResults[0] == 0) {
                 Singleton.getInstance().setStatusSoundMeter(true);
+                startSoundMeter();
             } else {
                 Toast.makeText(getContext(), R.string.not_permission, Toast.LENGTH_SHORT).show();
             }
             if (!Singleton.getInstance().isStatusSoundMeter()) {
-                createService();
+                // bindService();
             }
         }
 
