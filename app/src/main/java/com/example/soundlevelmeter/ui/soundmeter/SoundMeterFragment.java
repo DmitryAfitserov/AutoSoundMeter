@@ -244,7 +244,6 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
                     Singleton.getInstance().setStatusSpeedometer(true);
                     btnSpeedometer.setText(R.string.button_stop_speedometer);
                 }
-
             }
         }
 //         else {
