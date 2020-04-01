@@ -17,7 +17,6 @@
         android:roundIcon="@drawable/ic_logo_300"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:windowSoftInputMode="stateAlwaysHidden"
 
         >
 

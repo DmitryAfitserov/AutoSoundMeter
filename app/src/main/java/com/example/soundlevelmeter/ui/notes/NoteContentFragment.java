@@ -68,7 +68,6 @@ public class NoteContentFragment extends Fragment {
 
         if (!isNewNote) {
             note = sharedViewModel.getNote(position);
-            Log.d("EEE", note.getNameNote());
             nameNote = note.getNameNote();
             contentNote = note.getContentNote();
             editTextNameNote.setText(nameNote);
@@ -79,14 +78,15 @@ public class NoteContentFragment extends Fragment {
         editTextContentNote.addTextChangedListener(textWatcherContent);
 
 
-        if (isNewNote) {
-            //  editTextNameNote.requestFocus();
-            //   showKeyboard(editTextNameNote);
-        } else {
-            //  editTextContentNote.requestFocus();
-            //  showKeyboard(editTextContentNote);
-        }
-        showKeyboard();
+//        if (isNewNote) {
+//            //  editTextNameNote.requestFocus();
+//            //   showKeyboard(editTextNameNote);
+//        } else {
+//            //  editTextContentNote.requestFocus();
+//            //  showKeyboard(editTextContentNote);
+//        }
+        // showKeyboard();
+        //  editTextNameNote.requestFocus();
 
 
 
@@ -96,6 +96,7 @@ public class NoteContentFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        showKeyboard(view);
 //        Navigation.findNavController(view).
 //                addOnDestinationChangedListener(v);
 
@@ -104,9 +105,22 @@ public class NoteContentFragment extends Fragment {
 //    private NavController.OnDestinationChangedListener v = new NavController.OnDestinationChangedListener() {
 //        @Override
 //        public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+//            if(destination.getId() == R.id.nav_notes){
+//                Log.d("EEE", "onDestinationChanged to nav_notes");
+//                if (!isDeletedNote) {
+//                    save();
+//                }
 //
-//            Navigation.findNavController(Objects.requireNonNull(getView())).removeOnDestinationChangedListener(v);
+//                sharedViewModel = null;
+//                note = null;
+//
+//                Navigation.findNavController(Objects.requireNonNull(getView())).removeOnDestinationChangedListener(v);
+//
+//
+//            }
+//
 //        }
+//
 //    };
 
     private DialogInterface.OnClickListener clickListenerPositiveForAlert = new DialogInterface.OnClickListener() {
@@ -136,7 +150,7 @@ public class NoteContentFragment extends Fragment {
         @Override
         public void onClick(View v) {
             Navigation.findNavController(Objects.requireNonNull(getView())).
-                    navigate(R.id.action_fragment_note_to_nav_notes);
+                    popBackStack();
         }
     };
 
@@ -183,6 +197,7 @@ public class NoteContentFragment extends Fragment {
         } else {
             note.setNameNote(nameNote);
             note.setContentNote(contentNote);
+
         }
     }
 
@@ -193,17 +208,15 @@ public class NoteContentFragment extends Fragment {
                 getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         inputMethodManager.
-                hideSoftInputFromWindow(getView().getWindowToken(), 0);
-
-
+                hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
 
     }
 
-    private void showKeyboard() {
+    private void showKeyboard(View view) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.
-                toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        inputMethodManager.showSoftInput(view, 0);
+        //  toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     private void showAlertDelete() {
@@ -222,26 +235,27 @@ public class NoteContentFragment extends Fragment {
         }
         isDeletedNote = true;
         Navigation.findNavController(
-                Objects.requireNonNull(getView())).navigate(R.id.action_fragment_note_to_nav_notes);
+                Objects.requireNonNull(getView())).popBackStack();
     }
 
 
     @Override
     public void onPause() {
+        Log.d("EEE", "onPause");
         super.onPause();
         hideKeyboard();
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-
-
+        Log.d("EEE", "onDestroy");
         if (!isDeletedNote) {
             save();
         }
-
+        sharedViewModel.setIsUpdateList(true);
         sharedViewModel = null;
         note = null;
+        super.onDestroy();
+
     }
 }

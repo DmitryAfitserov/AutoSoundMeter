@@ -12,37 +12,55 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.fragment.app.ListFragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import com.example.soundlevelmeter.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class NotesFragment extends ListFragment implements AbsListView.OnScrollListener {
 
     private FloatingActionButton fab;
+    private SharedViewModel sharedViewModel;
+    private AdapterForListNotes adapter;
+
 
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        SharedViewModel sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
+        sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
         Objects.requireNonNull(getActivity()).getLifecycle().addObserver(sharedViewModel);
-        ArrayList<Note> list;
+        final ArrayList<Note> list;
 
         list = sharedViewModel.getList();
-//        Log.d("EEE", "sharedViewModel.getList();   " + list.size());
-        if (getListAdapter() == null) {
-            AdapterForListNotes adapter =
-                    new AdapterForListNotes(Objects.requireNonNull(getContext()),
+        adapter = new AdapterForListNotes(Objects.requireNonNull(getContext()),
                             R.layout.item_list_fragment, list);
-            setListAdapter(adapter);
-        }
+        setListAdapter(adapter);
+
+
+        sharedViewModel.getListMutableLiveData().observe(getActivity(), observer);
 
     }
+
+    private Observer<Boolean> observer = new Observer<Boolean>() {
+        @Override
+        public void onChanged(Boolean isUpdate) {
+            if (isUpdate) {
+                adapter.notifyDataSetChanged();
+                sharedViewModel.setIsUpdateList(false);
+            }
+
+            Log.d("EEE", "observe(this, new Observer<List<Note>>() note = ");
+        }
+    };
 
 
     @Override
@@ -57,7 +75,6 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
             }
         });
 
-
         return view;
     }
 
@@ -70,11 +87,19 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
     }
 
 
+
+    @Override
+    public void onStop() {
+        sharedViewModel.getListMutableLiveData().removeObserver(observer);
+        sharedViewModel = null;
+        super.onStop();
+    }
+
+
     @Override
     public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
-        Log.d("EEE", "touch");
-        changeFragment(position);
 
+        changeFragment(position);
     }
 
     private void changeFragment() {

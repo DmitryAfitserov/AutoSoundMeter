@@ -33,11 +33,6 @@
         android:label="@string/title_note"
         tools:layout="@layout/fragment_content_note">
 
-        <action
-            android:id="@+id/action_fragment_note_to_nav_notes"
-            app:destination="@id/nav_notes"
-            app:popUpTo="@+id/nav_sound_meter"
-            app:popUpToInclusive="false" />
 
     </fragment>
 

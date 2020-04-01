@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.preference.PreferenceManager;
 
@@ -17,12 +18,14 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SharedViewModel extends AndroidViewModel implements LifecycleObserver {
 
 
     private SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplication());
     private ArrayList<Note> list;
+    private MutableLiveData<Boolean> isUpdateList;
 
     public SharedViewModel(@NonNull Application application) {
         super(application);
@@ -43,8 +46,14 @@ public class SharedViewModel extends AndroidViewModel implements LifecycleObserv
         } else {
             list = new ArrayList<>();
         }
+        isUpdateList = new MutableLiveData<>();
+        isUpdateList.setValue(false);
 
 
+    }
+
+    MutableLiveData<Boolean> getListMutableLiveData() {
+        return isUpdateList;
     }
 
     ArrayList<Note> getList() {
@@ -73,8 +82,13 @@ public class SharedViewModel extends AndroidViewModel implements LifecycleObserv
 
     }
 
+    void setIsUpdateList(boolean isUpdateList) {
+        this.isUpdateList.setValue(isUpdateList);
+    }
+
     void addNote(Note note) {
         list.add(note);
+        Log.d("EEE", "listMutableLiveData.postValue(list);");
     }
 
 
