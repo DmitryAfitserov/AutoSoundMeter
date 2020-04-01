@@ -139,10 +139,10 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
 
                     }
                     if (!Singleton.getInstance().isStatusSpeedometer()) {
-                        Toast.makeText(getContext(), "Not speed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), R.string.not_run_speed, Toast.LENGTH_LONG).show();
                     }
                     if (!Singleton.getInstance().isStatusSoundMeter()) {
-                        Toast.makeText(getContext(), "Not sound", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), R.string.not_run_sound_meter, Toast.LENGTH_LONG).show();
                     }
 
                 } else {
@@ -182,14 +182,12 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         };
 
 
-//        if (checkPermissionSoundMeter()) {
-//            bindService();
-//            Singleton.getInstance().setStatusSoundMeter(true);
-//        }
+
         return root;
     }
 
     private void startSoundMeter() {
+        Singleton.getInstance().setStatusSoundMeter(true);
         binderService.startSoundMeter();
     }
 
@@ -357,9 +355,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
             } else {
                 Toast.makeText(getContext(), R.string.not_permission, Toast.LENGTH_SHORT).show();
             }
-            if (!Singleton.getInstance().isStatusSoundMeter()) {
-                // bindService();
-            }
+
         }
 
         if (LOCATION_REQUEST_CODE == requestCode) {

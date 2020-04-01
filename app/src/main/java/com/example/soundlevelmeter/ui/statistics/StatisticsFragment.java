@@ -54,6 +54,12 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
     private Button btnPlayStop;
     private MyService.LocalBinder binderService;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        bindService();
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -92,13 +98,13 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
             btnPlayStop.setText(R.string.button_pause);
         }
 
-        createService();
+
         upDateGraph();
 
         return root;
     }
 
-    private void createService() {
+    private void bindService() {
         Intent intent = new Intent(getContext(), MyService.class);
         Objects.requireNonNull(getActivity()).bindService(intent, serviceConnection, BIND_AUTO_CREATE);
     }
@@ -269,7 +275,6 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
                 final Runnable runnableUpdateUI = new Runnable() {
                     @Override
                     public void run() {
-                        Log.d("EEE", "  = updateUI = ");
                         upDateGraph();
                     }
                 };

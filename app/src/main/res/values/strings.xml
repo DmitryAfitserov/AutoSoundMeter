@@ -37,6 +37,8 @@
 
 
     <string name="dialog_message_choose_save">Выберите сохранение:</string>
+    <string name="not_run_speed">Не запущен спидометер</string>
+    <string name="not_run_sound_meter">Не запущен шумомер</string>
 
 
     <string name="mph">mph</string>
