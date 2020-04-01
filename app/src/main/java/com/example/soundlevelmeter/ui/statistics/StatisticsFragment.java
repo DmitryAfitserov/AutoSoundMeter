@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -51,6 +52,7 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
     private boolean isUseMph;
     private Handler handler = new Handler();
     private Button btnPlayStop;
+    private MyService.LocalBinder binderService;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -146,7 +148,10 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
                 }
                 seriesSound = new LineGraphSeries<>(dataPoints);
 
+                seriesSound.setColor(getResources().getColor(R.color.blue_new));
+                seriesSound.setThickness(6);
                 graph.addSeries(seriesSound);
+
             } catch (IllegalArgumentException e) {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -164,14 +169,17 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
                 double y = list.get(i).getSpeed();
                 if (isUseMph) {
                     y = y * coef;
-                    Log.d("EEE", "speed " + list.get(i).getSpeed() + " newspeed " + y);
                 }
                 dataPoints[i] = new DataPoint(x, y);
-                //   Log.d("EEE", "x=" + x + "     y=" + y);
             }
             seriesSpeed = new LineGraphSeries<>(dataPoints);
 
+            seriesSpeed.setColor(getResources().getColor(R.color.broun));
+            seriesSpeed.setThickness(6);
+
+
             graph.addSeries(seriesSpeed);
+
 
         } catch (IllegalArgumentException e) {
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
@@ -208,13 +216,14 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.d("EEE", " onServiceConnected with Statistics OK  ");
-            MyService.LocalBinder binderService = (MyService.LocalBinder) service;
+            binderService = (MyService.LocalBinder) service;
             binderService.setCallBackForStatistics(StatisticsFragment.this);
 
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+
             Log.d("EEE", " onServiceDisconnected with Statistics  Disconnected ");
 
         }
@@ -412,5 +421,13 @@ public class StatisticsFragment extends Fragment implements View.OnClickListener
             }
         };
         thread.start();
+    }
+
+    @Override
+    public void onStop() {
+        binderService.deleteCallBackForStatistics();
+        binderService = null;
+        getActivity().unbindService(serviceConnection);
+        super.onStop();
     }
 }

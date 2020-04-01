@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class MyService extends LifecycleService implements LifecycleObserver {
+public class MyService extends LifecycleService {
 
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
@@ -218,13 +218,18 @@ public class MyService extends LifecycleService implements LifecycleObserver {
             final Runnable runnableForSoundMeter = new Runnable() {
                 @Override
                 public void run() {
-                    callBack.callBackFromSpeedometer(speed);
+                    if (callBack != null) {
+                        callBack.callBackFromSpeedometer(speed);
+                    }
+
                 }
             };
             final Runnable runnableForStatistics = new Runnable() {
                 @Override
                 public void run() {
-                    callBackForStaticsits.callBackForUpDataGraph();
+                    if (callBackForStaticsits != null) {
+                        callBackForStaticsits.callBackForUpDataGraph();
+                    }
                 }
             };
 
@@ -296,7 +301,10 @@ public class MyService extends LifecycleService implements LifecycleObserver {
         if (fusedLocationClient != null) {
             fusedLocationClient.removeLocationUpdates(locationCallback);
         }
-        callBack.callBackFromSpeedometer(0);
+        if (callBack != null) {
+            callBack.callBackFromSpeedometer(0);
+        }
+
     }
 
 
@@ -310,25 +318,35 @@ public class MyService extends LifecycleService implements LifecycleObserver {
         Singleton.getInstance().destroy();
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    public void onDestroyActivity() {
-        Log.d("EEE", "onDestroyActivity");
-        this.stopSelf();
-    }
+
 
 
     public class LocalBinder extends Binder {
 
-        public MyService getService() {
-            return MyService.this;
-        }
+
 
         public void setCallBackFromService(CallBackFromService callBack) {
             MyService.this.callBack = callBack;
         }
 
+        public void deleteCallBackFromService() {
+            MyService.this.callBack = null;
+        }
+
         public void setCallBackForStatistics(CallBackForStaticsits callBackForStaticsits) {
             MyService.this.callBackForStaticsits = callBackForStaticsits;
+        }
+
+        public void deleteCallBackForStatistics() {
+            MyService.this.callBackForStaticsits = null;
+        }
+
+        public void startSoundMeter() {
+            MyService.this.startSoundMeter();
+        }
+
+        public void startSpeedometer() {
+            MyService.this.startSpeedometer();
         }
 
     }

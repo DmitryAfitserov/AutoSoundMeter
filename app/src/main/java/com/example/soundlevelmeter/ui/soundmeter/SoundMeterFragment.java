@@ -52,10 +52,11 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
     private Intent intent;
     private TextView textViewSpeedometer;
     private TextView textViewSoundMeter;
-    private MyService myService;
+    //   private MyService myService;
     private boolean isAutoRunSpeedometer;
     private boolean isUseMph;
     private final double coef = 0.621d;
+    private MyService.LocalBinder binderService;
 
 
 
@@ -151,23 +152,22 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 Log.d("EEE", " onServiceConnected OK  ");
-                MyService.LocalBinder binderService = (MyService.LocalBinder) service;
+                binderService = (MyService.LocalBinder) service;
                 binderService.setCallBackFromService(SoundMeterFragment.this);
-                myService = ((MyService.LocalBinder) service).getService();
-                myService.startSoundMeter();
+                binderService.startSoundMeter();
                 Singleton.getInstance().setStatusService(true);
                 if (isAutoRunSpeedometer && !Singleton.getInstance().isStatusSpeedometer()) {
                     clickBtnSpeedometer();
                 }
 
-                Objects.requireNonNull(getActivity()).getLifecycle().addObserver(myService);
+
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
                 Log.d("EEE", " onServiceDisconnected  Disconnected ");
                 Singleton.getInstance().setStatusService(false);
-                myService = null;
+                binderService = null;
 
             }
         };
@@ -223,8 +223,8 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         if (!Singleton.getInstance().isStatusSpeedometer()) {
 
             if (checkPermission()) {
-                if (myService != null) {
-                    myService.startSpeedometer();
+                if (binderService != null) {
+                    binderService.startSpeedometer();
                     Singleton.getInstance().setStatusSpeedometer(true);
                     btnSpeedometer.setText(R.string.button_stop_speedometer);
                 }
@@ -243,7 +243,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         Log.d("EEE", " createService  ");
         intent = new Intent(getContext(), MyService.class);
         Objects.requireNonNull(getActivity()).startService(intent);
-        getActivity().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+        getActivity().bindService(new Intent(getContext(), MyService.class), serviceConnection, BIND_AUTO_CREATE);
     }
 
     @Override
@@ -364,5 +364,12 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         Singleton.getInstance().setUseMPH(isUseMph);
     }
 
+    @Override
+    public void onStop() {
 
+        binderService.deleteCallBackFromService();
+        binderService = null;
+        getActivity().unbindService(serviceConnection);
+        super.onStop();
+    }
 }
