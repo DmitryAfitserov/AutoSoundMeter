@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,8 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
 import com.example.soundlevelmeter.R;
@@ -39,7 +35,7 @@ public class NoteContentFragment extends Fragment {
     private SharedViewModel sharedViewModel;
     private Note note;
     private boolean isDeletedNote = false;
-    EditText editTextNameNote;
+    private EditText editTextNameNote;
 
 
 

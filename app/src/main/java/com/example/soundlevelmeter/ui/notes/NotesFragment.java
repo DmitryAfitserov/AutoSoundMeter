@@ -1,13 +1,10 @@
 package com.example.soundlevelmeter.ui.notes;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
@@ -21,10 +18,7 @@ import androidx.navigation.Navigation;
 import com.example.soundlevelmeter.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class NotesFragment extends ListFragment implements AbsListView.OnScrollListener {

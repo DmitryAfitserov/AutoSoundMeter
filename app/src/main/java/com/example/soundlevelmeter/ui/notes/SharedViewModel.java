@@ -18,7 +18,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class SharedViewModel extends AndroidViewModel implements LifecycleObserver {
 
