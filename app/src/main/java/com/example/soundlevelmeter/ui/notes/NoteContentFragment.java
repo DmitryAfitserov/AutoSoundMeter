@@ -1,8 +1,10 @@
 package com.example.soundlevelmeter.ui.notes;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -37,6 +39,7 @@ public class NoteContentFragment extends Fragment {
     private SharedViewModel sharedViewModel;
     private Note note;
     private boolean isDeletedNote = false;
+    EditText editTextNameNote;
 
 
 
@@ -45,7 +48,7 @@ public class NoteContentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_content_note, container, false);
 
-        EditText editTextNameNote = view.findViewById(R.id.edit_text_name_note);
+        editTextNameNote = view.findViewById(R.id.edit_text_name_note);
         EditText editTextContentNote = view.findViewById(R.id.edit_text_content_note);
         Button buttonSaveNote = view.findViewById(R.id.button_save_note);
         FloatingActionButton buttonDelete = view.findViewById(R.id.button_delete_note);
@@ -96,7 +99,8 @@ public class NoteContentFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        showKeyboard(view);
+        //   editTextNameNote.requestFocus();
+
 //        Navigation.findNavController(view).
 //                addOnDestinationChangedListener(v);
 
@@ -204,19 +208,30 @@ public class NoteContentFragment extends Fragment {
 
     private void hideKeyboard() {
 
-        InputMethodManager inputMethodManager = (InputMethodManager)
-                getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//        InputMethodManager inputManager = (InputMethodManager) getView()
+//                .getContext()
+//                .getSystemService(Context.INPUT_METHOD_SERVICE);
+//
+//        IBinder binder = getView().getWindowToken();
+//        inputManager.hideSoftInputFromWindow(binder,
+//                InputMethodManager.HIDE_NOT_ALWAYS);
 
-        inputMethodManager.
-                hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(this.getView().getRootView().getWindowToken(), 0);
+
+
 
     }
 
-    private void showKeyboard(View view) {
+    private void showKeyboard() {
+
         InputMethodManager inputMethodManager =
                 (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.showSoftInput(view, 0);
-        //  toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        inputMethodManager. //showSoftInput(view, 0);
+                toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+
     }
 
     private void showAlertDelete() {
@@ -241,14 +256,22 @@ public class NoteContentFragment extends Fragment {
 
     @Override
     public void onPause() {
-        Log.d("EEE", "onPause");
         super.onPause();
         hideKeyboard();
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (sharedViewModel.isEmptyList()) {
+            Log.d("EEE", "editTextNameNote.isFocused()");
+            editTextNameNote.requestFocus();
+        }
+        showKeyboard();
+    }
+
+    @Override
     public void onDestroy() {
-        Log.d("EEE", "onDestroy");
         if (!isDeletedNote) {
             save();
         }

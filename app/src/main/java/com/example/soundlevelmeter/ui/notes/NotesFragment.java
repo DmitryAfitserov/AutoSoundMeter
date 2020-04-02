@@ -1,10 +1,13 @@
 package com.example.soundlevelmeter.ui.notes;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
@@ -58,7 +61,6 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
                 sharedViewModel.setIsUpdateList(false);
             }
 
-            Log.d("EEE", "observe(this, new Observer<List<Note>>() note = ");
         }
     };
 
@@ -84,6 +86,7 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
         super.onViewCreated(view, savedInstanceState);
         getListView().setOnScrollListener(this);
 
+
     }
 
 
@@ -95,6 +98,24 @@ public class NotesFragment extends ListFragment implements AbsListView.OnScrollL
         super.onStop();
     }
 
+    @Override
+    public void onStart() {
+        if (sharedViewModel == null) {
+            sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
+            sharedViewModel.getListMutableLiveData().observe(getActivity(), observer);
+        }
+
+//        InputMethodManager inputManager = (InputMethodManager) getView()
+//                .getContext()
+//                .getSystemService(Context.INPUT_METHOD_SERVICE);
+//
+//        IBinder binder = getView().getWindowToken();
+//        inputManager.hideSoftInputFromWindow(binder,
+//                InputMethodManager.HIDE_NOT_ALWAYS);
+        //getActivity().getWindow()
+
+        super.onStart();
+    }
 
     @Override
     public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {

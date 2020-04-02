@@ -60,6 +60,10 @@ public class SharedViewModel extends AndroidViewModel implements LifecycleObserv
         return list;
     }
 
+    boolean isEmptyList() {
+        return list.isEmpty();
+    }
+
     Note getNote(int position) {
         if (position < list.size()) {
             return list.get(position);
