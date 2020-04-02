@@ -43,7 +43,7 @@ public class MyService extends LifecycleService {
     public CallBackFromService callBack;
     public CallBackForStaticsits callBackForStaticsits;
     private double mEMA = 0.0d;
-    private final double EMA_FILTER = 0.6d;
+    private final double EMA_FILTER = 0.7d;
     private int sound;
     public boolean isStopThread = false;
     private final IBinder binder = new LocalBinder();
@@ -159,8 +159,13 @@ public class MyService extends LifecycleService {
     public int getSoundDb() {
         double amp = getAmplitude();
         double ampEMA = getAmplitudeEMA(amp);
-        //  Log.d("EEE", "soundDb() : " + "  amp -  " + amp );
-        int result = (int) Math.round(20 * Math.log10(amp / 5d));
+        ampEMA += 40;
+
+        double temp = (Math.log(ampEMA / 2) / Math.log(40) - 0.8d);
+
+
+        int result = (int) Math.round(50d * temp);
+        Log.d("EEE", "result = " + result + " ampEMA " + ampEMA);
         if (result < 0) {
             return 0;
         }
@@ -181,7 +186,10 @@ public class MyService extends LifecycleService {
     private double getAmplitudeEMA(double amp) {
 
         mEMA = EMA_FILTER * amp + (1.0 - EMA_FILTER) * mEMA;
-
+        if (mEMA <= 230) {
+            mEMA = mEMA + mEMA * 1.0d * (230d - mEMA) / 230d;
+        }
+        Log.d("EEE", "mEMA = " + mEMA);
         return mEMA;
     }
 
