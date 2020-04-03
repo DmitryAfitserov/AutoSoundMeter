@@ -165,7 +165,6 @@ public class MyService extends LifecycleService {
 
 
         int result = (int) Math.round(50d * temp);
-        Log.d("EEE", "result = " + result + " ampEMA " + ampEMA);
         if (result < 0) {
             return 0;
         }
@@ -189,7 +188,6 @@ public class MyService extends LifecycleService {
         if (mEMA <= 230) {
             mEMA = mEMA + mEMA * 1.0d * (230d - mEMA) / 230d;
         }
-        Log.d("EEE", "mEMA = " + mEMA);
         return mEMA;
     }
 
