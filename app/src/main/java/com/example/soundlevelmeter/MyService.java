@@ -1,17 +1,12 @@
 package com.example.soundlevelmeter;
 
 
-import android.Manifest;
 import android.app.Service;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaRecorder;
 import android.os.Binder;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -454,7 +449,8 @@ public class MyService extends LifecycleService {
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 if (locationResult != null) {
-                    speed = Math.round(locationResult.getLastLocation().getSpeed());
+                    speed = Math.round(locationResult.getLastLocation().getSpeed() * 3.6f);
+                    Log.d("EEE", " m/s  = " + locationResult.getLastLocation().getSpeed() + " speed = " + speed);
                 }
                 if (Singleton.getInstance().isStatusWriteTrack()) {
                     writeTrack();
