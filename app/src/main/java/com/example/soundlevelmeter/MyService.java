@@ -10,14 +10,9 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.OnLifecycleEvent;
 
 import com.example.soundlevelmeter.Interface.CallBackForStaticsits;
 import com.example.soundlevelmeter.Interface.CallBackFromService;
@@ -30,8 +25,6 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
-import java.util.List;
-
 
 public class MyService extends LifecycleService {
 
@@ -42,6 +35,7 @@ public class MyService extends LifecycleService {
     private Thread thread;
     public CallBackFromService callBack;
     public CallBackForStaticsits callBackForStaticsits;
+    private boolean isFirstValueSpeed = true;
     private double mEMA = 0.0d;
     private final double EMA_FILTER = 0.7d;
     private int sound;
@@ -75,10 +69,9 @@ public class MyService extends LifecycleService {
                     if (!Singleton.getInstance().getList().isEmpty()) {
 
                         timeCorrector = System.currentTimeMillis() - Singleton.getInstance().getLastTime();
-                        Log.d("EEE", "timecorrector = " + timeCorrector);
                     } else {
                         timeCorrector = 0;
-                        Log.d("EEE", "timecorrector = null = " + timeCorrector);
+
                     }
 
                 }
@@ -87,7 +80,6 @@ public class MyService extends LifecycleService {
 
         try {
             if (mRecorder == null) {
-                Log.d("EEE", "create mRecorder ");
                 mRecorder = new MediaRecorder();
                 mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                 mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -163,7 +155,6 @@ public class MyService extends LifecycleService {
 
         double temp = (Math.log(ampEMA / 2) / Math.log(40) - 0.8d);
 
-
         int result = (int) Math.round(50d * temp);
         if (result < 0) {
             return 0;
@@ -198,8 +189,8 @@ public class MyService extends LifecycleService {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
             locationRequest = LocationRequest.create();
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            locationRequest.setInterval(500); // 0,5 seconds
-            locationRequest.setFastestInterval(250); // 0,025 seconds
+            locationRequest.setInterval(1000);
+            locationRequest.setFastestInterval(500);
             startLocationProvider();
         }
 
@@ -259,6 +250,10 @@ public class MyService extends LifecycleService {
                         float speedInFloat = distanceBetween / (float) intervalTime * 3600f;
 
                         speed = Math.round(speedInFloat);
+                        if (isFirstValueSpeed) {
+                            isFirstValueSpeed = false;
+                            return;
+                        }
 
                         if (Singleton.getInstance().isStatusWriteTrack()) {
                             writeTrack();
