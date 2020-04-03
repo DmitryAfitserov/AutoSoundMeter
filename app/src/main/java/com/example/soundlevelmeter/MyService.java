@@ -366,74 +366,115 @@ public class MyService extends LifecycleService {
 
         locationCallback = new LocationCallback() {
 
-            private long lastTime;
-            private long currentTime;
-            private Location lastLocation;
-            private Location currentLocation;
-            private long intervalTime;
-            boolean isFirstTime = true;
-            final Handler handler = new Handler();
+            //   private long lastTime;
+            //   private long currentTime;
+            //   private Location lastLocation;
+            //   private Location currentLocation;
+            //   private long intervalTime;
+            //   boolean isFirstTime = true;
+            //   final Handler handler = new Handler();
             int speed;
             LocationResult locationResult;
 
-            final Runnable runnableForSoundMeter = new Runnable() {
-                @Override
-                public void run() {
-                    if (callBack != null) {
-                        callBack.callBackFromSpeedometer(speed);
-                    }
+//            final Runnable runnableForSoundMeter = new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (callBack != null) {
+//                        callBack.callBackFromSpeedometer(speed);
+//                    }
+//
+//                }
+//            };
+//            final Runnable runnableForStatistics = new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (callBackForStaticsits != null) {
+//                        callBackForStaticsits.callBackForUpDataGraph();
+//                    }
+//                }
+//            };
+//
+//            private Thread threadLocation = new Thread() {
+//
+//                @Override
+//                public void run() {
+//
+//                    currentLocation = locationResult.getLastLocation();
+//                    if (lastLocation == null) {
+//                        lastLocation = currentLocation;
+//                        lastTime = System.currentTimeMillis();
+//
+//                    } else {
+//                        float distanceBetween = currentLocation.distanceTo(lastLocation);
+//
+//                        currentTime = System.currentTimeMillis();
+//                        intervalTime = currentTime - lastTime;
+//
+//                        float speedInFloat = distanceBetween / (float) intervalTime * 3600f;
+//
+//                        speed = Math.round(speedInFloat);
+//                        if (isFirstValueSpeed) {
+//                            isFirstValueSpeed = false;
+//                            return;
+//                        }
+//                        Log.d("EEE", "My speed = " + speed + " getSpeed = " + currentLocation.getSpeed());
+//
+//                        if (Singleton.getInstance().isStatusWriteTrack()) {
+//                            writeTrack();
+//                        }
+//
+//                        if (callBack != null && !isFirstTime) {
+//                            handler.post(runnableForSoundMeter);
+//                        }
+//
+//                        lastTime = currentTime;
+//                        lastLocation = currentLocation;
+//                        isFirstTime = false;
+//
+//                    }
+//                }
+//            };
 
+
+//
+//            }
+//
+//            @Override
+//            public void onLocationResult(final LocationResult locationResult) {
+//                this.locationResult = locationResult;
+//                if (locationResult == null) {
+//                    return;
+//                }
+//                threadLocation.start();
+//
+//            }
+
+
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                if (locationResult != null) {
+                    speed = Math.round(locationResult.getLastLocation().getSpeed());
                 }
-            };
-            final Runnable runnableForStatistics = new Runnable() {
-                @Override
-                public void run() {
-                    if (callBackForStaticsits != null) {
-                        callBackForStaticsits.callBackForUpDataGraph();
-                    }
+                if (Singleton.getInstance().isStatusWriteTrack()) {
+                    writeTrack();
                 }
-            };
-
-            private Thread threadLocation = new Thread() {
-
-                @Override
-                public void run() {
-
-                    currentLocation = locationResult.getLastLocation();
-                    if (lastLocation == null) {
-                        lastLocation = currentLocation;
-                        lastTime = System.currentTimeMillis();
-
-                    } else {
-                        float distanceBetween = currentLocation.distanceTo(lastLocation);
-
-                        currentTime = System.currentTimeMillis();
-                        intervalTime = currentTime - lastTime;
-
-                        float speedInFloat = distanceBetween / (float) intervalTime * 3600f;
-
-                        speed = Math.round(speedInFloat);
-                        if (isFirstValueSpeed) {
-                            isFirstValueSpeed = false;
-                            return;
-                        }
-                        Log.d("EEE", "My speed = " + speed + " getSpeed = " + currentLocation.getSpeed());
-
-                        if (Singleton.getInstance().isStatusWriteTrack()) {
-                            writeTrack();
-                        }
-
-                        if (callBack != null && !isFirstTime) {
-                            handler.post(runnableForSoundMeter);
-                        }
-
-                        lastTime = currentTime;
-                        lastLocation = currentLocation;
-                        isFirstTime = false;
-
-                    }
+                if (callBack != null) {
+                    callBackForSoundMeter();
                 }
-            };
+            }
+
+            private void callBackForStatistics() {
+                if (callBackForStaticsits != null) {
+                    callBackForStaticsits.callBackForUpDataGraph();
+                }
+            }
+
+            private void callBackForSoundMeter() {
+                if (callBack != null) {
+                    callBack.callBackFromSpeedometer(speed);
+                }
+            }
 
             private void writeTrack() {
                 DataEvent event = new DataEvent();
@@ -445,20 +486,13 @@ public class MyService extends LifecycleService {
 
                 Singleton.getInstance().addDataToList(event);
                 if (callBackForStaticsits != null) {
-                    handler.post(runnableForStatistics);
+                    //  handler.post(runnableForStatistics);
+                    callBackForStatistics();
                 }
 
             }
 
-            @Override
-            public void onLocationResult(final LocationResult locationResult) {
-                this.locationResult = locationResult;
-                if (locationResult == null) {
-                    return;
-                }
-                threadLocation.start();
 
-            }
         };
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
