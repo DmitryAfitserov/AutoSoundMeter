@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -191,6 +193,7 @@ public class SoundMeterFragment extends Fragment implements CallBackFromService 
         binderService.startSoundMeter();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void startSpedometer() {
         binderService.startSpeedometer();
     }
