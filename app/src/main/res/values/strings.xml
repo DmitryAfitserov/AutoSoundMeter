@@ -37,7 +37,7 @@
 
 
     <string name="dialog_message_choose_save">Выберите сохранение:</string>
-    <string name="not_run_speed">Не запущен спидометер</string>
+    <string name="not_run_speed">Не запущен спидометр</string>
     <string name="not_run_sound_meter">Не запущен шумомер</string>
 
 
@@ -71,7 +71,7 @@
     <string name="text_for_not_work_speedometer">Спидометр не запущен</string>
     <string name="text_for_not_work_soundmeter">Шумомер не запущен</string>
     <string name="button_start_speedometer">Запустить спидометр</string>
-    <string name="button_stop_speedometer">Спидометер запущен</string>
+    <string name="button_stop_speedometer">Спидометр запущен</string>
     <string name="sound">Шум</string>
     <string name="speed">Скорость</string>
     <string name="button_save">Сохранить</string>
