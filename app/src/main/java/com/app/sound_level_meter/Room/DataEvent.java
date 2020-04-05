@@ -1,4 +1,4 @@
-package com.example.soundlevelmeter.Room;
+package com.app.sound_level_meter.Room;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

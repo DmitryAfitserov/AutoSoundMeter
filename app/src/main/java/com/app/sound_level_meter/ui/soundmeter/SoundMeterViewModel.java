@@ -1,4 +1,4 @@
-package com.example.soundlevelmeter.ui.soundmeter;
+package com.app.sound_level_meter.ui.soundmeter;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

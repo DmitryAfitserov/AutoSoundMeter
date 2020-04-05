@@ -1,4 +1,4 @@
-package com.example.soundlevelmeter.Interface;
+package com.app.sound_level_meter.Interface;
 
 
 public interface CallBackFromService {

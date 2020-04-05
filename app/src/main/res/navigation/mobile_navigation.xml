@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_sound_meter"
-        android:name="com.example.soundlevelmeter.ui.soundmeter.SoundMeterFragment"
+        android:name="com.app.sound_level_meter.ui.soundmeter.SoundMeterFragment"
         android:label="@string/menu_sound_meter"
         tools:layout="@layout/fragment_sound_meter" />
 
     <fragment
         android:id="@+id/nav_statistics"
-        android:name="com.example.soundlevelmeter.ui.statistics.StatisticsFragment"
+        android:name="com.app.sound_level_meter.ui.statistics.StatisticsFragment"
         android:label="@string/menu_statistics"
         tools:layout="@layout/fragment_statistics" />
 
     <fragment
         android:id="@+id/nav_notes"
-        android:name="com.example.soundlevelmeter.ui.notes.NotesFragment"
+        android:name="com.app.sound_level_meter.ui.notes.NotesFragment"
         android:label="@string/menu_notes"
         tools:layout="@layout/fragment_notes">
         <action
@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/fragment_note"
-        android:name="com.example.soundlevelmeter.ui.notes.NoteContentFragment"
+        android:name="com.app.sound_level_meter.ui.notes.NoteContentFragment"
         android:label="@string/title_note"
         tools:layout="@layout/fragment_content_note">
 
@@ -38,7 +38,7 @@
 
     <fragment
         android:id="@+id/fragment_settings"
-        android:name="com.example.soundlevelmeter.SettingsFragment"
+        android:name="com.app.sound_level_meter.SettingsFragment"
         android:label="@string/action_settings" />
     <action
         android:id="@+id/open_fragment_settings"

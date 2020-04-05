@@ -1,13 +1,12 @@
-package com.example.soundlevelmeter.Singleton;
+package com.app.sound_level_meter.Singleton;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
 
-import com.example.soundlevelmeter.Room.DataEvent;
-import com.example.soundlevelmeter.Room.MyRoomDataBase;
+import com.app.sound_level_meter.Room.DataEvent;
+import com.app.sound_level_meter.Room.MyRoomDataBase;
 
 import java.util.ArrayList;
 import java.util.List;

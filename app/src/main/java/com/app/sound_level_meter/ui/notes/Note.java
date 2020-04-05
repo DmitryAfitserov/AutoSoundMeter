@@ -1,4 +1,4 @@
-package com.example.soundlevelmeter.ui.notes;
+package com.app.sound_level_meter.ui.notes;
 
 
 class Note {

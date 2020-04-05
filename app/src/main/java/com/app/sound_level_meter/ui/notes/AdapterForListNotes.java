@@ -1,4 +1,4 @@
-package com.example.soundlevelmeter.ui.notes;
+package com.app.sound_level_meter.ui.notes;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import com.example.soundlevelmeter.R;
+import com.app.sound_level_meter.R;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.soundlevelmeter.ui.soundmeter;
+package com.app.sound_level_meter.ui.soundmeter;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -30,11 +30,11 @@ import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
 
-import com.example.soundlevelmeter.Interface.CallBackFromService;
-import com.example.soundlevelmeter.MyService;
-import com.example.soundlevelmeter.R;
-import com.example.soundlevelmeter.Singleton.Singleton;
-import com.example.soundlevelmeter.ui.SaveTrackDialog;
+import com.app.sound_level_meter.Interface.CallBackFromService;
+import com.app.sound_level_meter.MyService;
+import com.app.sound_level_meter.R;
+import com.app.sound_level_meter.Singleton.Singleton;
+import com.app.sound_level_meter.ui.SaveTrackDialog;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;

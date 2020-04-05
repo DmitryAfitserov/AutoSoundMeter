@@ -1,4 +1,4 @@
-package com.example.soundlevelmeter;
+package com.app.sound_level_meter;
 
 
 import android.app.Service;
@@ -16,10 +16,10 @@ import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import com.example.soundlevelmeter.Interface.CallBackForStaticsits;
-import com.example.soundlevelmeter.Interface.CallBackFromService;
-import com.example.soundlevelmeter.Room.DataEvent;
-import com.example.soundlevelmeter.Singleton.Singleton;
+import com.app.sound_level_meter.Interface.CallBackForStaticsits;
+import com.app.sound_level_meter.Interface.CallBackFromService;
+import com.app.sound_level_meter.Room.DataEvent;
+import com.app.sound_level_meter.Singleton.Singleton;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;

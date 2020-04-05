@@ -1,4 +1,4 @@
-package com.example.soundlevelmeter.Room;
+package com.app.sound_level_meter.Room;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
