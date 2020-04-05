@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="164dp"
+    android:layout_height="158dp"
     android:background="@drawable/side_nav_bar"
     android:gravity="bottom|end"
     android:orientation="vertical"
@@ -13,8 +13,8 @@
     <ImageView
         android:id="@+id/imageView"
 
-        android:layout_width="231dp"
-        android:layout_height="154dp"
+        android:layout_width="225dp"
+        android:layout_height="150dp"
         android:contentDescription="@string/nav_header_desc"
 
 
