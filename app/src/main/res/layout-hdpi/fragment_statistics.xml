@@ -14,9 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:orientation="vertical"
-        android:paddingStart="8dp"
+        android:paddingStart="0dp"
         android:paddingTop="0dp"
-        android:paddingEnd="8dp"
+        android:paddingEnd="0dp"
         android:paddingBottom="0dp">
 
 
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="8dp"
             android:layout_toEndOf="@+id/textview_sound"
             android:checked="true"
             app:buttonTint="@color/broun" />
@@ -67,7 +67,7 @@
         <Button
             android:id="@+id/btn_open_save_track"
             style="@style/style_btn"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="44dp"
             android:layout_alignParentEnd="true"
             android:text="@string/button_open_save_track">
@@ -94,15 +94,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
         android:paddingBottom="0dp"
         android:paddingTop="4dp">
 
         <Button
             style="@style/style_btn"
             android:id="@+id/btn_play_stop"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="44dp"
             android:layout_alignParentStart="true"
             android:text="@string/button_play">
@@ -112,7 +112,7 @@
         <Button
             style="@style/style_btn"
             android:id="@+id/btn_clean"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="44dp"
             android:text="@string/button_clean"
             android:layout_centerHorizontal="true">
@@ -122,7 +122,7 @@
         <Button
             android:id="@+id/btn_save_track_in_statistics"
             style="@style/style_btn"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="44dp"
             android:text="@string/button_save"
             android:layout_alignParentEnd="true">
