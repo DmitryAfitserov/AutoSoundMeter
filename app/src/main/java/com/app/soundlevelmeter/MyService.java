@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -185,7 +184,7 @@ public class MyService extends LifecycleService {
         return mEMA;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     public void startSpeedometer() {
 
         if (fusedLocationClient == null) {
@@ -541,7 +540,7 @@ public class MyService extends LifecycleService {
             MyService.this.startSoundMeter();
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.M)
+
         public void startSpeedometer() {
             MyService.this.startSpeedometer();
         }
