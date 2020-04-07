@@ -62,6 +62,7 @@
     <string name="menu_sound_meter">Шумомер</string>
     <string name="double_click">Нажмите ещё раз для выхода</string>
     <string name="menu_statistics">Графики</string>
+    <string name="menu_about_app">О приложении</string>
     <string name="menu_notes">Заметки</string>
     <string name="title_note">Заметка</string>
     <string name="button_start_track">Начать запись</string>

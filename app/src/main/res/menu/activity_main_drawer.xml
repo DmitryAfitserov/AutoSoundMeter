@@ -17,6 +17,11 @@
             android:icon="@drawable/ic_notes_150"
             android:title="@string/menu_notes" />
 
+        <item
+            android:id="@+id/nav_about_app"
+            android:icon="@drawable/ic_notes_150"
+            android:title="@string/menu_about_app" />
+
     </group>
 
 
