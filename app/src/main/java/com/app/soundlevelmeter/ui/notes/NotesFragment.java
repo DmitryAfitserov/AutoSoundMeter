@@ -1,4 +1,4 @@
-package com.app.sound_level_meter.ui.notes;
+package com.app.soundlevelmeter.ui.notes;
 
 import android.os.Bundle;
 
@@ -16,7 +16,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-import com.app.sound_level_meter.R;
+import com.app.soundlevelmeter.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package com.app.sound_level_meter.ui;
+package com.app.soundlevelmeter.ui;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -16,11 +16,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.app.sound_level_meter.R;
-import com.app.sound_level_meter.Room.DataEvent;
-import com.app.sound_level_meter.Room.MyRoomDataBase;
-import com.app.sound_level_meter.Room.Save;
-import com.app.sound_level_meter.Singleton.Singleton;
+import com.app.soundlevelmeter.R;
+import com.app.soundlevelmeter.Room.DataEvent;
+import com.app.soundlevelmeter.Room.MyRoomDataBase;
+import com.app.soundlevelmeter.Room.Save;
+import com.app.soundlevelmeter.Singleton.Singleton;
 
 import java.util.HashSet;
 import java.util.List;

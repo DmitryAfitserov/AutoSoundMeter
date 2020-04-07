@@ -1,4 +1,4 @@
-package com.app.sound_level_meter.ui.statistics;
+package com.app.soundlevelmeter.ui.statistics;
 
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -20,14 +20,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import com.app.sound_level_meter.Interface.CallBackForStaticsits;
-import com.app.sound_level_meter.MyService;
-import com.app.sound_level_meter.R;
-import com.app.sound_level_meter.Room.DataEvent;
-import com.app.sound_level_meter.Room.MyRoomDataBase;
-import com.app.sound_level_meter.Room.Save;
-import com.app.sound_level_meter.Singleton.Singleton;
-import com.app.sound_level_meter.ui.SaveTrackDialog;
+import com.app.soundlevelmeter.Interface.CallBackForStaticsits;
+import com.app.soundlevelmeter.MyService;
+import com.app.soundlevelmeter.R;
+import com.app.soundlevelmeter.Room.DataEvent;
+import com.app.soundlevelmeter.Room.MyRoomDataBase;
+import com.app.soundlevelmeter.Room.Save;
+import com.app.soundlevelmeter.Singleton.Singleton;
+import com.app.soundlevelmeter.ui.SaveTrackDialog;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;

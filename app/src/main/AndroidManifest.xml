@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
-    package="com.app.sound_level_meter">
+    package="com.app.soundlevelmeter">
 
     <dist:module dist:instant="true" />
 
@@ -23,7 +23,7 @@
 
         <activity
             android:windowSoftInputMode="stateAlwaysHidden"
-            android:name="com.app.sound_level_meter.MainActivity"
+            android:name="com.app.soundlevelmeter.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -32,7 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="com.app.sound_level_meter.MyService" />
+        <service android:name="com.app.soundlevelmeter.MyService" />
 
     </application>
 

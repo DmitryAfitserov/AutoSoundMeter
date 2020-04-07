@@ -1,4 +1,4 @@
-package com.app.sound_level_meter;
+package com.app.soundlevelmeter;
 
 import android.content.Context;
 
