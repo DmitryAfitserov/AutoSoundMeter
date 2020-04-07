@@ -6,9 +6,11 @@ import android.os.Bundle;
 
 import android.os.Handler;
 
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -32,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private boolean doubleClick = false;
     private NavController navController;
+    private boolean isSaveService;
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        isSaveService = false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,8 +133,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        isSaveService = true;
+    }
+
+    @Override
     protected void onDestroy() {
+        Log.d("EEE", "onDestroy Activity");
         super.onDestroy();
-        stopService(new Intent(this, MyService.class));
+        if (!isSaveService) {
+            stopService(new Intent(this, MyService.class));
+        }
+
     }
 }

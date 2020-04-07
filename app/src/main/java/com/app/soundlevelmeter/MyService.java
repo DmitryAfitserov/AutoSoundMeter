@@ -505,7 +505,7 @@ public class MyService extends LifecycleService {
 
     @Override
     public void onDestroy() {
-        Log.d("EEE", "onDestroy");
+        Log.d("EEE", "onDestroy Service");
         super.onDestroy();
         stopSpeedometer();
         stopRecorder();
